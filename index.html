@@ -4177,6 +4177,137 @@
         opacity: 1
       }
     }
+
+    /* ===== About: the story grows into a tree (trunk → branches → skills) ===== */
+    .ab-exp {
+      position: relative
+    }
+
+    /* trunk continues the timeline line, so no fade-out at its end */
+    .ab-line {
+      -webkit-mask-image: none;
+      mask-image: none
+    }
+
+    .ab-tree {
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: visible;
+      pointer-events: none;
+      z-index: -1
+    }
+
+    .ab-tree .tg {
+      fill: none;
+      stroke: var(--hl);
+      stroke-width: 2;
+      stroke-linecap: round
+    }
+
+    .ab-tree .tl {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1
+    }
+
+    .ab-leaf {
+      fill: var(--blue);
+      opacity: .9;
+      transform-box: fill-box;
+      transform-origin: 0 50%;
+      transform: scale(0);
+      transition: transform .7s cubic-bezier(.2, 1.7, .4, 1)
+    }
+
+    .ab-leaf.pop {
+      transform: scale(var(--s, 1))
+    }
+
+    .ab-node {
+      fill: var(--page);
+      stroke: var(--blue);
+      stroke-width: 2.5;
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: scale(0);
+      transition: transform .55s cubic-bezier(.2, 1.7, .4, 1), fill .3s
+    }
+
+    .ab-node.pop {
+      transform: scale(1);
+      fill: var(--blue)
+    }
+
+    .ab-halo {
+      fill: none;
+      stroke: var(--blue);
+      stroke-width: 1.5;
+      opacity: 0;
+      transform-box: fill-box;
+      transform-origin: center
+    }
+
+    .ab-halo.pop {
+      animation: abhalo 2.4s ease-out infinite
+    }
+
+    @keyframes abhalo {
+      from {
+        opacity: .7;
+        transform: scale(1)
+      }
+
+      to {
+        opacity: 0;
+        transform: scale(3.2)
+      }
+    }
+
+    .ab-tip {
+      fill: var(--blue);
+      opacity: 0;
+      filter: drop-shadow(0 0 6px var(--blue));
+      transition: opacity .2s
+    }
+
+    .ab-tip.on {
+      opacity: 1
+    }
+
+    .ab-dleaf {
+      fill: var(--blue)
+    }
+
+    .ab-skill.grown {
+      border-color: color-mix(in srgb, var(--blue) 60%, var(--hl));
+      box-shadow: 0 26px 56px -34px var(--blue)
+    }
+
+    .ab-skill.grown i {
+      background: var(--blue);
+      color: #14120d
+    }
+
+    @media (min-width:861px) {
+      .ab-exp .ab-sub {
+        text-align: center;
+        margin-bottom: clamp(120px, 13vw, 170px)
+      }
+    }
+
+    @media (max-width:860px) {
+      .ab-exp {
+        padding-left: 32px
+      }
+
+      .ab-grid {
+        grid-template-columns: 1fr
+      }
+    }
   </style>
 </head>
 
@@ -4491,6 +4622,7 @@
   <section class="ab" id="about">
     <span class="ab-ring ab-r1" aria-hidden="true"></span><span class="ab-ring ab-r2" aria-hidden="true"></span>
     <div class="ab-wrap">
+      <svg class="ab-tree" aria-hidden="true"></svg>
 
       <div class="ab-head ab-rv">
         <h2 class="ab-title">My <span>story</span></h2>
@@ -5764,7 +5896,7 @@
         var vh = window.innerHeight, mid = vh * .5, sr = sec.getBoundingClientRect();
         if (sr.bottom < -200 || sr.top > vh + 200) return;
         if (!reduce) sec.style.setProperty('--sy', (-sr.top).toFixed(0));
-        if (tl && fill) { var r = tl.getBoundingClientRect(); fill.style.transform = 'scaleY(' + Math.max(0, Math.min(1, (mid - r.top) / r.height)).toFixed(4) + ')' }
+        if (tl && fill) { var r = tl.getBoundingClientRect(); fill.style.transform = 'scaleY(' + Math.max(0, Math.min(1, (vh * .62 - r.top) / r.height)).toFixed(4) + ')' }
         chs.forEach(function (c) {
           var r = c.getBoundingClientRect();
           c.classList.toggle('on', r.top < mid);
@@ -5782,6 +5914,153 @@
         es.forEach(function (e) { e.target.classList.toggle('idle', !e.isIntersecting) });
       }, { threshold: .05 });
       [].forEach.call(document.querySelectorAll('.ab-vis'), function (v) { io.observe(v) });
+    })();
+  </script>
+  <script>
+    /* ===== About: tree that grows out of the timeline as you scroll ===== */
+    (function () {
+      var sec = document.getElementById('about'); if (!sec) return;
+      var wrap = sec.querySelector('.ab-wrap'), tl = sec.querySelector('.ab-tl'), exp = sec.querySelector('.ab-exp'),
+        head = exp && exp.querySelector('.ab-sub'), svg = sec.querySelector('.ab-tree'),
+        cards = [].slice.call(sec.querySelectorAll('.ab-skill'));
+      if (!wrap || !tl || !exp || !head || !svg || !cards.length) return;
+      var NS = 'http://www.w3.org/2000/svg', reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var items = [], drift = [], H = 0, narrow = false, queued = false;
+      var LEAF = 'M0 0C5-8 16-8 24 0C16 8 5 8 0 0Z', DLEAF = 'M-11 0C-5-7 5-7 11 0C5 7-5 7-11 0Z';
+
+      function el(tag, attrs, parent) {
+        var n = document.createElementNS(NS, tag);
+        for (var k in attrs) n.setAttribute(k, attrs[k]);
+        if (parent) parent.appendChild(n); return n;
+      }
+      function clamp(v) { return Math.max(0, Math.min(1, v)) }
+      function pos(e) {              /* layout position inside .ab-wrap (ignores transforms) */
+        var x = 0, y = 0, n = e;
+        while (n && n !== wrap) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent }
+        return { x: x, y: y, w: e.offsetWidth, h: e.offsetHeight };
+      }
+      function rnd(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 } }
+
+      function build() {
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        items = []; drift = [];
+        narrow = window.matchMedia('(max-width:860px)').matches;
+        var W = wrap.offsetWidth; H = wrap.offsetHeight;
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('width', W); svg.setAttribute('height', H);
+        var t = pos(tl), x0 = narrow ? t.x + 8 : t.x + t.w / 2, y0 = t.y + t.h;
+        var gDrift = el('g', {}, svg), g = el('g', {}, svg);
+
+        /* floating leaves at different depths (parallax layer) */
+        var R = rnd(7), n = narrow ? 8 : 16;
+        for (var i = 0; i < n; i++) {
+          var d = R(), gg = el('g', {}, gDrift);
+          el('path', { d: DLEAF, class: 'ab-dleaf', opacity: (.12 + d * .34).toFixed(2) }, gg);
+          drift.push({ g: gg, x: R() * W, y: y0 - 160 + R() * (H - y0 + 100), d: d, r: R() * 360, ph: R() * 6.28, s: .55 + d * 1.1 });
+        }
+
+        function grow(dstr, a, b) {
+          var ghost = el('path', { d: dstr, class: 'tg' }, g);
+          var live = el('path', { d: dstr, class: 'tl', pathLength: 1 }, g);
+          var it = { live: live, a: a, b: Math.max(b, a + 1), len: live.getTotalLength(), leaves: [], p: -1 };
+          it.tip = el('circle', { r: 4.5, class: 'ab-tip', cx: 0, cy: 0 }, g);
+          items.push(it); return it;
+        }
+        function node(it, x, y, r) {
+          it.node = el('circle', { cx: x, cy: y, r: r || 5, class: 'ab-node' }, g); return it.node;
+        }
+        function leafAt(it, frac, side, size, spread) {
+          var L = it.len, p = it.live.getPointAtLength(L * frac),
+            p1 = it.live.getPointAtLength(L * clamp(frac - .02)), p2 = it.live.getPointAtLength(L * clamp(frac + .02)),
+            ang = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+          var gr = el('g', { transform: 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ') rotate(' + (ang - side * (spread || 48)).toFixed(1) + ')' }, g);
+          var lf = el('path', { d: LEAF, class: 'ab-leaf', style: '--s:' + (size || 1) }, gr);
+          it.leaves.push({ el: lf, at: frac });
+        }
+        function cardOf(it, c) { it.card = c }
+
+        var h = pos(head), hTop = h.y, hBot = h.y + h.h, pc = cards.map(pos), i, it;
+
+        if (narrow) {
+          /* one trunk down the left, a twig into every card */
+          var last = pc[pc.length - 1], yEnd = last.y + 50;
+          var trunk = grow('M' + x0 + ' ' + y0 + 'L' + x0 + ' ' + yEnd, y0, yEnd);
+          node(trunk, x0, y0 + 1, 4);
+          pc.forEach(function (c, k) {
+            var cy = c.y + 50, tw = grow('M' + x0 + ' ' + (cy - 14) + 'C' + x0 + ' ' + cy + ' ' + (x0 + 6) + ' ' + cy + ' ' + c.x + ' ' + cy, cy - 14, cy + 10);
+            node(tw, c.x, cy, 4); cardOf(tw, cards[k]);
+            leafAt(trunk, clamp((c.y - 30 - y0) / (yEnd - y0)), 1, .8, 55);
+          });
+        } else {
+          var yBud = hTop - 14;
+          var A = grow('M' + x0 + ' ' + y0 + 'L' + x0 + ' ' + yBud, y0, yBud);
+          node(A, x0, yBud, 6);
+          el('circle', { cx: x0, cy: yBud, r: 6, class: 'ab-halo' }, g);
+          A.halo = g.lastChild;
+
+          var rows = [], minY = pc[0].y;
+          pc.forEach(function (c, k) { if (Math.abs(c.y - minY) < 8) rows.push(k) });
+          var row1Top = minY, yf = row1Top - 62, yB0 = hBot + 14;
+          var B = grow('M' + x0 + ' ' + yB0 + 'L' + x0 + ' ' + yf, yB0, yf);
+          /* little side shoots on the trunk */
+          [.3, .66].forEach(function (f, k) {
+            var yy = yB0 + (yf - yB0) * f, side = k ? 1 : -1;
+            var s = grow('M' + x0 + ' ' + yy + 'Q' + (x0 + side * 26) + ' ' + (yy - 4) + ' ' + (x0 + side * 58) + ' ' + (yy - 30), yy, yy + 36);
+            leafAt(s, .55, -side, .8, 60); leafAt(s, 1, side, 1, 25); leafAt(s, 1, -side, .9, 80);
+          });
+          leafAt(B, .45, 1, .9, 55);
+
+          rows.forEach(function (k) {
+            var c = pc[k], cx = c.x + c.w / 2, dy = c.y - yf, side = cx < x0 - 4 ? -1 : cx > x0 + 4 ? 1 : 0;
+            var br = grow('M' + x0 + ' ' + yf + 'C' + x0 + ' ' + (yf + dy * .55) + ' ' + cx + ' ' + (yf + dy * .45) + ' ' + cx + ' ' + c.y, yf, c.y);
+            node(br, cx, c.y, 5); cardOf(br, cards[k]);
+            if (side) { leafAt(br, .5, -side, 1, 50); leafAt(br, .82, side, .8, 55) }
+            else { leafAt(br, .5, 1, .9, 50); leafAt(br, .5, -1, .9, 50) }
+          });
+          /* second row hangs from the first */
+          pc.forEach(function (c, k) {
+            if (rows.indexOf(k) > -1) return;
+            var cx = c.x + c.w / 2, above = null;
+            rows.forEach(function (r) { var a = pc[r]; if (Math.abs(a.x + a.w / 2 - cx) < 6) above = a });
+            if (!above) return;
+            var yA = above.y + above.h, tw = grow('M' + cx + ' ' + yA + 'L' + cx + ' ' + c.y, yA, c.y);
+            node(tw, cx, c.y, 4.5); cardOf(tw, cards[k]);
+          });
+        }
+        update(true);
+      }
+
+      function update(force) {
+        queued = false;
+        var vh = window.innerHeight, wr = wrap.getBoundingClientRect();
+        if (!force && (wr.bottom < -300 || wr.top > vh + 300)) return;
+        var front = vh * .62 - wr.top, s = -wr.top;
+        items.forEach(function (it) {
+          var p = reduce ? 1 : clamp((front - it.a) / (it.b - it.a));
+          if (p === it.p && (p === 0 || p === 1)) return;
+          it.p = p; it.live.style.strokeDashoffset = (1 - p).toFixed(4);
+          if (p > 0 && p < 1) { var q = it.live.getPointAtLength(it.len * p); it.tip.setAttribute('cx', q.x); it.tip.setAttribute('cy', q.y); it.tip.classList.add('on') }
+          else it.tip.classList.remove('on');
+          it.leaves.forEach(function (l) { l.el.classList.toggle('pop', p >= l.at && p > 0) });
+          var done = p >= .995;
+          if (it.node) it.node.classList.toggle('pop', done);
+          if (it.halo) it.halo.classList.toggle('pop', done);
+          if (it.card) it.card.classList.toggle('grown', done);
+        });
+        if (!reduce) drift.forEach(function (d) {
+          var kk = .6 - .8 * d.d;
+          d.g.setAttribute('transform', 'translate(' + (d.x + Math.sin(s * .004 + d.ph) * 24 * d.d).toFixed(1) + ' ' + (d.y + s * kk).toFixed(1) + ') rotate(' + (d.r + s * .09 * (.3 + d.d)).toFixed(1) + ') scale(' + d.s.toFixed(2) + ')');
+        });
+        else drift.forEach(function (d) { d.g.setAttribute('transform', 'translate(' + d.x.toFixed(1) + ' ' + d.y.toFixed(1) + ') rotate(' + d.r.toFixed(0) + ') scale(' + d.s.toFixed(2) + ')') });
+      }
+      function req() { if (!queued) { queued = true; requestAnimationFrame(function () { update() }) } }
+
+      var rt; function rebuild() { clearTimeout(rt); rt = setTimeout(build, 120) }
+      window.addEventListener('scroll', req, { passive: true });
+      window.addEventListener('resize', rebuild);
+      window.addEventListener('load', build);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+      if ('ResizeObserver' in window) new ResizeObserver(rebuild).observe(wrap);
+      build();
     })();
   </script>
 </body>
