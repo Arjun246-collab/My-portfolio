@@ -1979,32 +1979,67 @@
       }
     }
 
-/* ===== UX/UI cursor follower (mouse devices only, hides over text) ===== */
-.uxcur{
-  position:fixed;left:0;top:0;z-index:99999;
-  display:none;pointer-events:none;
-  will-change:transform;
-  transition:opacity .2s ease;
-}
-.uxcur.on{display:block}
-.uxcur svg{
-  display:block;width:22px;height:22px;
-  fill:var(--blue);stroke:#14120d;stroke-width:1.4;stroke-linejoin:round;
-  filter:drop-shadow(0 4px 8px rgba(0,0,0,.28));
-  transition:transform .25s cubic-bezier(.3,1.6,.5,1);
-}
-.uxcur .tag{
-  position:absolute;left:16px;top:20px;
-  padding:3px 10px;border-radius:99px;
-  background:var(--blue);color:#14120d;
-  font:600 .72rem/1.4 inherit;letter-spacing:.01em;white-space:nowrap;
-  box-shadow:0 6px 16px -6px rgba(0,0,0,.35);
-  transition:transform .25s cubic-bezier(.3,1.6,.5,1), padding .25s;
-}
-.uxcur.act svg{transform:scale(.85) rotate(-8deg)}
-.uxcur.act .tag{transform:scale(1.12);padding:3px 12px}
-.uxcur.hide{opacity:0}
-@media (prefers-reduced-motion:reduce){.uxcur{display:none!important}}
+    /* ===== UX/UI cursor follower (mouse devices only, hides over text) ===== */
+    .uxcur {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 99999;
+      display: none;
+      pointer-events: none;
+      will-change: transform;
+      transition: opacity .2s ease;
+    }
+
+    .uxcur.on {
+      display: block
+    }
+
+    .uxcur svg {
+      display: block;
+      width: 22px;
+      height: 22px;
+      fill: var(--blue);
+      stroke: #14120d;
+      stroke-width: 1.4;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .28));
+      transition: transform .25s cubic-bezier(.3, 1.6, .5, 1);
+    }
+
+    .uxcur .tag {
+      position: absolute;
+      left: 16px;
+      top: 20px;
+      padding: 3px 10px;
+      border-radius: 99px;
+      background: var(--blue);
+      color: #14120d;
+      font: 600 .72rem/1.4 inherit;
+      letter-spacing: .01em;
+      white-space: nowrap;
+      box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .35);
+      transition: transform .25s cubic-bezier(.3, 1.6, .5, 1), padding .25s;
+    }
+
+    .uxcur.act svg {
+      transform: scale(.85) rotate(-8deg)
+    }
+
+    .uxcur.act .tag {
+      transform: scale(1.12);
+      padding: 3px 12px
+    }
+
+    .uxcur.hide {
+      opacity: 0
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .uxcur {
+        display: none !important
+      }
+    }
 
     @media (prefers-reduced-motion:reduce) {
       .dcur {
@@ -2045,212 +2080,2103 @@
     textarea {
       cursor: text !important
     }
+
     /* ===== Screens carousel + project viewer (id="screens") ===== */
-.work{padding-bottom:clamp(40px,6vw,80px)} /* the new section now carries the space above the dock */
-.sx{position:relative;z-index:1;padding:clamp(40px,7vw,90px) 0 clamp(150px,18vw,190px);overflow:hidden}
-.sxhead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:clamp(24px,4vw,40px)}
-.sxtitle{margin:0;font-weight:500;font-size:clamp(2.4rem,5.4vw,4.2rem);line-height:1;letter-spacing:-.035em;color:var(--text)}
-.sxtitle span{display:block;color:var(--blue)}
-.sxlede{margin:0;max-width:34ch;font-weight:300;color:var(--muted);font-size:clamp(1rem,1.4vw,1.12rem);line-height:1.7}
+    .work {
+      padding-bottom: clamp(40px, 6vw, 80px)
+    }
 
-/* carousel */
-.sxrail{position:relative;--sxpad:max(clamp(20px,5vw,40px),calc((100% - 1040px)/2 + clamp(20px,5vw,40px)))}
-.sxtrack{position:relative;display:flex;gap:clamp(14px,2vw,22px);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;padding:8px var(--sxpad) 26px;scroll-padding-inline:var(--sxpad);scrollbar-width:none;cursor:grab}
-.sxtrack::-webkit-scrollbar{display:none}
-.sxtrack.drag{scroll-snap-type:none;cursor:grabbing}
-.sxtrack.drag .sxcard{pointer-events:none}
-.sxcard{--mx:50%;--my:50%;appearance:none;font:inherit;text-align:left;position:relative;flex:0 0 min(78vw,420px);aspect-ratio:4/5;scroll-snap-align:start;padding:0;border:1px solid var(--hl);border-radius:30px;background:var(--tile);color:#fff;overflow:hidden;cursor:pointer;isolation:isolate;-webkit-tap-highlight-color:transparent;transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .5s}
-.sxcard:hover,.sxcard:focus-visible{transform:translateY(-6px);border-color:color-mix(in srgb,var(--blue) 40%,var(--hl));box-shadow:0 30px 60px -28px var(--shadow)}
-.sxcard:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
-.sxmedia{position:absolute;inset:0;z-index:-1;display:grid;place-items:center;background:var(--sbg);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
-.sxcard:hover .sxmedia{transform:scale(1.05)}
-.sxmedia img,.vwslide img{max-width:88%;max-height:88%;object-fit:contain;filter:drop-shadow(0 22px 30px rgba(0,0,0,.35));-webkit-user-drag:none;user-select:none}
-.sxmedia{padding:20px 20px 88px}
-.sxmedia img{max-width:100%;max-height:100%}
-.cover .sxmedia img,.vwslide.cover img{width:100%;height:100%;max-width:none;max-height:none;object-fit:cover;filter:none}
-.sxshade{position:absolute;inset:0;z-index:0;background:linear-gradient(to top,rgba(0,0,0,.62),transparent 48%);pointer-events:none}
-.sxcount{position:absolute;top:16px;left:16px;z-index:2;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.9);color:#14120d;font-size:.8rem;font-weight:500}
-.sxopen{position:absolute;top:14px;right:14px;z-index:2;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.9);color:#14120d;transition:background .3s,transform .45s cubic-bezier(.3,1.6,.5,1)}
-.sxopen svg{width:18px;height:18px}
-.sxcard:hover .sxopen,.sxcard:focus-visible .sxopen{background:var(--blue);transform:scale(1.14)}
-.sxinfo{position:absolute;left:20px;right:20px;bottom:18px;z-index:2;display:flex;flex-direction:column;gap:4px}
-.sxinfo small{opacity:.82;font-size:.85rem}
-.sxinfo strong{font-weight:500;font-size:clamp(1.2rem,2vw,1.5rem);line-height:1.2;letter-spacing:-.02em}
-@property --sa{syntax:'<angle>';inherits:false;initial-value:0deg}
-.sxcard::after{content:"";position:absolute;inset:0;z-index:3;border-radius:29px;padding:2px;pointer-events:none;opacity:0;transition:opacity .35s;
-  background:conic-gradient(from var(--sa),transparent 0 52%,color-mix(in srgb,var(--blue) 35%,transparent) 66%,var(--blue) 86%,#fff4d6 94%,transparent 100%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
-  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
-.sxcard:hover::after,.sxcard:focus-visible::after{opacity:1;animation:sxspin 2.8s linear infinite}
-@keyframes sxspin{to{--sa:360deg}}
+    /* the new section now carries the space above the dock */
+    .sx {
+      position: relative;
+      z-index: 1;
+      padding: clamp(40px, 7vw, 90px) 0 clamp(150px, 18vw, 190px);
+      overflow: hidden
+    }
 
-.sxbar{display:flex;align-items:center;gap:clamp(16px,3vw,28px);margin-top:6px}
-.sxprog{position:relative;flex:1;height:2px;border-radius:2px;background:var(--hl);overflow:hidden}
-.sxprog i{position:absolute;top:0;bottom:0;left:0;width:30%;border-radius:2px;background:var(--blue)}
-.sxnav{display:flex;gap:10px}
-.sxbtn{width:50px;height:50px;border-radius:50%;border:1.5px solid var(--text);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background .3s,border-color .3s,color .3s,opacity .3s,transform .3s}
-.sxbtn svg{width:20px;height:20px}
-.sxbtn:hover:not(:disabled){background:var(--blue);border-color:var(--blue);color:#14120d;transform:scale(1.06)}
-.sxbtn:disabled{opacity:.3;cursor:default}
+    .sxhead {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px 40px;
+      margin-bottom: clamp(24px, 4vw, 40px)
+    }
 
-/* placeholder screens (shown until you add real images) */
-.phs{width:62%;aspect-ratio:3/4;border-radius:18px;background:var(--ps,#fff);box-shadow:0 22px 44px -18px rgba(0,0,0,.5);padding:14px;display:flex;flex-direction:column;gap:9px;overflow:hidden}
-.phs.v1{width:42%;aspect-ratio:9/17;border-radius:26px}
-.phs.v2{width:72%;aspect-ratio:4/3}
-.phs.v3{width:64%;aspect-ratio:1}
-.pk{display:block;height:8px;border-radius:4px;background:var(--pk,rgba(20,18,13,.11))}
-.pa{display:block;border-radius:12px;background:var(--blue)}
-.pb{display:block;border-radius:10px;background:var(--pk,rgba(20,18,13,.11))}
-.pbars{flex:1;display:flex;align-items:flex-end;gap:7px}.pbars i{flex:1;border-radius:5px 5px 0 0;background:var(--pk,rgba(20,18,13,.11))}.pbars i.a{background:var(--blue)}
-.ptiles{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .sxtitle {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(2.4rem, 5.4vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: -.035em;
+      color: var(--text)
+    }
 
-/* viewer: the tapped tile opens into this panel */
-html.vw-lock,html.vw-lock body{overflow:hidden}
-.vw{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:clamp(10px,3vw,32px);visibility:hidden}
-.vw.open,.vw.closing{visibility:visible}
-.vwback{position:absolute;inset:0;background:rgba(10,10,12,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;transition:opacity .4s}
-.vw.open .vwback{opacity:1}
-.vwpanel{position:relative;z-index:1;width:min(1080px,100%);height:min(700px,calc(100svh - 2*clamp(10px,3vw,32px)));display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);border-radius:32px;background:var(--page);border:1px solid var(--hl);box-shadow:0 40px 100px -30px rgba(0,0,0,.6);overflow:hidden;outline:none;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
-.vw.closing .vwpanel{transition-duration:.5s;transition-timing-function:cubic-bezier(.6,0,.3,1)}
-.vwpanel>*{opacity:0;transition:opacity .35s .12s}
-.vw.open .vwpanel>*{opacity:1}
-.vwclose{position:absolute;top:14px;right:14px;z-index:5;width:44px;height:44px;border-radius:50%;border:1px solid var(--hl);background:var(--page);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:background .3s,border-color .3s,color .3s,transform .4s cubic-bezier(.3,1.6,.5,1)}
-.vwclose svg{width:18px;height:18px}
-.vwclose:hover{background:var(--blue);border-color:var(--blue);color:#14120d;transform:rotate(90deg)}
-.vwgal{position:relative;display:flex;flex-direction:column;min-height:0;padding:10px;background:var(--tile)}
-.vwtrack{position:relative;flex:1;min-height:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:22px;cursor:grab}
-.vwtrack::-webkit-scrollbar{display:none}
-.vwtrack.drag{scroll-snap-type:none;cursor:grabbing}
-.vwslide{flex:0 0 100%;scroll-snap-align:center;position:relative;display:grid;place-items:center;overflow:hidden;background:var(--sbg)}
-.vwarr{position:absolute;top:calc(50% - 30px);z-index:3;width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#14120d;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px -10px rgba(0,0,0,.45);transition:background .3s,opacity .3s,transform .3s}
-.vwarr svg{width:20px;height:20px}
-.vwarr.prev{left:22px}.vwarr.next{right:22px}
-.vwarr:hover:not(:disabled){background:var(--blue);transform:scale(1.08)}
-.vwarr:disabled{opacity:0;pointer-events:none}
-.vwcount{position:absolute;top:24px;left:24px;z-index:3;padding:6px 12px;border-radius:99px;background:rgba(255,255,255,.9);color:#14120d;font-size:.8rem;font-weight:500}
-.vwthumbs{display:flex;gap:8px;padding:10px 2px 2px;overflow-x:auto;scrollbar-width:none}
-.vwthumbs::-webkit-scrollbar{display:none}
-.vwth{flex:none;width:60px;height:46px;padding:0;border-radius:12px;border:2px solid transparent;background:var(--sbg);overflow:hidden;cursor:pointer;opacity:.6;transition:opacity .3s,border-color .3s,transform .3s}
-.vwth img{width:100%;height:100%;object-fit:cover}
-.vwth:hover{opacity:1}
-.vwth.on{opacity:1;border-color:var(--blue)}
-.vwinfo{display:flex;flex-direction:column;gap:14px;min-height:0;overflow:auto;padding:clamp(22px,3vw,34px);padding-top:clamp(64px,6vw,72px)}
-.vwcat{margin:0;color:var(--blue);font-weight:500;font-size:.9rem}
-.vwinfo h3{margin:0;font-weight:500;font-size:clamp(1.6rem,2.6vw,2.1rem);line-height:1.15;letter-spacing:-.03em}
-.vwdesc{margin:0;color:var(--muted);font-weight:300;line-height:1.75;font-size:1rem}
-.vwchips{display:flex;flex-wrap:wrap;gap:8px}
-.vwchips span{padding:5px 13px;border:1px solid var(--hl);border-radius:99px;font-size:.85rem;color:var(--muted)}
-.vwmeta{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;margin:6px 0 0;padding-top:18px;border-top:1px solid var(--hl)}
-.vwmeta div{min-width:0}
-.vwmeta dt{color:var(--muted);font-size:.8rem;font-weight:300}
-.vwmeta dd{margin:2px 0 0;font-weight:500;font-size:.95rem}
-.vwcta{margin-top:auto;align-self:flex-start}
+    .sxtitle span {
+      display: block;
+      color: var(--blue)
+    }
 
-@media (max-width:860px){
-  .vwslide .phs{width:auto;height:82%}
-  .sxhead{flex-direction:column;align-items:center;text-align:center}
-  .sxlede{margin:0 auto}
-  .vw{padding:0;place-items:end center}
-  .vwpanel{width:100%;height:min(94svh,860px);grid-template-columns:1fr;grid-template-rows:minmax(0,46%) minmax(0,1fr);border-radius:28px 28px 0 0}
-  .vwinfo{padding-top:clamp(20px,5vw,28px)}
-  .vwarr{width:40px;height:40px}.vwarr.prev{left:14px}.vwarr.next{right:14px}
-  .vwclose{top:12px;right:12px}
-}
-@media (prefers-reduced-motion:reduce){.sxcard:hover::after,.sxcard:focus-visible::after{animation:none}}
-/* ===== About me: story section (id="about") ===== */
-.work{padding-bottom:clamp(40px,6vw,80px)}   /* the About section now carries the space above the dock */
-.sx{padding-bottom:clamp(40px,6vw,80px)}     /* (only matters if you added the screens carousel) */
-.ab{position:relative;z-index:1;overflow:hidden;padding:clamp(56px,9vw,110px) 0 clamp(150px,18vw,190px)}
-.ab-wrap{position:relative;z-index:1;width:100%;max-width:1040px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
-.ab-ring{position:absolute;z-index:0;border-radius:50%;border:1px solid color-mix(in srgb,var(--blue) 28%,transparent);pointer-events:none;will-change:transform}
-.ab-r1{width:540px;height:540px;right:-220px;top:8%;transform:translateY(calc(var(--sy,0)*.06px))}
-.ab-r2{width:380px;height:380px;left:-160px;top:58%;transform:translateY(calc(var(--sy,0)*-.04px))}
+    .sxlede {
+      margin: 0;
+      max-width: 34ch;
+      font-weight: 300;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.4vw, 1.12rem);
+      line-height: 1.7
+    }
 
-.ab-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:clamp(28px,4vw,48px)}
-.ab-title{margin:0;font-weight:500;font-size:clamp(2.4rem,5.4vw,4.2rem);line-height:1;letter-spacing:-.035em;color:var(--text)}
-.ab-title span{display:block;color:var(--blue)}
-.ab-lede{margin:0;max-width:34ch;font-weight:300;color:var(--muted);font-size:clamp(1rem,1.4vw,1.12rem);line-height:1.7}
+    /* carousel */
+    .sxrail {
+      position: relative;
+      --sxpad: max(clamp(20px, 5vw, 40px), calc((100% - 1040px)/2 + clamp(20px, 5vw, 40px)))
+    }
 
-.ab-intro{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start;margin-bottom:clamp(64px,9vw,120px)}
-.ab-say{margin:0;font-weight:500;font-size:clamp(1.6rem,3.2vw,2.6rem);line-height:1.2;letter-spacing:-.03em;color:var(--text)}
-.ab-say em{font-style:normal;color:var(--blue)}
-.ab-stats{margin:0;padding:0;list-style:none;border-top:1px solid var(--hl)}
-.ab-stats li{display:flex;align-items:baseline;gap:16px;padding:18px 0;border-bottom:1px solid var(--hl)}
-.ab-stats b{min-width:3.4ch;font-weight:500;font-size:clamp(2rem,4vw,3rem);line-height:1;letter-spacing:-.04em;color:var(--text)}
-.ab-stats span{color:var(--muted);font-weight:300}
+    .sxtrack {
+      position: relative;
+      display: flex;
+      gap: clamp(14px, 2vw, 22px);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      padding: 8px var(--sxpad) 26px;
+      scroll-padding-inline: var(--sxpad);
+      scrollbar-width: none;
+      cursor: grab
+    }
 
-.ab-sub{margin:0 0 clamp(28px,4vw,44px);font-weight:500;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.03em;color:var(--text)}
+    .sxtrack::-webkit-scrollbar {
+      display: none
+    }
 
-/* the story: a timeline that draws itself as you scroll */
-.ab-tl{position:relative;display:flex;flex-direction:column;gap:clamp(44px,6vw,84px)}
-.ab-line{position:absolute;top:12px;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--hl);-webkit-mask-image:linear-gradient(#000 88%,transparent);mask-image:linear-gradient(#000 88%,transparent)}
-.ab-fill{position:absolute;inset:0;background:linear-gradient(var(--blue),color-mix(in srgb,var(--blue) 40%,transparent));transform:scaleY(0);transform-origin:top}
-.ab-ch{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);align-items:start;gap:0 clamp(12px,2vw,28px)}
-.ab-mark{grid-column:2;grid-row:1;display:flex;justify-content:center;padding-top:8px}
-.ab-dot{position:relative;z-index:1;width:16px;height:16px;border-radius:50%;background:var(--page);border:2px solid var(--hl);transition:background .4s,border-color .4s,box-shadow .4s}
-.ab-ch.on .ab-dot{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 6px color-mix(in srgb,var(--blue) 22%,transparent)}
-.ab-card{grid-column:1;grid-row:1;padding-top:2px}
-.ab-ch:nth-child(even) .ab-card{grid-column:3}
-.ab-kind{margin:0 0 10px;color:var(--blue);font-weight:500;font-size:.9rem}
-.ab-kind time{margin-left:8px;color:var(--muted);font-weight:300}
-.ab-card h3{margin:0;font-weight:500;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.15;letter-spacing:-.03em;color:var(--text)}
-.ab-place{margin:6px 0 0;color:var(--muted);font-weight:300}
-.ab-txt{margin:14px 0 0;max-width:44ch;color:var(--muted);font-weight:300;line-height:1.75}
-.ab-tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
-.ab-tags li{padding:5px 13px;border:1px solid var(--hl);border-radius:99px;font-size:.85rem;color:var(--muted)}
+    .sxtrack.drag {
+      scroll-snap-type: none;
+      cursor: grabbing
+    }
 
-.ab-vis{--g1:#e2cd9f;--g2:#bd9b5b;--abink:rgba(20,18,13,.34);--abic:#14120d;position:relative;grid-column:3;grid-row:1;aspect-ratio:4/3;border-radius:28px;overflow:hidden;isolation:isolate;background:linear-gradient(140deg,var(--g1),var(--g2))}
-.ab-ch:nth-child(even) .ab-vis{grid-column:1}
-.ab-vis[data-tone="stone"]{--g1:#ece8de;--g2:#cdc5b3}
-.ab-vis[data-tone="work"]{--g1:#2c2d33;--g2:#131418;--abink:rgba(255,255,255,.3);--abic:#f3efe6}
-.ab-vis[data-tone="brown"]{--g1:#3c3427;--g2:#1a1510;--abink:rgba(255,255,255,.3);--abic:#f3efe6}
-.ab-vis::before{content:"";position:absolute;z-index:-1;width:70%;aspect-ratio:1;right:-18%;bottom:-30%;border-radius:50%;border:1px solid var(--abink);transform:translateY(calc(var(--p,0)*-18px))}
-.ab-big{position:absolute;left:22px;bottom:-6px;font-weight:600;font-size:clamp(4.2rem,9vw,7.4rem);line-height:1;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px var(--abink);user-select:none;transform:translateY(calc(var(--p,0)*-34px))}
-.ab-ico{position:absolute;right:22px;top:22px;width:clamp(56px,7vw,76px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--abic);transform:translateY(calc(var(--p,0)*22px))}
-.ab-ico svg{width:46%;height:46%}
+    .sxtrack.drag .sxcard {
+      pointer-events: none
+    }
 
-/* expertise */
-.ab-exp{margin-top:clamp(72px,10vw,130px)}
-.ab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
-.ab-skill{padding:26px;border:1px solid var(--hl);border-radius:26px;background:var(--tile);transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .5s}
-.ab-skill:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--blue) 55%,var(--hl));box-shadow:0 30px 60px -28px var(--shadow)}
-.ab-skill i{display:grid;place-items:center;width:48px;height:48px;margin-bottom:18px;border-radius:50%;border:1.5px solid var(--blue);color:var(--blue);transition:background .35s,color .35s}
-.ab-skill:hover i{background:var(--blue);color:#14120d}
-.ab-skill svg{width:22px;height:22px}
-.ab-skill h4{margin:0;font-weight:500;font-size:1.2rem;letter-spacing:-.02em;color:var(--text)}
-.ab-skill p{margin:8px 0 0;color:var(--muted);font-weight:300;line-height:1.65;font-size:.96rem}
-.ab-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:clamp(28px,4vw,44px)}
-.ab-tools b{margin-right:8px;font-weight:500;color:var(--text)}
-.ab-tools span{padding:8px 16px;border:1px solid var(--hl);border-radius:99px;color:var(--muted);font-weight:300;transition:border-color .3s,color .3s}
-.ab-tools span:hover{border-color:var(--blue);color:var(--text)}
+    .sxcard {
+      --mx: 50%;
+      --my: 50%;
+      appearance: none;
+      font: inherit;
+      text-align: left;
+      position: relative;
+      flex: 0 0 min(78vw, 420px);
+      aspect-ratio: 4/5;
+      scroll-snap-align: start;
+      padding: 0;
+      border: 1px solid var(--hl);
+      border-radius: 30px;
+      background: var(--tile);
+      color: #fff;
+      overflow: hidden;
+      cursor: pointer;
+      isolation: isolate;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .5s cubic-bezier(.2, .8, .2, 1), border-color .35s, box-shadow .5s
+    }
 
-/* closing */
-.ab-end{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px 40px;margin-top:clamp(64px,9vw,120px);padding:clamp(28px,5vw,56px);border:1px solid var(--hl);border-radius:32px;background:var(--tile)}
-.ab-end h3{margin:0;max-width:16ch;font-weight:500;font-size:clamp(1.8rem,3.6vw,2.8rem);line-height:1.1;letter-spacing:-.035em;color:var(--text)}
-.ab-end h3 span{color:var(--blue)}
-.ab-end p{margin:12px 0 0;max-width:38ch;color:var(--muted);font-weight:300}
-.ab-cta{display:flex;flex-wrap:wrap;gap:12px}
+    .sxcard:hover,
+    .sxcard:focus-visible {
+      transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--blue) 40%, var(--hl));
+      box-shadow: 0 30px 60px -28px var(--shadow)
+    }
 
-/* reveal once (never hides content if JS is off) */
-@keyframes abin{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
-.ab-js .ab-rv:not(.in){opacity:0}
-.ab-rv.in{animation:abin .9s cubic-bezier(.2,.8,.2,1) var(--d,0s) backwards}
+    .sxcard:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 4px
+    }
 
-@media (max-width:860px){
-  .ab-head{flex-direction:column;align-items:center;text-align:center}
-  .ab-lede{margin:0 auto}
-  .ab-intro{grid-template-columns:1fr}
-  .ab-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .ab-line{left:7px;margin-left:0}
-  .ab-ch{grid-template-columns:16px minmax(0,1fr);gap:0 16px}
-  .ab-mark{grid-column:1;justify-content:flex-start}
-  .ab-card,.ab-ch:nth-child(even) .ab-card{grid-column:2;grid-row:1}
-  .ab-vis,.ab-ch:nth-child(even) .ab-vis{grid-column:2;grid-row:2;margin-top:18px;aspect-ratio:16/10}
-  .ab-end{flex-direction:column;align-items:flex-start}
-}
-@media (max-width:560px){.ab-grid{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:reduce){.ab-rv.in{animation:none}.ab-js .ab-rv:not(.in){opacity:1}}
-    
+    .sxmedia {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      display: grid;
+      place-items: center;
+      background: var(--sbg);
+      transition: transform .9s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .sxcard:hover .sxmedia {
+      transform: scale(1.05)
+    }
+
+    .sxmedia img,
+    .vwslide img {
+      max-width: 88%;
+      max-height: 88%;
+      object-fit: contain;
+      filter: drop-shadow(0 22px 30px rgba(0, 0, 0, .35));
+      -webkit-user-drag: none;
+      user-select: none
+    }
+
+    .sxmedia {
+      padding: 20px 20px 88px
+    }
+
+    .sxmedia img {
+      max-width: 100%;
+      max-height: 100%
+    }
+
+    .cover .sxmedia img,
+    .vwslide.cover img {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      object-fit: cover;
+      filter: none
+    }
+
+    .sxshade {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, .62), transparent 48%);
+      pointer-events: none
+    }
+
+    .sxcount {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      z-index: 2;
+      padding: 6px 12px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .9);
+      color: #14120d;
+      font-size: .8rem;
+      font-weight: 500
+    }
+
+    .sxopen {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .9);
+      color: #14120d;
+      transition: background .3s, transform .45s cubic-bezier(.3, 1.6, .5, 1)
+    }
+
+    .sxopen svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .sxcard:hover .sxopen,
+    .sxcard:focus-visible .sxopen {
+      background: var(--blue);
+      transform: scale(1.14)
+    }
+
+    .sxinfo {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 18px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .sxinfo small {
+      opacity: .82;
+      font-size: .85rem
+    }
+
+    .sxinfo strong {
+      font-weight: 500;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      line-height: 1.2;
+      letter-spacing: -.02em
+    }
+
+    @property --sa {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg
+    }
+
+    .sxcard::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      border-radius: 29px;
+      padding: 2px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .35s;
+      background: conic-gradient(from var(--sa), transparent 0 52%, color-mix(in srgb, var(--blue) 35%, transparent) 66%, var(--blue) 86%, #fff4d6 94%, transparent 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite: exclude
+    }
+
+    .sxcard:hover::after,
+    .sxcard:focus-visible::after {
+      opacity: 1;
+      animation: sxspin 2.8s linear infinite
+    }
+
+    @keyframes sxspin {
+      to {
+        --sa: 360deg
+      }
+    }
+
+    .sxbar {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 3vw, 28px);
+      margin-top: 6px
+    }
+
+    .sxprog {
+      position: relative;
+      flex: 1;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--hl);
+      overflow: hidden
+    }
+
+    .sxprog i {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 30%;
+      border-radius: 2px;
+      background: var(--blue)
+    }
+
+    .sxnav {
+      display: flex;
+      gap: 10px
+    }
+
+    .sxbtn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1.5px solid var(--text);
+      background: transparent;
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background .3s, border-color .3s, color .3s, opacity .3s, transform .3s
+    }
+
+    .sxbtn svg {
+      width: 20px;
+      height: 20px
+    }
+
+    .sxbtn:hover:not(:disabled) {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #14120d;
+      transform: scale(1.06)
+    }
+
+    .sxbtn:disabled {
+      opacity: .3;
+      cursor: default
+    }
+
+    /* placeholder screens (shown until you add real images) */
+    .phs {
+      width: 62%;
+      aspect-ratio: 3/4;
+      border-radius: 18px;
+      background: var(--ps, #fff);
+      box-shadow: 0 22px 44px -18px rgba(0, 0, 0, .5);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      overflow: hidden
+    }
+
+    .phs.v1 {
+      width: 42%;
+      aspect-ratio: 9/17;
+      border-radius: 26px
+    }
+
+    .phs.v2 {
+      width: 72%;
+      aspect-ratio: 4/3
+    }
+
+    .phs.v3 {
+      width: 64%;
+      aspect-ratio: 1
+    }
+
+    .pk {
+      display: block;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--pk, rgba(20, 18, 13, .11))
+    }
+
+    .pa {
+      display: block;
+      border-radius: 12px;
+      background: var(--blue)
+    }
+
+    .pb {
+      display: block;
+      border-radius: 10px;
+      background: var(--pk, rgba(20, 18, 13, .11))
+    }
+
+    .pbars {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      gap: 7px
+    }
+
+    .pbars i {
+      flex: 1;
+      border-radius: 5px 5px 0 0;
+      background: var(--pk, rgba(20, 18, 13, .11))
+    }
+
+    .pbars i.a {
+      background: var(--blue)
+    }
+
+    .ptiles {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px
+    }
+
+    /* viewer: the tapped tile opens into this panel */
+    html.vw-lock,
+    html.vw-lock body {
+      overflow: hidden
+    }
+
+    .vw {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      display: grid;
+      place-items: center;
+      padding: clamp(10px, 3vw, 32px);
+      visibility: hidden
+    }
+
+    .vw.open,
+    .vw.closing {
+      visibility: visible
+    }
+
+    .vwback {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 12, .55);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity .4s
+    }
+
+    .vw.open .vwback {
+      opacity: 1
+    }
+
+    .vwpanel {
+      position: relative;
+      z-index: 1;
+      width: min(1080px, 100%);
+      height: min(700px, calc(100svh - 2*clamp(10px, 3vw, 32px)));
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      border-radius: 32px;
+      background: var(--page);
+      border: 1px solid var(--hl);
+      box-shadow: 0 40px 100px -30px rgba(0, 0, 0, .6);
+      overflow: hidden;
+      outline: none;
+      transition: transform .6s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    .vw.closing .vwpanel {
+      transition-duration: .5s;
+      transition-timing-function: cubic-bezier(.6, 0, .3, 1)
+    }
+
+    .vwpanel>* {
+      opacity: 0;
+      transition: opacity .35s .12s
+    }
+
+    .vw.open .vwpanel>* {
+      opacity: 1
+    }
+
+    .vwclose {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 5;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--hl);
+      background: var(--page);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background .3s, border-color .3s, color .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1)
+    }
+
+    .vwclose svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .vwclose:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #14120d;
+      transform: rotate(90deg)
+    }
+
+    .vwgal {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 10px;
+      background: var(--tile)
+    }
+
+    .vwtrack {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      border-radius: 22px;
+      cursor: grab
+    }
+
+    .vwtrack::-webkit-scrollbar {
+      display: none
+    }
+
+    .vwtrack.drag {
+      scroll-snap-type: none;
+      cursor: grabbing
+    }
+
+    .vwslide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: var(--sbg)
+    }
+
+    .vwarr {
+      position: absolute;
+      top: calc(50% - 30px);
+      z-index: 3;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 0;
+      background: rgba(255, 255, 255, .9);
+      color: #14120d;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .45);
+      transition: background .3s, opacity .3s, transform .3s
+    }
+
+    .vwarr svg {
+      width: 20px;
+      height: 20px
+    }
+
+    .vwarr.prev {
+      left: 22px
+    }
+
+    .vwarr.next {
+      right: 22px
+    }
+
+    .vwarr:hover:not(:disabled) {
+      background: var(--blue);
+      transform: scale(1.08)
+    }
+
+    .vwarr:disabled {
+      opacity: 0;
+      pointer-events: none
+    }
+
+    .vwcount {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      z-index: 3;
+      padding: 6px 12px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .9);
+      color: #14120d;
+      font-size: .8rem;
+      font-weight: 500
+    }
+
+    .vwthumbs {
+      display: flex;
+      gap: 8px;
+      padding: 10px 2px 2px;
+      overflow-x: auto;
+      scrollbar-width: none
+    }
+
+    .vwthumbs::-webkit-scrollbar {
+      display: none
+    }
+
+    .vwth {
+      flex: none;
+      width: 60px;
+      height: 46px;
+      padding: 0;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      background: var(--sbg);
+      overflow: hidden;
+      cursor: pointer;
+      opacity: .6;
+      transition: opacity .3s, border-color .3s, transform .3s
+    }
+
+    .vwth img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .vwth:hover {
+      opacity: 1
+    }
+
+    .vwth.on {
+      opacity: 1;
+      border-color: var(--blue)
+    }
+
+    .vwinfo {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0;
+      overflow: auto;
+      padding: clamp(22px, 3vw, 34px);
+      padding-top: clamp(64px, 6vw, 72px)
+    }
+
+    .vwcat {
+      margin: 0;
+      color: var(--blue);
+      font-weight: 500;
+      font-size: .9rem
+    }
+
+    .vwinfo h3 {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+      line-height: 1.15;
+      letter-spacing: -.03em
+    }
+
+    .vwdesc {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.75;
+      font-size: 1rem
+    }
+
+    .vwchips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .vwchips span {
+      padding: 5px 13px;
+      border: 1px solid var(--hl);
+      border-radius: 99px;
+      font-size: .85rem;
+      color: var(--muted)
+    }
+
+    .vwmeta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 18px;
+      margin: 6px 0 0;
+      padding-top: 18px;
+      border-top: 1px solid var(--hl)
+    }
+
+    .vwmeta div {
+      min-width: 0
+    }
+
+    .vwmeta dt {
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 300
+    }
+
+    .vwmeta dd {
+      margin: 2px 0 0;
+      font-weight: 500;
+      font-size: .95rem
+    }
+
+    .vwcta {
+      margin-top: auto;
+      align-self: flex-start
+    }
+
+    @media (max-width:860px) {
+      .vwslide .phs {
+        width: auto;
+        height: 82%
+      }
+
+      .sxhead {
+        flex-direction: column;
+        align-items: center;
+        text-align: center
+      }
+
+      .sxlede {
+        margin: 0 auto
+      }
+
+      .vw {
+        padding: 0;
+        place-items: end center
+      }
+
+      .vwpanel {
+        width: 100%;
+        height: min(94svh, 860px);
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 46%) minmax(0, 1fr);
+        border-radius: 28px 28px 0 0
+      }
+
+      .vwinfo {
+        padding-top: clamp(20px, 5vw, 28px)
+      }
+
+      .vwarr {
+        width: 40px;
+        height: 40px
+      }
+
+      .vwarr.prev {
+        left: 14px
+      }
+
+      .vwarr.next {
+        right: 14px
+      }
+
+      .vwclose {
+        top: 12px;
+        right: 12px
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      .sxcard:hover::after,
+      .sxcard:focus-visible::after {
+        animation: none
+      }
+    }
+
+    /* ===== About me: story section (id="about") ===== */
+    .work {
+      padding-bottom: clamp(40px, 6vw, 80px)
+    }
+
+    /* the About section now carries the space above the dock */
+    .sx {
+      padding-bottom: clamp(40px, 6vw, 80px)
+    }
+
+    /* (only matters if you added the screens carousel) */
+    .ab {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      padding: clamp(56px, 9vw, 110px) 0 clamp(150px, 18vw, 190px)
+    }
+
+    .ab-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 40px)
+    }
+
+    .ab-ring {
+      position: absolute;
+      z-index: 0;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--blue) 28%, transparent);
+      pointer-events: none;
+      will-change: transform
+    }
+
+    .ab-r1 {
+      width: 540px;
+      height: 540px;
+      right: -220px;
+      top: 8%;
+      transform: translateY(calc(var(--sy, 0)*.06px))
+    }
+
+    .ab-r2 {
+      width: 380px;
+      height: 380px;
+      left: -160px;
+      top: 58%;
+      transform: translateY(calc(var(--sy, 0)*-.04px))
+    }
+
+    .ab-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px 40px;
+      margin-bottom: clamp(28px, 4vw, 48px)
+    }
+
+    .ab-title {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(2.4rem, 5.4vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: -.035em;
+      color: var(--text)
+    }
+
+    .ab-title span {
+      display: block;
+      color: var(--blue)
+    }
+
+    .ab-lede {
+      margin: 0;
+      max-width: 34ch;
+      font-weight: 300;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.4vw, 1.12rem);
+      line-height: 1.7
+    }
+
+    .ab-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: start;
+      margin-bottom: clamp(64px, 9vw, 120px)
+    }
+
+    .ab-say {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+      line-height: 1.2;
+      letter-spacing: -.03em;
+      color: var(--text)
+    }
+
+    .ab-say em {
+      font-style: normal;
+      color: var(--blue)
+    }
+
+    .ab-stats {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--hl)
+    }
+
+    .ab-stats li {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--hl)
+    }
+
+    .ab-stats b {
+      min-width: 3.4ch;
+      font-weight: 500;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: var(--text)
+    }
+
+    .ab-stats span {
+      color: var(--muted);
+      font-weight: 300
+    }
+
+    .ab-sub {
+      margin: 0 0 clamp(28px, 4vw, 44px);
+      font-weight: 500;
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      letter-spacing: -.03em;
+      color: var(--text)
+    }
+
+    /* the story: a timeline that draws itself as you scroll */
+    .ab-tl {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(44px, 6vw, 84px)
+    }
+
+    .ab-line {
+      position: absolute;
+      top: 12px;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      margin-left: -1px;
+      background: var(--hl);
+      -webkit-mask-image: linear-gradient(#000 88%, transparent);
+      mask-image: linear-gradient(#000 88%, transparent)
+    }
+
+    .ab-fill {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(var(--blue), color-mix(in srgb, var(--blue) 40%, transparent));
+      transform: scaleY(0);
+      transform-origin: top
+    }
+
+    .ab-ch {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
+      align-items: start;
+      gap: 0 clamp(12px, 2vw, 28px)
+    }
+
+    .ab-mark {
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      justify-content: center;
+      padding-top: 8px
+    }
+
+    .ab-dot {
+      position: relative;
+      z-index: 1;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--page);
+      border: 2px solid var(--hl);
+      transition: background .4s, border-color .4s, box-shadow .4s
+    }
+
+    .ab-ch.on .ab-dot {
+      background: var(--blue);
+      border-color: var(--blue);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--blue) 22%, transparent)
+    }
+
+    .ab-card {
+      grid-column: 1;
+      grid-row: 1;
+      padding-top: 2px
+    }
+
+    .ab-ch:nth-child(even) .ab-card {
+      grid-column: 3
+    }
+
+    .ab-kind {
+      margin: 0 0 10px;
+      color: var(--blue);
+      font-weight: 500;
+      font-size: .9rem
+    }
+
+    .ab-kind time {
+      margin-left: 8px;
+      color: var(--muted);
+      font-weight: 300
+    }
+
+    .ab-card h3 {
+      margin: 0;
+      font-weight: 500;
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      line-height: 1.15;
+      letter-spacing: -.03em;
+      color: var(--text)
+    }
+
+    .ab-place {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-weight: 300
+    }
+
+    .ab-txt {
+      margin: 14px 0 0;
+      max-width: 44ch;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.75
+    }
+
+    .ab-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none
+    }
+
+    .ab-tags li {
+      padding: 5px 13px;
+      border: 1px solid var(--hl);
+      border-radius: 99px;
+      font-size: .85rem;
+      color: var(--muted)
+    }
+
+    .ab-vis {
+      --g1: #e2cd9f;
+      --g2: #bd9b5b;
+      --abink: rgba(20, 18, 13, .34);
+      --abic: #14120d;
+      position: relative;
+      grid-column: 3;
+      grid-row: 1;
+      aspect-ratio: 4/3;
+      border-radius: 28px;
+      overflow: hidden;
+      isolation: isolate;
+      background: linear-gradient(140deg, var(--g1), var(--g2))
+    }
+
+    .ab-ch:nth-child(even) .ab-vis {
+      grid-column: 1
+    }
+
+    .ab-vis[data-tone="stone"] {
+      --g1: #ece8de;
+      --g2: #cdc5b3
+    }
+
+    .ab-vis[data-tone="work"] {
+      --g1: #2c2d33;
+      --g2: #131418;
+      --abink: rgba(255, 255, 255, .3);
+      --abic: #f3efe6
+    }
+
+    .ab-vis[data-tone="brown"] {
+      --g1: #3c3427;
+      --g2: #1a1510;
+      --abink: rgba(255, 255, 255, .3);
+      --abic: #f3efe6
+    }
+
+    .ab-vis::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 70%;
+      aspect-ratio: 1;
+      right: -18%;
+      bottom: -30%;
+      border-radius: 50%;
+      border: 1px solid var(--abink);
+      transform: translateY(calc(var(--p, 0)*-18px))
+    }
+
+    .ab-big {
+      position: absolute;
+      left: 22px;
+      bottom: -6px;
+      font-weight: 600;
+      font-size: clamp(4.2rem, 9vw, 7.4rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--abink);
+      user-select: none;
+      transform: translateY(calc(var(--p, 0)*-34px))
+    }
+
+    .ab-ico {
+      position: absolute;
+      right: 22px;
+      top: 22px;
+      width: clamp(56px, 7vw, 76px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, .2);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      color: var(--abic);
+      transform: translateY(calc(var(--p, 0)*22px))
+    }
+
+    .ab-ico svg {
+      width: 46%;
+      height: 46%
+    }
+
+    /* expertise */
+    .ab-exp {
+      margin-top: clamp(72px, 10vw, 130px)
+    }
+
+    .ab-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 2vw, 22px)
+    }
+
+    .ab-skill {
+      padding: 26px;
+      border: 1px solid var(--hl);
+      border-radius: 26px;
+      background: var(--tile);
+      transition: transform .5s cubic-bezier(.2, .8, .2, 1), border-color .35s, box-shadow .5s
+    }
+
+    .ab-skill:hover {
+      transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--blue) 55%, var(--hl));
+      box-shadow: 0 30px 60px -28px var(--shadow)
+    }
+
+    .ab-skill i {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      margin-bottom: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--blue);
+      color: var(--blue);
+      transition: background .35s, color .35s
+    }
+
+    .ab-skill:hover i {
+      background: var(--blue);
+      color: #14120d
+    }
+
+    .ab-skill svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .ab-skill h4 {
+      margin: 0;
+      font-weight: 500;
+      font-size: 1.2rem;
+      letter-spacing: -.02em;
+      color: var(--text)
+    }
+
+    .ab-skill p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.65;
+      font-size: .96rem
+    }
+
+    .ab-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-top: clamp(28px, 4vw, 44px)
+    }
+
+    .ab-tools b {
+      margin-right: 8px;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    .ab-tools span {
+      padding: 8px 16px;
+      border: 1px solid var(--hl);
+      border-radius: 99px;
+      color: var(--muted);
+      font-weight: 300;
+      transition: border-color .3s, color .3s
+    }
+
+    .ab-tools span:hover {
+      border-color: var(--blue);
+      color: var(--text)
+    }
+
+    /* closing */
+    .ab-end {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px 40px;
+      margin-top: clamp(64px, 9vw, 120px);
+      padding: clamp(28px, 5vw, 56px);
+      border: 1px solid var(--hl);
+      border-radius: 32px;
+      background: var(--tile)
+    }
+
+    .ab-end h3 {
+      margin: 0;
+      max-width: 16ch;
+      font-weight: 500;
+      font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+      line-height: 1.1;
+      letter-spacing: -.035em;
+      color: var(--text)
+    }
+
+    .ab-end h3 span {
+      color: var(--blue)
+    }
+
+    .ab-end p {
+      margin: 12px 0 0;
+      max-width: 38ch;
+      color: var(--muted);
+      font-weight: 300
+    }
+
+    .ab-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px
+    }
+
+    /* reveal once (never hides content if JS is off) */
+    @keyframes abin {
+      from {
+        opacity: 0;
+        transform: translateY(26px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .ab-js .ab-rv:not(.in) {
+      opacity: 0
+    }
+
+    .ab-rv.in {
+      animation: abin .9s cubic-bezier(.2, .8, .2, 1) var(--d, 0s) backwards
+    }
+
+    @media (max-width:860px) {
+      .ab-head {
+        flex-direction: column;
+        align-items: center;
+        text-align: center
+      }
+
+      .ab-lede {
+        margin: 0 auto
+      }
+
+      .ab-intro {
+        grid-template-columns: 1fr
+      }
+
+      .ab-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr))
+      }
+
+      .ab-line {
+        left: 7px;
+        margin-left: 0
+      }
+
+      .ab-ch {
+        grid-template-columns: 16px minmax(0, 1fr);
+        gap: 0 16px
+      }
+
+      .ab-mark {
+        grid-column: 1;
+        justify-content: flex-start
+      }
+
+      .ab-card,
+      .ab-ch:nth-child(even) .ab-card {
+        grid-column: 2;
+        grid-row: 1
+      }
+
+      .ab-vis,
+      .ab-ch:nth-child(even) .ab-vis {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 18px;
+        aspect-ratio: 16/10
+      }
+
+      .ab-end {
+        flex-direction: column;
+        align-items: flex-start
+      }
+    }
+
+    @media (max-width:560px) {
+      .ab-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .ab-rv.in {
+        animation: none
+      }
+
+      .ab-js .ab-rv:not(.in) {
+        opacity: 1
+      }
+    }
+
+    /* ===== About: animated scenes ===== */
+    .ab-vis {
+      --acc: #fff;
+      --abfill: rgba(255, 255, 255, .42)
+    }
+
+    .ab-vis[data-tone="stone"] {
+      --acc: #b8924d;
+      --abfill: rgba(255, 255, 255, .55)
+    }
+
+    .ab-vis[data-tone="work"],
+    .ab-vis[data-tone="brown"] {
+      --acc: var(--blue);
+      --abfill: rgba(255, 255, 255, .07)
+    }
+
+    .ab-vis .ab-ico {
+      display: none
+    }
+
+    .ab-anim {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none
+    }
+
+    .ab-anim svg {
+      display: block;
+      width: 100%;
+      height: 100%
+    }
+
+    .ab-anim svg * {
+      transform-box: fill-box;
+      transform-origin: center
+    }
+
+    .ab-anim .ln {
+      fill: none;
+      stroke: var(--abic);
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .ab-anim .sl {
+      fill: none;
+      stroke: var(--abink);
+      stroke-width: 2;
+      stroke-linecap: round
+    }
+
+    .ab-anim .acs {
+      fill: none;
+      stroke: var(--acc);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .ab-anim .fl {
+      fill: var(--abfill);
+      stroke: var(--abink);
+      stroke-width: 2
+    }
+
+    .ab-anim .ink {
+      fill: var(--abic)
+    }
+
+    .ab-anim .ac {
+      fill: var(--acc)
+    }
+
+    .ab-anim .sk {
+      fill: var(--abink)
+    }
+
+    .ab-anim text {
+      font-family: inherit
+    }
+
+    /* shared entrance steps (8s loop, each step appears a little later, all fade out together) */
+    .ab-anim .i {
+      animation: 8s cubic-bezier(.2, .8, .2, 1) infinite both
+    }
+
+    .ab-anim .i1 {
+      animation-name: abIn1
+    }
+
+    .ab-anim .i2 {
+      animation-name: abIn2
+    }
+
+    .ab-anim .i3 {
+      animation-name: abIn3
+    }
+
+    .ab-anim .i4 {
+      animation-name: abIn4
+    }
+
+    .ab-anim .i5 {
+      animation-name: abIn5
+    }
+
+    .ab-anim .i6 {
+      animation-name: abIn6
+    }
+
+    @keyframes abIn1 {
+
+      0%,
+      3% {
+        opacity: 0;
+        transform: translateY(12px) scale(.9)
+      }
+
+      9%,
+      91% {
+        opacity: 1;
+        transform: none
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes abIn2 {
+
+      0%,
+      13% {
+        opacity: 0;
+        transform: translateY(12px) scale(.9)
+      }
+
+      19%,
+      91% {
+        opacity: 1;
+        transform: none
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes abIn3 {
+
+      0%,
+      23% {
+        opacity: 0;
+        transform: translateY(12px) scale(.9)
+      }
+
+      29%,
+      91% {
+        opacity: 1;
+        transform: none
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes abIn4 {
+
+      0%,
+      33% {
+        opacity: 0;
+        transform: translateY(12px) scale(.9)
+      }
+
+      39%,
+      91% {
+        opacity: 1;
+        transform: none
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes abIn5 {
+
+      0%,
+      43% {
+        opacity: 0;
+        transform: translateY(12px) scale(.9)
+      }
+
+      49%,
+      91% {
+        opacity: 1;
+        transform: none
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes abIn6 {
+
+      0%,
+      53% {
+        opacity: 0;
+        transform: translateY(12px) scale(.9)
+      }
+
+      59%,
+      91% {
+        opacity: 1;
+        transform: none
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    /* lines that draw themselves (needs pathLength="1") */
+    .ab-anim .dr {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: abDraw 8s ease-in-out infinite both
+    }
+
+    .ab-anim .dr2 {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: abDraw2 8s ease-in-out infinite both
+    }
+
+    @keyframes abDraw {
+
+      0%,
+      15% {
+        stroke-dashoffset: 1;
+        opacity: 1
+      }
+
+      50%,
+      91% {
+        stroke-dashoffset: 0;
+        opacity: 1
+      }
+
+      97%,
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 0
+      }
+    }
+
+    @keyframes abDraw2 {
+
+      0%,
+      40% {
+        stroke-dashoffset: 1;
+        opacity: 1
+      }
+
+      72%,
+      91% {
+        stroke-dashoffset: 0;
+        opacity: 1
+      }
+
+      97%,
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 0
+      }
+    }
+
+    /* bars growing from the baseline */
+    .ab-anim .bar {
+      transform-origin: 50% 100%;
+      animation: abGrow 8s cubic-bezier(.2, .8, .2, 1) infinite both
+    }
+
+    @keyframes abGrow {
+
+      0%,
+      30% {
+        transform: scaleY(0);
+        opacity: 1
+      }
+
+      46%,
+      91% {
+        transform: scaleY(1);
+        opacity: 1
+      }
+
+      97%,
+      100% {
+        transform: scaleY(1);
+        opacity: 0
+      }
+    }
+
+    /* scene 2: cursor + colour fill */
+    .ab-anim .cur {
+      fill: #fff;
+      stroke: #14120d;
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+      transform-origin: 0 0;
+      animation: abCur 8s ease-in-out infinite both
+    }
+
+    @keyframes abCur {
+
+      0%,
+      38% {
+        opacity: 0;
+        transform: translate(150px, -150px)
+      }
+
+      44% {
+        opacity: 1;
+        transform: translate(150px, -150px)
+      }
+
+      66% {
+        opacity: 1;
+        transform: translate(0, 0)
+      }
+
+      70% {
+        opacity: 1;
+        transform: translate(0, 0) scale(.8)
+      }
+
+      74% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1)
+      }
+
+      91% {
+        opacity: 1;
+        transform: translate(0, 0)
+      }
+
+      97%,
+      100% {
+        opacity: 0;
+        transform: translate(0, 0)
+      }
+    }
+
+    .ab-anim .fillx {
+      opacity: 0;
+      animation: abFill 8s ease infinite both
+    }
+
+    @keyframes abFill {
+
+      0%,
+      76% {
+        opacity: 0
+      }
+
+      84%,
+      91% {
+        opacity: .92
+      }
+
+      97%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    /* continuous loops */
+    .ab-anim .pulse {
+      animation: abPulse 1.6s ease-in-out infinite
+    }
+
+    @keyframes abPulse {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.35)
+      }
+    }
+
+    .ab-anim .rg {
+      animation: abRing 3.2s ease-out infinite
+    }
+
+    @keyframes abRing {
+      0% {
+        transform: scale(.3);
+        opacity: .9
+      }
+
+      100% {
+        transform: scale(2);
+        opacity: 0
+      }
+    }
+
+    .ab-anim .tw {
+      animation: abTw 2.4s ease-in-out infinite
+    }
+
+    @keyframes abTw {
+
+      0%,
+      100% {
+        opacity: .2;
+        transform: scale(.5) rotate(0)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1) rotate(45deg)
+      }
+    }
+
+    /* pause when off screen, keep still for reduced motion */
+    .ab-vis.idle .ab-anim * {
+      animation-play-state: paused !important
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .ab-anim * {
+        animation: none !important
+      }
+
+      .ab-anim .dr,
+      .ab-anim .dr2 {
+        stroke-dashoffset: 0
+      }
+
+      .ab-anim .fillx {
+        opacity: .9
+      }
+
+      .ab-anim .cur {
+        opacity: 0
+      }
+
+      .ab-anim .rg {
+        opacity: .35
+      }
+    }
+
+    /* ===== About: animated scenes · FIX 1 · entrance animations (fixes visual 4) ===== */
+    .ab-anim .i1,
+    .ab-anim .i2,
+    .ab-anim .i3,
+    .ab-anim .i4,
+    .ab-anim .i5,
+    .ab-anim .i6 {
+      animation-duration: 8s;
+      animation-timing-function: cubic-bezier(.2, .8, .2, 1);
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+    }
+
+    /* ===== About: animated scenes · FIX 2 · transparent background, theme-aware colours ===== */
+    .ab-vis,
+    .ab-vis[data-tone] {
+      background: none;
+      --abic: var(--text);
+      --abink: color-mix(in srgb, var(--text) 32%, transparent);
+      --abfill: color-mix(in srgb, var(--text) 7%, transparent);
+      --acc: var(--blue);
+    }
+
+    .ab-vis::before {
+      display: none
+    }
+
+    .ab-vis .ab-big {
+      -webkit-text-stroke: 1.5px color-mix(in srgb, var(--text) 16%, transparent)
+    }
+
+    /* ===== About: animated scenes · VISUAL 5 · currently working here ===== */
+    .ab-anim .nw-b1,
+    .ab-anim .nw-b2,
+    .ab-anim .nw-b3,
+    .ab-anim .nw-b4,
+    .ab-anim .nw-b5,
+    .ab-anim .nw-b6,
+    .ab-anim .nw-b7 {
+      animation: 8s cubic-bezier(.2, .8, .2, 1) infinite both;
+    }
+
+    .ab-anim .nw-b1 {
+      animation-name: nwIn1
+    }
+
+    .ab-anim .nw-b2 {
+      animation-name: nwIn2
+    }
+
+    .ab-anim .nw-b3 {
+      animation-name: nwIn3
+    }
+
+    .ab-anim .nw-b4 {
+      animation-name: nwIn4
+    }
+
+    .ab-anim .nw-b5 {
+      animation-name: nwIn5
+    }
+
+    .ab-anim .nw-b6 {
+      animation-name: nwIn6
+    }
+
+    .ab-anim .nw-b7 {
+      animation-name: nwIn7
+    }
+
+    @keyframes nwIn1 {
+
+      0%,
+      6% {
+        opacity: 0;
+        transform: scale(.85)
+      }
+
+      14%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes nwIn2 {
+
+      0%,
+      16% {
+        opacity: 0;
+        transform: translateX(14px)
+      }
+
+      24%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes nwIn3 {
+
+      0%,
+      22% {
+        opacity: 0;
+        transform: translateX(14px)
+      }
+
+      30%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes nwIn4 {
+
+      0%,
+      28% {
+        opacity: 0;
+        transform: translateX(14px)
+      }
+
+      36%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes nwIn5 {
+
+      0%,
+      38% {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      46%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes nwIn6 {
+
+      0%,
+      44% {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      52%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    @keyframes nwIn7 {
+
+      0%,
+      50% {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      58%,
+      88% {
+        opacity: 1;
+        transform: none
+      }
+
+      96%,
+      100% {
+        opacity: 0;
+        transform: none
+      }
+    }
+
+    .ab-anim .nw-caret {
+      animation: nwBlink 1s steps(1) infinite
+    }
+
+    @keyframes nwBlink {
+
+      0%,
+      50% {
+        opacity: 1
+      }
+
+      50.01%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    .ab-anim .nw-steam {
+      stroke-dasharray: 6 8;
+      animation: nwSteam 2.4s linear infinite
+    }
+
+    @keyframes nwSteam {
+      from {
+        stroke-dashoffset: 28;
+        opacity: .9
+      }
+
+      to {
+        stroke-dashoffset: 0;
+        opacity: .3
+      }
+    }
+
+    .ab-anim .nw-pill {
+      animation: nwPill 8s cubic-bezier(.2, .8, .2, 1) infinite both
+    }
+
+    @keyframes nwPill {
+
+      0%,
+      60% {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      68%,
+      100% {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .ab-anim .nw-live {
+      animation: abPulse 1.6s ease-in-out infinite
+    }
+
+    .ab-anim .nw-ring {
+      animation: abRing 2s ease-out infinite
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      .ab-anim .nw-b1,
+      .ab-anim .nw-b2,
+      .ab-anim .nw-b3,
+      .ab-anim .nw-b4,
+      .ab-anim .nw-b5,
+      .ab-anim .nw-b6,
+      .ab-anim .nw-b7,
+      .ab-anim .nw-pill {
+        opacity: 1
+      }
+    }
   </style>
 </head>
 
@@ -2438,48 +4364,65 @@ html.vw-lock,html.vw-lock body{overflow:hidden}
     </div>
   </section>
   <section class="sx" id="screens">
-  <div class="pjwrap">
-    <div class="sxhead">
-      <h2 class="sxtitle">Project <span>screens</span></h2>
-      <p class="sxlede">Tap a screen to open the project, read the story behind it and swipe through more images.</p>
+    <div class="pjwrap">
+      <div class="sxhead">
+        <h2 class="sxtitle">Project <span>screens</span></h2>
+        <p class="sxlede">Tap a screen to open the project, read the story behind it and swipe through more images.</p>
+      </div>
     </div>
-  </div>
 
-  <div class="sxrail"><div class="sxtrack" id="sxtrack" aria-label="Project screens"></div></div>
+    <div class="sxrail">
+      <div class="sxtrack" id="sxtrack" aria-label="Project screens"></div>
+    </div>
 
-  <div class="pjwrap">
-    <div class="sxbar">
-      <div class="sxprog" aria-hidden="true"><i id="sxfill"></i></div>
-      <div class="sxnav">
-        <button class="sxbtn" id="sxprev" type="button" aria-label="Previous projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
-        <button class="sxbtn" id="sxnext" type="button" aria-label="Next projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    <div class="pjwrap">
+      <div class="sxbar">
+        <div class="sxprog" aria-hidden="true"><i id="sxfill"></i></div>
+        <div class="sxnav">
+          <button class="sxbtn" id="sxprev" type="button" aria-label="Previous projects"><svg viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M11 6l-6 6 6 6" />
+            </svg></button>
+          <button class="sxbtn" id="sxnext" type="button" aria-label="Next projects"><svg viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- project viewer: opens from the tapped tile -->
+  <div class="vw" id="vw" aria-hidden="true">
+    <div class="vwback" data-close></div>
+    <div class="vwpanel" role="dialog" aria-modal="true" aria-labelledby="vwtitle" tabindex="-1">
+      <button class="vwclose" type="button" data-close aria-label="Close project"><svg viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg></button>
+      <div class="vwgal">
+        <div class="vwtrack" id="vwtrack"></div>
+        <button class="vwarr prev" id="vwprev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 6l-6 6 6 6" />
+          </svg></button>
+        <button class="vwarr next" id="vwnext" type="button" aria-label="Next image"><svg viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 6l6 6-6 6" />
+          </svg></button>
+        <span class="vwcount" id="vwcount"></span>
+        <div class="vwthumbs" id="vwthumbs"></div>
+      </div>
+      <div class="vwinfo">
+        <p class="vwcat" id="vwcat"></p>
+        <h3 id="vwtitle"></h3>
+        <p class="vwdesc" id="vwdesc"></p>
+        <div class="vwchips" id="vwchips"></div>
+        <dl class="vwmeta" id="vwmeta"></dl>
+        <a class="hbtn fill vwcta" id="vwcta" href="#">View case study</a>
       </div>
     </div>
   </div>
-</section>
-
-<!-- project viewer: opens from the tapped tile -->
-<div class="vw" id="vw" aria-hidden="true">
-  <div class="vwback" data-close></div>
-  <div class="vwpanel" role="dialog" aria-modal="true" aria-labelledby="vwtitle" tabindex="-1">
-    <button class="vwclose" type="button" data-close aria-label="Close project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-    <div class="vwgal">
-      <div class="vwtrack" id="vwtrack"></div>
-      <button class="vwarr prev" id="vwprev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-      <button class="vwarr next" id="vwnext" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-      <span class="vwcount" id="vwcount"></span>
-      <div class="vwthumbs" id="vwthumbs"></div>
-    </div>
-    <div class="vwinfo">
-      <p class="vwcat" id="vwcat"></p>
-      <h3 id="vwtitle"></h3>
-      <p class="vwdesc" id="vwdesc"></p>
-      <div class="vwchips" id="vwchips"></div>
-      <dl class="vwmeta" id="vwmeta"></dl>
-      <a class="hbtn fill vwcta" id="vwcta" href="#">View case study</a>
-    </div>
-  </div>
-</div>
 
   <div class="dock">
     <nav id="nav" aria-label="Main">
@@ -2546,112 +4489,314 @@ html.vw-lock,html.vw-lock body{overflow:hidden}
     </nav>
   </div>
   <section class="ab" id="about">
-  <span class="ab-ring ab-r1" aria-hidden="true"></span><span class="ab-ring ab-r2" aria-hidden="true"></span>
-  <div class="ab-wrap">
+    <span class="ab-ring ab-r1" aria-hidden="true"></span><span class="ab-ring ab-r2" aria-hidden="true"></span>
+    <div class="ab-wrap">
 
-    <div class="ab-head ab-rv">
-      <h2 class="ab-title">My <span>story</span></h2>
-      <p class="ab-lede">Where I studied, where I have worked and what I do best, in a few minutes of scrolling.</p>
-    </div>
-
-    <div class="ab-intro">
-      <p class="ab-say ab-rv">I’m Arjun, a UX/UI designer who starts with people and ends with <em>clear, beautiful products</em>.</p>
-      <ul class="ab-stats ab-rv" style="--d:.1s">
-        <li><b data-n="4" data-s="+">4+</b><span>years designing products</span></li>
-        <li><b data-n="20" data-s="+">20+</b><span>projects shipped</span></li>
-        <li><b data-n="3" data-s="">3</b><span>industries explored</span></li>
-      </ul>
-    </div>
-
-    <h3 class="ab-sub ab-rv">The journey so far</h3>
-    <div class="ab-tl">
-
-      <article class="ab-ch ab-rv">
-        <div class="ab-mark"><span class="ab-dot"></span></div>
-        <div class="ab-card">
-          <p class="ab-kind">Studies<time>2018 – 2021</time></p>
-          <h3>B.Des in Visual Communication</h3>
-          <p class="ab-place">Your University · City</p>
-          <p class="ab-txt">Where my curiosity for how people see, read and decide began. Typography, colour and storytelling became the foundation of every interface I design today.</p>
-          <ul class="ab-tags"><li>Visual design</li><li>Typography</li><li>Storytelling</li></ul>
-        </div>
-        <div class="ab-vis" aria-hidden="true"><span class="ab-big">2018</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span></div>
-      </article>
-
-      <article class="ab-ch ab-rv">
-        <div class="ab-mark"><span class="ab-dot"></span></div>
-        <div class="ab-card">
-          <p class="ab-kind">Learning<time>2021</time></p>
-          <h3>UX/UI Design Programme</h3>
-          <p class="ab-place">Institute or course name</p>
-          <p class="ab-txt">I turned curiosity into craft: user research, wireframing, prototyping and my first end-to-end case studies, each one tested with real people.</p>
-          <ul class="ab-tags"><li>User research</li><li>Wireframes</li><li>Prototyping</li></ul>
-        </div>
-        <div class="ab-vis" data-tone="stone" aria-hidden="true"><span class="ab-big">2021</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg></span></div>
-      </article>
-
-      <article class="ab-ch ab-rv">
-        <div class="ab-mark"><span class="ab-dot"></span></div>
-        <div class="ab-card">
-          <p class="ab-kind">Career<time>2022 – 2024</time></p>
-          <h3>Junior UI/UX Designer</h3>
-          <p class="ab-place">Company one · City</p>
-          <p class="ab-txt">I designed screens for web and mobile products, learned to work closely with developers, and to test ideas quickly instead of arguing about them.</p>
-          <ul class="ab-tags"><li>Web</li><li>Mobile</li><li>Developer handoff</li></ul>
-        </div>
-        <div class="ab-vis" data-tone="work" aria-hidden="true"><span class="ab-big">2022</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span></div>
-      </article>
-
-      <article class="ab-ch ab-rv">
-        <div class="ab-mark"><span class="ab-dot"></span></div>
-        <div class="ab-card">
-          <p class="ab-kind">Career<time>2024 – Now</time></p>
-          <h3>UX/UI Designer</h3>
-          <p class="ab-place">Company two · City</p>
-          <p class="ab-txt">I now own design from research to launch: shaping product direction, building design systems and measuring results together with the team.</p>
-          <ul class="ab-tags"><li>Product design</li><li>Design systems</li><li>Metrics</li></ul>
-        </div>
-        <div class="ab-vis" data-tone="brown" aria-hidden="true"><span class="ab-big">2024</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></span></div>
-      </article>
-
-      <article class="ab-ch ab-rv">
-        <div class="ab-mark"><span class="ab-dot"></span></div>
-        <div class="ab-card">
-          <p class="ab-kind">Next chapter<time>Now</time></p>
-          <h3>Open to new projects</h3>
-          <p class="ab-place">Where I’m heading</p>
-          <p class="ab-txt">I’m looking for teams that care about craft and outcomes. If that sounds like yours, I would love to talk.</p>
-          <ul class="ab-tags"><li>Product design</li><li>Design systems</li><li>Mobile &amp; web</li></ul>
-        </div>
-        <div class="ab-vis" aria-hidden="true"><span class="ab-big">Now</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span></div>
-      </article>
-
-      <div class="ab-line" aria-hidden="true"><div class="ab-fill"></div></div>
-    </div>
-
-    <div class="ab-exp">
-      <h3 class="ab-sub ab-rv">What I do best</h3>
-      <div class="ab-grid">
-        <div class="ab-skill ab-rv"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/></svg></i><h4>UX research</h4><p>Interviews, surveys and usability tests that turn assumptions into evidence.</p></div>
-        <div class="ab-skill ab-rv" style="--d:.08s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 10v10"/></svg></i><h4>UI design</h4><p>Clean, consistent interfaces with strong hierarchy and details that feel considered.</p></div>
-        <div class="ab-skill ab-rv" style="--d:.16s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></i><h4>Design systems</h4><p>Reusable components and tokens that keep teams fast and products consistent.</p></div>
-        <div class="ab-skill ab-rv"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 7-6 2-2 6z"/></svg></i><h4>Prototyping</h4><p>Interactive flows that let people feel the idea before a line of code is written.</p></div>
-        <div class="ab-skill ab-rv" style="--d:.08s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l3 9M16 7l-3 9"/></svg></i><h4>Information architecture</h4><p>Structures and flows that make complex products easy to navigate.</p></div>
-        <div class="ab-skill ab-rv" style="--d:.16s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="1.2"/><path d="M8 11h8M12 11v5M10 20l2-4 2 4"/></svg></i><h4>Accessibility</h4><p>Designing for everyone: contrast, hierarchy, motion and touch targets.</p></div>
+      <div class="ab-head ab-rv">
+        <h2 class="ab-title">My <span>story</span></h2>
+        <p class="ab-lede">Where I studied, where I have worked and what I do best, in a few minutes of scrolling.</p>
       </div>
-      <div class="ab-tools ab-rv"><b>Tools I work in</b><span>Figma</span><span>FigJam</span><span>Maze</span><span>Notion</span><span>ProtoPie</span><span>Webflow</span><span>Illustrator</span></div>
-    </div>
 
-    <div class="ab-end ab-rv">
-      <div>
-        <h3>Let’s build something <span>people love.</span></h3>
-        <p>Have a product, a team or an idea? I’d love to hear about it.</p>
+      <div class="ab-intro">
+        <p class="ab-say ab-rv">I’m Arjun, a UX/UI designer who starts with people and ends with <em>clear, beautiful
+            products</em>.</p>
+        <ul class="ab-stats ab-rv" style="--d:.1s">
+          <li><b data-n="4" data-s="+">4+</b><span>years designing products</span></li>
+          <li><b data-n="20" data-s="+">20+</b><span>projects shipped</span></li>
+          <li><b data-n="3" data-s="">3</b><span>industries explored</span></li>
+        </ul>
       </div>
-      <div class="ab-cta"><a class="hbtn fill" href="mailto:04arjunkj@gmail.com">Let’s talk</a><a class="hbtn" href="#work">See my work</a></div>
-    </div>
 
-  </div>
-</section>
+      <h3 class="ab-sub ab-rv">The journey so far</h3>
+      <div class="ab-tl">
+
+        <article class="ab-ch ab-rv">
+          <div class="ab-mark"><span class="ab-dot"></span></div>
+          <div class="ab-card">
+            <p class="ab-kind">Studies<time>2018 – 2021</time></p>
+            <h3>B.Des in Visual Communication</h3>
+            <p class="ab-place">Your University · City</p>
+            <p class="ab-txt">Where my curiosity for how people see, read and decide began. Typography, colour and
+              storytelling became the foundation of every interface I design today.</p>
+            <ul class="ab-tags">
+              <li>Visual design</li>
+              <li>Typography</li>
+              <li>Storytelling</li>
+            </ul>
+          </div>
+          <!-- ================= ABOUT · VISUAL 1 · 2018 · STUDIES (typography + colour) ================= -->
+          <div class="ab-vis" aria-hidden="true">
+            <span class="ab-big">2018</span>
+            <div class="ab-anim"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                <text class="ink i1" x="62" y="140" font-size="116" font-weight="600">A</text>
+                <text class="ink i2" x="150" y="140" font-size="116" font-weight="600">a</text>
+                <path class="sl i2" d="M62 156H215" stroke-dasharray="2 8" />
+                <path class="acs dr" pathLength="1" d="M60 236C140 120 230 300 340 150" />
+                <g class="i5">
+                  <path class="sl" d="M60 236L140 120M340 150L230 300" />
+                  <circle class="ac" cx="140" cy="120" r="5" />
+                  <circle class="ac" cx="230" cy="300" r="5" />
+                  <rect class="ink" x="53" y="229" width="14" height="14" />
+                  <rect class="ink" x="333" y="143" width="14" height="14" />
+                </g>
+                <circle class="ac i4" cx="290" cy="70" r="15" />
+                <circle class="ink i5" cx="325" cy="70" r="15" />
+                <circle class="ln i6" cx="360" cy="70" r="14" />
+              </svg></div>
+          </div>
+          <!-- ================= /ABOUT · VISUAL 1 ================= -->
+
+        </article>
+
+        <article class="ab-ch ab-rv">
+          <div class="ab-mark"><span class="ab-dot"></span></div>
+          <div class="ab-card">
+            <p class="ab-kind">Learning<time>2021</time></p>
+            <h3>UX/UI Design Programme</h3>
+            <p class="ab-place">Institute or course name</p>
+            <p class="ab-txt">I turned curiosity into craft: user research, wireframing, prototyping and my first
+              end-to-end case studies, each one tested with real people.</p>
+            <ul class="ab-tags">
+              <li>User research</li>
+              <li>Wireframes</li>
+              <li>Prototyping</li>
+            </ul>
+          </div>
+          <!-- ================= ABOUT · VISUAL 2 · 2021 · LEARNING (wireframe to UI) ================= -->
+          <div class="ab-vis" data-tone="stone" aria-hidden="true">
+            <span class="ab-big">2021</span>
+            <div class="ab-anim"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                <rect class="fl i1" x="70" y="36" width="260" height="228" rx="16" />
+                <rect class="sk i2" x="90" y="56" width="80" height="10" rx="5" />
+                <circle class="sk i2" cx="306" cy="61" r="5" />
+                <g class="i3">
+                  <rect class="fl" x="90" y="82" width="220" height="72" rx="10" stroke-dasharray="5 5" />
+                  <path class="sl" d="M90 82L310 154M310 82L90 154" />
+                </g>
+                <rect class="ac fillx" x="90" y="82" width="220" height="72" rx="10" />
+                <rect class="fl i4" x="90" y="168" width="66" height="44" rx="8" />
+                <rect class="fl i5" x="167" y="168" width="66" height="44" rx="8" />
+                <rect class="fl i6" x="244" y="168" width="66" height="44" rx="8" />
+                <rect class="ink i6" x="90" y="226" width="86" height="24" rx="12" />
+                <g transform="translate(120 236)">
+                  <path class="cur" d="M0 0L0 22L6 17L10 27L14 25L10 16L18 16Z" />
+                </g>
+              </svg></div>
+          </div>
+          <!-- ================= /ABOUT · VISUAL 2 ================= -->
+        </article>
+
+        <article class="ab-ch ab-rv">
+          <div class="ab-mark"><span class="ab-dot"></span></div>
+          <div class="ab-card">
+            <p class="ab-kind">Career<time>2022 – 2024</time></p>
+            <h3>Junior UI/UX Designer</h3>
+            <p class="ab-place">Company one · City</p>
+            <p class="ab-txt">I designed screens for web and mobile products, learned to work closely with developers,
+              and to test ideas quickly instead of arguing about them.</p>
+            <ul class="ab-tags">
+              <li>Web</li>
+              <li>Mobile</li>
+              <li>Developer handoff</li>
+            </ul>
+          </div>
+          <!-- ================= ABOUT · VISUAL 3 · 2022 · JUNIOR UI/UX (web + mobile, developer handoff) ================= -->
+          <div class="ab-vis" data-tone="work" aria-hidden="true">
+            <span class="ab-big">2022</span>
+            <div class="ab-anim"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+                <rect class="fl i1" x="40" y="62" width="230" height="150" rx="12" />
+                <g class="i2">
+                  <circle class="sk" cx="58" cy="78" r="4" />
+                  <circle class="sk" cx="72" cy="78" r="4" />
+                  <circle class="sk" cx="86" cy="78" r="4" />
+                  <rect class="ac" x="58" y="94" width="110" height="50" rx="8" />
+                </g>
+                <g class="i3">
+                  <rect class="fl" x="184" y="94" width="68" height="50" rx="8" />
+                  <rect class="sk" x="58" y="156" width="150" height="8" rx="4" />
+                  <rect class="sk" x="58" y="172" width="100" height="8" rx="4" />
+                  <rect class="sl" x="52" y="88" width="122" height="62" rx="10" stroke-dasharray="5 5" />
+                </g>
+                <g class="i4">
+                  <rect class="ink" x="49" y="85" width="6" height="6" />
+                  <rect class="ink" x="171" y="85" width="6" height="6" />
+                  <rect class="ink" x="49" y="147" width="6" height="6" />
+                  <rect class="ink" x="171" y="147" width="6" height="6" />
+                </g>
+                <g class="i4">
+                  <rect class="fl" x="296" y="82" width="70" height="132" rx="14" />
+                  <rect class="ac" x="306" y="96" width="50" height="34" rx="6" />
+                  <rect class="sk" x="306" y="140" width="50" height="7" rx="3.5" />
+                  <rect class="sk" x="306" y="154" width="34" height="7" rx="3.5" />
+                </g>
+                <path class="ln i5" d="M58 238H168M58 231V245M168 231V245" style="stroke-width:2" />
+                <text class="ink i5" x="113" y="264" font-size="14" text-anchor="middle">16 px</text>
+                <text class="ac i6" x="331" y="250" font-size="26" font-weight="600"
+                  text-anchor="middle">&lt;/&gt;</text>
+              </svg></div>
+          </div>
+          <!-- ================= /ABOUT · VISUAL 3 ================= -->
+        </article>
+
+        <article class="ab-ch ab-rv">
+          <div class="ab-mark"><span class="ab-dot"></span></div>
+          <div class="ab-card">
+            <p class="ab-kind">Career<time>2024 – Now</time></p>
+            <h3>UX/UI Designer</h3>
+            <p class="ab-place">Company two · City</p>
+            <p class="ab-txt">I now own design from research to launch: shaping product direction, building design
+              systems and measuring results together with the team.</p>
+            <ul class="ab-tags">
+              <li>Product design</li>
+              <li>Design systems</li>
+              <li>Metrics</li>
+            </ul>
+          </div>
+          <!-- ================= ABOUT · VISUAL 5 · NOW · CURRENTLY WORKING HERE (desk scene) ================= -->
+          <div class="ab-vis" aria-hidden="true">
+            <span class="ab-big">Now</span>
+            <div class="ab-anim"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet">
+
+                <!-- laptop screen -->
+                <rect class="fl" x="92" y="50" width="216" height="140" rx="12" />
+                <!-- top bar dots -->
+                <circle class="sk" cx="108" cy="66" r="3.5" />
+                <circle class="sk" cx="120" cy="66" r="3.5" />
+                <circle class="sk" cx="132" cy="66" r="3.5" />
+
+                <!-- design being built on screen (loops) -->
+                <rect class="ac nw-b1" x="108" y="82" width="90" height="48" rx="8" />
+                <rect class="sk nw-b2" x="208" y="82" width="84" height="10" rx="5" />
+                <rect class="sk nw-b3" x="208" y="100" width="64" height="10" rx="5" />
+                <rect class="sk nw-b4" x="208" y="118" width="74" height="10" rx="5" />
+                <rect class="fl nw-b5" x="108" y="142" width="54" height="34" rx="7" />
+                <rect class="fl nw-b6" x="170" y="142" width="54" height="34" rx="7" />
+                <rect class="fl nw-b7" x="232" y="142" width="60" height="34" rx="7" />
+
+                <!-- blinking text cursor -->
+                <rect class="ink nw-caret" x="274" y="156" width="3" height="16" rx="1.5" />
+
+                <!-- laptop base -->
+                <path class="fl" d="M70 190H330L342 208Q343 214 336 214H64Q57 214 58 208Z" />
+                <rect class="sk" x="176" y="196" width="48" height="5" rx="2.5" />
+
+                <!-- coffee cup -->
+                <g>
+                  <path class="fl" d="M338 168H372V196Q372 214 355 214Q338 214 338 196Z" />
+                  <path class="ln" d="M372 176H378Q386 176 386 186Q386 196 376 196H372" style="stroke-width:2.5" />
+                  <rect class="ac" x="338" y="168" width="34" height="8" rx="3" />
+                  <!-- steam -->
+                  <path class="sl nw-steam" d="M347 156Q341 146 347 136Q353 126 347 116" />
+                  <path class="sl nw-steam" style="animation-delay:-.9s" d="M361 156Q355 146 361 136Q367 126 361 116" />
+                </g>
+
+                <!-- desk line -->
+                <path class="sl" d="M30 226H370" />
+
+                <!-- status pill -->
+                <g class="nw-pill">
+                  <rect class="fl" x="118" y="244" width="164" height="36" rx="18" />
+                  <circle class="ac nw-live" cx="142" cy="262" r="6" />
+                  <circle class="sl nw-ring" cx="142" cy="262" r="6" />
+                  <text class="ink" x="158" y="267" font-size="15" font-weight="500">Working here now</text>
+                </g>
+
+                <!-- floating sparkles -->
+                <g transform="translate(60 88)">
+                  <path class="ac tw" d="M0-9L2.3-2.3L9 0L2.3 2.3L0 9L-2.3 2.3L-9 0L-2.3-2.3Z" />
+                </g>
+                <g transform="translate(346 70) scale(.8)">
+                  <path class="ac tw" style="animation-delay:-1.1s"
+                    d="M0-9L2.3-2.3L9 0L2.3 2.3L0 9L-2.3 2.3L-9 0L-2.3-2.3Z" />
+                </g>
+                <g transform="translate(52 170) scale(.7)">
+                  <path class="ac tw" style="animation-delay:-.5s"
+                    d="M0-9L2.3-2.3L9 0L2.3 2.3L0 9L-2.3 2.3L-9 0L-2.3-2.3Z" />
+                </g>
+
+              </svg></div>
+          </div>
+          <!-- ================= /ABOUT · VISUAL 5 ================= -->
+
+        </article>
+
+          <div class="ab-line" aria-hidden="true">
+            <div class="ab-fill"></div>
+          </div>
+      </div>
+
+      <div class="ab-exp">
+        <h3 class="ab-sub ab-rv">What I do best</h3>
+        <div class="ab-grid">
+          <div class="ab-skill ab-rv"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="6" />
+                <path d="M20 20l-4.2-4.2" />
+              </svg></i>
+            <h4>UX research</h4>
+            <p>Interviews, surveys and usability tests that turn assumptions into evidence.</p>
+          </div>
+          <div class="ab-skill ab-rv" style="--d:.08s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="3" />
+                <path d="M3 10h18M9 10v10" />
+              </svg></i>
+            <h4>UI design</h4>
+            <p>Clean, consistent interfaces with strong hierarchy and details that feel considered.</p>
+          </div>
+          <div class="ab-skill ab-rv" style="--d:.16s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="2" />
+                <rect x="14" y="3" width="7" height="7" rx="2" />
+                <rect x="3" y="14" width="7" height="7" rx="2" />
+                <rect x="14" y="14" width="7" height="7" rx="2" />
+              </svg></i>
+            <h4>Design systems</h4>
+            <p>Reusable components and tokens that keep teams fast and products consistent.</p>
+          </div>
+          <div class="ab-skill ab-rv"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 3l14 7-6 2-2 6z" />
+              </svg></i>
+            <h4>Prototyping</h4>
+            <p>Interactive flows that let people feel the idea before a line of code is written.</p>
+          </div>
+          <div class="ab-skill ab-rv" style="--d:.08s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="2.5" />
+                <circle cx="18" cy="6" r="2.5" />
+                <circle cx="12" cy="18" r="2.5" />
+                <path d="M8 7l3 9M16 7l-3 9" />
+              </svg></i>
+            <h4>Information architecture</h4>
+            <p>Structures and flows that make complex products easy to navigate.</p>
+          </div>
+          <div class="ab-skill ab-rv" style="--d:.16s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="8" r="1.2" />
+                <path d="M8 11h8M12 11v5M10 20l2-4 2 4" />
+              </svg></i>
+            <h4>Accessibility</h4>
+            <p>Designing for everyone: contrast, hierarchy, motion and touch targets.</p>
+          </div>
+        </div>
+        <div class="ab-tools ab-rv"><b>Tools I work
+            in</b><span>Figma</span><span>FigJam</span><span>Maze</span><span>Notion</span><span>ProtoPie</span><span>Webflow</span><span>Illustrator</span>
+        </div>
+      </div>
+
+      <div class="ab-end ab-rv">
+        <div>
+          <h3>Let’s build something <span>people love.</span></h3>
+          <p>Have a product, a team or an idea? I’d love to hear about it.</p>
+        </div>
+        <div class="ab-cta"><a class="hbtn fill" href="mailto:04arjunkj@gmail.com">Let’s talk</a><a class="hbtn"
+            href="#work">See my work</a></div>
+      </div>
+
+    </div>
+  </section>
 
   <div class="side" id="side" role="group" aria-label="Social links">
     <button class="side-toggle" id="sideToggle" type="button" aria-expanded="false" aria-controls="sideLinks"
@@ -3198,310 +5343,447 @@ html.vw-lock,html.vw-lock body{overflow:hidden}
     })();
   </script>
   <script>
-(function(){
-  if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    (function () {
+      if (!window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var el=document.createElement('div');
-  el.className='uxcur';
-  el.setAttribute('aria-hidden','true');
-  el.innerHTML='<svg viewBox="0 0 24 24"><path d="M5 3l14 7.5-6.2 1.9L10.5 19z"/></svg><span class="tag">UI/UX</span>';
-  document.body.appendChild(el);
+      var el = document.createElement('div');
+      el.className = 'uxcur';
+      el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 3l14 7.5-6.2 1.9L10.5 19z"/></svg><span class="tag">UI/UX</span>';
+      document.body.appendChild(el);
 
-  var tag=el.querySelector('.tag');
-  var x=-100,y=-100,cx=-100,cy=-100,shown=false;
+      var tag = el.querySelector('.tag');
+      var x = -100, y = -100, cx = -100, cy = -100, shown = false;
 
-  /* true if the element directly holds readable text (heading, paragraph, label, number...) */
-  function hasText(n){
-    if(!n||n.nodeType!==1) return false;
-    for(var i=0;i<n.childNodes.length;i++){
-      var c=n.childNodes[i];
-      if(c.nodeType===3&&c.nodeValue.trim().length) return true;
-    }
-    return false;
-  }
-
-  window.addEventListener('mousemove',function(e){
-    x=e.clientX;y=e.clientY;
-    if(!shown){cx=x;cy=y;shown=true;el.classList.add('on');}
-
-    var t=e.target;
-    var clickable=t.closest&&t.closest('a,button,.pjcard,.hbtn,.icon,.link');
-
-    el.classList.toggle('act',!!clickable);
-    tag.textContent=clickable?'Click':'UI/UX';
-
-    /* hide only while over text (clickable things keep showing "Click") */
-    el.classList.toggle('hide',!clickable&&hasText(t));
-  },{passive:true});
-
-  document.addEventListener('mouseleave',function(){el.classList.add('hide');});
-  document.addEventListener('mouseenter',function(){el.classList.remove('hide');});
-
-  (function loop(){
-    cx+=(x-cx)*.18;          /* lower = lazier trail, higher = snappier */
-    cy+=(y-cy)*.18;
-    el.style.transform='translate3d('+cx+'px,'+cy+'px,0)';
-    requestAnimationFrame(loop);
-  })();
-})();
-</script>
-<script>
-/* ===== Screens carousel + project viewer ===== */
-(function(){
-  /* ---------- EDIT YOUR PROJECTS HERE ----------
-     images : your screens in order, e.g. ['img/fit-1.png','img/fit-2.png']  (leave [] to show placeholder screens)
-     slides : how many placeholder screens to show while images is empty
-     fit    : 'contain' (default, for mockups) or 'cover' (full-bleed screenshots)
-     link   : case-study page URL (add later; '#' does nothing)               */
-  var SCREENS=[
-    {title:'EIT Academy: Fitness & Transformation',cat:'Fitness · Mobile app',year:'2025',
-     desc:'A redesign of the member journey for a fitness and transformation academy, from first sign-up to daily progress tracking. The goal was simple: keep people motivated and give coaches the insight they need at a glance.',
-     role:'Lead UX/UI designer',time:'8 weeks',tools:'Figma, FigJam, Maze',tags:['Research','UI design','Prototype'],link:'#',images:[],slides:4},
-    {title:'Lumé: skincare store',cat:'E-commerce · Web',year:'2025',
-     desc:'A faster, clearer shopping and checkout experience for a skincare brand. Product pages now answer the buyer’s questions early, and the checkout was cut down to the steps that matter.',
-     role:'UX/UI designer',time:'6 weeks',tools:'Figma, Hotjar',tags:['E-commerce','Checkout','Design system'],link:'#',images:[],slides:3},
-    {title:'Orbit: team analytics',cat:'SaaS · Dashboard',year:'2024',
-     desc:'Dense analytics turned into a dashboard that teams can read in seconds. I mapped the key questions people ask every day and designed the views around them.',
-     role:'Product designer',time:'10 weeks',tools:'Figma, Notion',tags:['Dashboard','Data visualisation'],link:'#',images:[],slides:4},
-    {title:'Calm Clinic: booking',cat:'Healthcare · Mobile app',year:'2024',
-     desc:'A three-tap booking flow for a clinic, designed to reduce missed appointments with clear reminders and an easy way to reschedule.',
-     role:'UX/UI designer',time:'5 weeks',tools:'Figma, Maze',tags:['Mobile','Booking','Accessibility'],link:'#',images:[],slides:3},
-    {title:'Atlas: travel planner',cat:'Travel · Mobile app',year:'2024',
-     desc:'A trip planner that keeps flights, stays and ideas in one calm timeline, so planning feels like part of the holiday.',
-     role:'UX/UI designer',time:'7 weeks',tools:'Figma, ProtoPie',tags:['Mobile','Planning'],link:'#',images:[],slides:3}
-  ];
-  var PAL=[['#e2cd9f','#bd9b5b',0],['#2c2d33','#131418',1],['#ece8de','#cdc5b3',0],['#3c3427','#1a1510',1]];
-  /* ---------------------------------------------- */
-
-  var $=function(s){return document.querySelector(s)};
-  var track=$('#sxtrack'),fill=$('#sxfill'),prev=$('#sxprev'),next=$('#sxnext');
-  var vw=$('#vw'),panel=vw&&vw.querySelector('.vwpanel'),vtrack=$('#vwtrack'),thumbs=$('#vwthumbs'),count=$('#vwcount'),vprev=$('#vwprev'),vnext=$('#vwnext');
-  if(!track||!vw) return;
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var ESC={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'};
-  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ESC[c]})}
-  function n(i){var d=SCREENS[i];return d.images&&d.images.length?d.images.length:(d.slides||3)}
-  function pal(i){return PAL[i%PAL.length]}
-  function sty(i){var p=pal(i);return '--sbg:linear-gradient(140deg,'+p[0]+','+p[1]+');--ps:'+(p[2]?'#1e1f25':'#fff')+';--pk:'+(p[2]?'rgba(255,255,255,.14)':'rgba(20,18,13,.11)')}
-  function ph(k){
-    var v=k%4;
-    if(v===0) return '<div class="phs"><i class="pk" style="width:40%"></i><b class="pa" style="height:42%"></b><i class="pk"></i><i class="pk" style="width:70%"></i><i class="pk" style="width:55%"></i></div>';
-    if(v===1) return '<div class="phs v1"><b class="pa" style="height:30%"></b><i class="pk"></i><i class="pk" style="width:75%"></i><i class="pk" style="width:55%"></i><b class="pb" style="height:14%;margin-top:auto"></b></div>';
-    if(v===2) return '<div class="phs v2"><i class="pk" style="width:35%"></i><div class="pbars"><i style="height:40%"></i><i style="height:68%"></i><i class="a" style="height:100%"></i><i style="height:58%"></i><i style="height:78%"></i></div></div>';
-    return '<div class="phs v3"><i class="pk" style="width:45%"></i><div class="ptiles"><b class="pa"></b><b class="pb"></b><b class="pb"></b><b class="pa" style="opacity:.55"></b></div></div>';
-  }
-  function slide(i,k){
-    var d=SCREENS[i],im=d.images&&d.images[k];
-    return im?'<img src="'+esc(im)+'" alt="'+esc(d.title)+' screen '+(k+1)+'" loading="lazy" draggable="false">':ph(k+i);
-  }
-
-  /* background colour follows the image you place (same idea as the Projects section) */
-  function hsl(r,g,b){r/=255;g/=255;b/=255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,h=0,s=0,d=mx-mn;
-    if(d){s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?((g-b)/d+(g<b?6:0)):mx===g?((b-r)/d+2):((r-g)/d+4);h*=60}return [h,s,l]}
-  function tint(img,cb){
-    var src=img.currentSrc||img.src; if(!src) return;
-    var t=new Image(); t.crossOrigin='anonymous';
-    t.onload=function(){try{
-      var cv=document.createElement('canvas');cv.width=cv.height=32;
-      var cx=cv.getContext('2d',{willReadFrequently:true});cx.drawImage(t,0,0,32,32);
-      var d=cx.getImageData(0,0,32,32).data,bins={},best=null,tr=0,tg=0,tb=0,c=0;
-      for(var i=0;i<d.length;i+=4){
-        if(d[i+3]<128) continue;
-        var r=d[i],g=d[i+1],b=d[i+2],mx=Math.max(r,g,b),mn=Math.min(r,g,b),sat=mx?(mx-mn)/mx:0,lum=(mx+mn)/510;
-        tr+=r;tg+=g;tb+=b;c++;
-        var w=(.1+sat*sat*3)*Math.max(.1,1-Math.abs(lum-.5)*1.4),k=(r>>4)+','+(g>>4)+','+(b>>4),o=bins[k]||(bins[k]={w:0,r:0,g:0,b:0});
-        o.w+=w;o.r+=r*w;o.g+=g*w;o.b+=b*w;if(!best||o.w>best.w) best=o;
+      /* true if the element directly holds readable text (heading, paragraph, label, number...) */
+      function hasText(n) {
+        if (!n || n.nodeType !== 1) return false;
+        for (var i = 0; i < n.childNodes.length; i++) {
+          var c = n.childNodes[i];
+          if (c.nodeType === 3 && c.nodeValue.trim().length) return true;
+        }
+        return false;
       }
-      if(!c) return;
-      var h=hsl(best.r/best.w,best.g/best.w,best.b/best.w);
-      if(h[1]<.12) h=hsl(tr/c,tg/c,tb/c);
-      var s=Math.min(h[1],.62),l=Math.min(.72,Math.max(.3,h[2]));
-      var col=function(dl){return 'hsl('+h[0].toFixed(0)+','+(s*100).toFixed(0)+'%,'+((l+dl)*100).toFixed(0)+'%)'};
-      cb('linear-gradient(140deg,'+col(.07)+','+col(-.1)+')');
-    }catch(e){}};
-    t.src=src;
-  }
-  function tintIn(root){
-    [].forEach.call(root.querySelectorAll('img'),function(img){
-      var host=img.closest('.sxcard,.vwslide,.vwth'); if(!host) return;
-      var go=function(){tint(img,function(g){host.style.setProperty('--sbg',g)})};
-      if(img.complete&&img.naturalWidth) go(); else img.addEventListener('load',go,{once:true});
-    });
-  }
 
-  /* ---------- carousel ---------- */
-  track.innerHTML=SCREENS.map(function(d,i){
-    return '<button class="sxcard'+(d.fit==='cover'?' cover':'')+'" type="button" data-i="'+i+'" aria-label="Open project: '+esc(d.title)+'" style="'+sty(i)+'">'+
-      '<span class="sxmedia">'+slide(i,0)+'</span><span class="sxshade"></span>'+
-      '<span class="sxcount">'+n(i)+' screens</span>'+
-      '<span class="sxopen" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>'+
-      '<span class="sxinfo"><small>'+esc(d.cat)+'</small><strong>'+esc(d.title)+'</strong></span></button>';
-  }).join('');
-  tintIn(track);
+      window.addEventListener('mousemove', function (e) {
+        x = e.clientX; y = e.clientY;
+        if (!shown) { cx = x; cy = y; shown = true; el.classList.add('on'); }
 
-  function syncBar(){
-    var max=track.scrollWidth-track.clientWidth,r=max>0?track.scrollLeft/max:0,w=Math.min(100,track.clientWidth/track.scrollWidth*100);
-    fill.style.width=w+'%';fill.style.left=(r*(100-w))+'%';
-    prev.disabled=track.scrollLeft<=2;next.disabled=track.scrollLeft>=max-2;
-  }
-  function step(dir){
-    var c=track.querySelector('.sxcard'),gap=parseFloat(getComputedStyle(track).columnGap)||16;
-    track.scrollBy({left:dir*(c.getBoundingClientRect().width+gap),behavior:reduce?'auto':'smooth'});
-  }
-  var r1=0;track.addEventListener('scroll',function(){cancelAnimationFrame(r1);r1=requestAnimationFrame(syncBar)},{passive:true});
-  prev.addEventListener('click',function(){step(-1)});next.addEventListener('click',function(){step(1)});
-  window.addEventListener('resize',syncBar);syncBar();
+        var t = e.target;
+        var clickable = t.closest && t.closest('a,button,.pjcard,.hbtn,.icon,.link');
 
-  /* mouse drag for desktop (touch scrolls natively) */
-  function drag(el,done){
-    var down=false,sx=0,sl=0;
-    el.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse'||e.button) return;down=true;sx=e.clientX;sl=el.scrollLeft});
-    window.addEventListener('pointermove',function(e){
-      if(!down) return;var dx=e.clientX-sx;
-      if(Math.abs(dx)>5) el.classList.add('drag');
-      if(el.classList.contains('drag')) el.scrollLeft=sl-dx;
-    });
-    window.addEventListener('pointerup',function(){
-      if(!down) return;down=false;
-      if(el.classList.contains('drag')){el.classList.remove('drag');el.dataset.dragged='1';setTimeout(function(){delete el.dataset.dragged},0);done()}
-    });
-  }
-  drag(track,function(){
-    var pad=parseFloat(getComputedStyle(track).paddingLeft)||0,best=null,bd=1e9;
-    [].forEach.call(track.children,function(c){var d=Math.abs(c.offsetLeft-pad-track.scrollLeft);if(d<bd){bd=d;best=c}});
-    if(best) track.scrollTo({left:best.offsetLeft-pad,behavior:'smooth'});
-  });
+        el.classList.toggle('act', !!clickable);
+        tag.textContent = clickable ? 'Click' : 'UI/UX';
 
-  /* ---------- viewer ---------- */
-  var cur=0,idx=0,lastCard=null,r2=0;
-  function fillV(i){
-    var d=SCREENS[i],c=n(i),s='',t='',m='';
-    for(var k=0;k<c;k++){
-      var im=d.images&&d.images[k];
-      s+='<div class="vwslide'+(d.fit==='cover'?' cover':'')+'" style="'+sty(i)+'">'+slide(i,k)+'</div>';
-      t+='<button type="button" class="vwth" data-k="'+k+'" aria-label="Show image '+(k+1)+'" style="'+sty(i)+'">'+(im?'<img src="'+esc(im)+'" alt="" loading="lazy" draggable="false">':'')+'</button>';
-    }
-    vtrack.innerHTML=s;thumbs.innerHTML=t;
-    $('#vwcat').textContent=d.cat+(d.year?' · '+d.year:'');
-    $('#vwtitle').textContent=d.title;$('#vwdesc').textContent=d.desc||'';
-    $('#vwchips').innerHTML=(d.tags||[]).map(function(x){return '<span>'+esc(x)+'</span>'}).join('');
-    [['Role',d.role],['Timeline',d.time],['Tools',d.tools]].forEach(function(r){if(r[1]) m+='<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>'});
-    $('#vwmeta').innerHTML=m;
-    var a=$('#vwcta');a.setAttribute('href',d.link||'#');
-    tintIn(vtrack);tintIn(thumbs);
-  }
-  function syncV(){
-    var w=vtrack.clientWidth||1,c=vtrack.children.length;
-    idx=Math.max(0,Math.min(c-1,Math.round(vtrack.scrollLeft/w)));
-    count.textContent=(idx+1)+' / '+c;
-    [].forEach.call(thumbs.children,function(b,k){b.classList.toggle('on',k===idx)});
-    var on=thumbs.children[idx];if(on) thumbs.scrollTo({left:on.offsetLeft-thumbs.clientWidth/2+on.offsetWidth/2,behavior:'smooth'});
-    vprev.disabled=idx<=0;vnext.disabled=idx>=c-1;
-  }
-  function go(k){var c=vtrack.children.length;k=Math.max(0,Math.min(c-1,k));vtrack.scrollTo({left:k*vtrack.clientWidth,behavior:reduce?'auto':'smooth'})}
-  vtrack.addEventListener('scroll',function(){cancelAnimationFrame(r2);r2=requestAnimationFrame(syncV)},{passive:true});
-  vprev.addEventListener('click',function(){go(idx-1)});vnext.addEventListener('click',function(){go(idx+1)});
-  thumbs.addEventListener('click',function(e){var b=e.target.closest('.vwth');if(b) go(+b.dataset.k)});
-  drag(vtrack,function(){go(Math.round(vtrack.scrollLeft/vtrack.clientWidth))});
-  window.addEventListener('resize',function(){if(vw.classList.contains('open')) vtrack.scrollLeft=idx*vtrack.clientWidth});
+        /* hide only while over text (clickable things keep showing "Click") */
+        el.classList.toggle('hide', !clickable && hasText(t));
+      }, { passive: true });
 
-  function flip(from,to){ /* transform that makes `to` look like `from` */
-    var a=from.getBoundingClientRect(),b=to.getBoundingClientRect();
-    return 'translate('+(a.left+a.width/2-b.left-b.width/2)+'px,'+(a.top+a.height/2-b.top-b.height/2)+'px) scale('+(a.width/b.width)+','+(a.height/b.height)+')';
-  }
-  function openV(i,card){
-    lastCard=card;cur=i;fillV(i);
-    vw.setAttribute('aria-hidden','false');document.documentElement.classList.add('vw-lock');
-    vtrack.scrollLeft=0;
-    if(!reduce){
-      panel.style.transition='none';panel.style.transform='none';
-      panel.style.transform=flip(card,panel);
-      void panel.offsetWidth;
-      panel.style.transition='';panel.style.transform='none';
-    }
-    vw.classList.add('open');syncV();panel.focus({preventScroll:true});
-  }
-  function closeV(){
-    if(!vw.classList.contains('open')) return;
-    vw.classList.remove('open');vw.classList.add('closing');
-    if(!reduce&&lastCard) panel.style.transform=flip(lastCard,panel);
-    setTimeout(function(){
-      vw.classList.remove('closing');vw.setAttribute('aria-hidden','true');
-      document.documentElement.classList.remove('vw-lock');panel.style.transform='';
-      if(lastCard) lastCard.focus({preventScroll:true});
-    },reduce?0:540);
-  }
-  track.addEventListener('click',function(e){
-    var c=e.target.closest('.sxcard');
-    if(!c||track.dataset.dragged) return;
-    openV(+c.dataset.i,c);
-  });
-  vw.addEventListener('click',function(e){if(e.target.closest('[data-close]')) closeV()});
-  $('#vwcta').addEventListener('click',function(e){if(this.getAttribute('href')==='#') e.preventDefault()});
-  document.addEventListener('keydown',function(e){
-    if(!vw.classList.contains('open')) return;
-    if(e.key==='Escape') closeV();
-    else if(e.key==='ArrowRight') go(idx+1);
-    else if(e.key==='ArrowLeft') go(idx-1);
-    else if(e.key==='Tab'){
-      var f=[].filter.call(panel.querySelectorAll('button,a[href]'),function(x){return !x.disabled&&x.offsetParent!==null});
-      if(!f.length) return;
-      var first=f[0],last=f[f.length-1];
-      if(e.shiftKey&&(document.activeElement===first||document.activeElement===panel)){e.preventDefault();last.focus()}
-      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
-    }
-  });
-})();
+      document.addEventListener('mouseleave', function () { el.classList.add('hide'); });
+      document.addEventListener('mouseenter', function () { el.classList.remove('hide'); });
 
-</script>
-<script>
-/* ===== About: gentle story effects (reveal once, progress line, light parallax) ===== */
-(function(){
-  var sec=document.getElementById('about'); if(!sec) return;
-  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var chs=[].slice.call(sec.querySelectorAll('.ab-ch')),tl=sec.querySelector('.ab-tl'),fill=sec.querySelector('.ab-fill');
+      (function loop() {
+        cx += (x - cx) * .18;          /* lower = lazier trail, higher = snappier */
+        cy += (y - cy) * .18;
+        el.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+        requestAnimationFrame(loop);
+      })();
+    })();
+  </script>
+  <script>
+    /* ===== Screens carousel + project viewer ===== */
+    (function () {
+      /* ---------- EDIT YOUR PROJECTS HERE ----------
+         images : your screens in order, e.g. ['img/fit-1.png','img/fit-2.png']  (leave [] to show placeholder screens)
+         slides : how many placeholder screens to show while images is empty
+         fit    : 'contain' (default, for mockups) or 'cover' (full-bleed screenshots)
+         link   : case-study page URL (add later; '#' does nothing)               */
+      var SCREENS = [
+        {
+          title: 'EIT Academy: Fitness & Transformation', cat: 'Fitness · Mobile app', year: '2025',
+          desc: 'A redesign of the member journey for a fitness and transformation academy, from first sign-up to daily progress tracking. The goal was simple: keep people motivated and give coaches the insight they need at a glance.',
+          role: 'Lead UX/UI designer', time: '8 weeks', tools: 'Figma, FigJam, Maze', tags: ['Research', 'UI design', 'Prototype'], link: '#', images: [], slides: 4
+        },
+        {
+          title: 'Lumé: skincare store', cat: 'E-commerce · Web', year: '2025',
+          desc: 'A faster, clearer shopping and checkout experience for a skincare brand. Product pages now answer the buyer’s questions early, and the checkout was cut down to the steps that matter.',
+          role: 'UX/UI designer', time: '6 weeks', tools: 'Figma, Hotjar', tags: ['E-commerce', 'Checkout', 'Design system'], link: '#', images: [], slides: 3
+        },
+        {
+          title: 'Orbit: team analytics', cat: 'SaaS · Dashboard', year: '2024',
+          desc: 'Dense analytics turned into a dashboard that teams can read in seconds. I mapped the key questions people ask every day and designed the views around them.',
+          role: 'Product designer', time: '10 weeks', tools: 'Figma, Notion', tags: ['Dashboard', 'Data visualisation'], link: '#', images: [], slides: 4
+        },
+        {
+          title: 'Calm Clinic: booking', cat: 'Healthcare · Mobile app', year: '2024',
+          desc: 'A three-tap booking flow for a clinic, designed to reduce missed appointments with clear reminders and an easy way to reschedule.',
+          role: 'UX/UI designer', time: '5 weeks', tools: 'Figma, Maze', tags: ['Mobile', 'Booking', 'Accessibility'], link: '#', images: [], slides: 3
+        },
+        {
+          title: 'Atlas: travel planner', cat: 'Travel · Mobile app', year: '2024',
+          desc: 'A trip planner that keeps flights, stays and ideas in one calm timeline, so planning feels like part of the holiday.',
+          role: 'UX/UI designer', time: '7 weeks', tools: 'Figma, ProtoPie', tags: ['Mobile', 'Planning'], link: '#', images: [], slides: 3
+        }
+      ];
+      var PAL = [['#e2cd9f', '#bd9b5b', 0], ['#2c2d33', '#131418', 1], ['#ece8de', '#cdc5b3', 0], ['#3c3427', '#1a1510', 1]];
+      /* ---------------------------------------------- */
 
-  /* reveal each block once as it enters the screen */
-  if(!reduce&&'IntersectionObserver' in window){
-    sec.classList.add('ab-js');
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){
-      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}
-    })},{threshold:.15,rootMargin:'0px 0px -6% 0px'});
-    [].forEach.call(sec.querySelectorAll('.ab-rv'),function(el){io.observe(el)});
+      var $ = function (s) { return document.querySelector(s) };
+      var track = $('#sxtrack'), fill = $('#sxfill'), prev = $('#sxprev'), next = $('#sxnext');
+      var vw = $('#vw'), panel = vw && vw.querySelector('.vwpanel'), vtrack = $('#vwtrack'), thumbs = $('#vwthumbs'), count = $('#vwcount'), vprev = $('#vwprev'), vnext = $('#vwnext');
+      if (!track || !vw) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' };
+      function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return ESC[c] }) }
+      function n(i) { var d = SCREENS[i]; return d.images && d.images.length ? d.images.length : (d.slides || 3) }
+      function pal(i) { return PAL[i % PAL.length] }
+      function sty(i) { var p = pal(i); return '--sbg:linear-gradient(140deg,' + p[0] + ',' + p[1] + ');--ps:' + (p[2] ? '#1e1f25' : '#fff') + ';--pk:' + (p[2] ? 'rgba(255,255,255,.14)' : 'rgba(20,18,13,.11)') }
+      function ph(k) {
+        var v = k % 4;
+        if (v === 0) return '<div class="phs"><i class="pk" style="width:40%"></i><b class="pa" style="height:42%"></b><i class="pk"></i><i class="pk" style="width:70%"></i><i class="pk" style="width:55%"></i></div>';
+        if (v === 1) return '<div class="phs v1"><b class="pa" style="height:30%"></b><i class="pk"></i><i class="pk" style="width:75%"></i><i class="pk" style="width:55%"></i><b class="pb" style="height:14%;margin-top:auto"></b></div>';
+        if (v === 2) return '<div class="phs v2"><i class="pk" style="width:35%"></i><div class="pbars"><i style="height:40%"></i><i style="height:68%"></i><i class="a" style="height:100%"></i><i style="height:58%"></i><i style="height:78%"></i></div></div>';
+        return '<div class="phs v3"><i class="pk" style="width:45%"></i><div class="ptiles"><b class="pa"></b><b class="pb"></b><b class="pb"></b><b class="pa" style="opacity:.55"></b></div></div>';
+      }
+      function slide(i, k) {
+        var d = SCREENS[i], im = d.images && d.images[k];
+        return im ? '<img src="' + esc(im) + '" alt="' + esc(d.title) + ' screen ' + (k + 1) + '" loading="lazy" draggable="false">' : ph(k + i);
+      }
 
-    /* numbers count up once */
-    var stats=sec.querySelector('.ab-stats');
-    if(stats){
-      var so=new IntersectionObserver(function(es){es.forEach(function(e){
-        if(!e.isIntersecting) return; so.disconnect();
-        [].forEach.call(stats.querySelectorAll('b[data-n]'),function(b){
-          var n=+b.dataset.n,s=b.dataset.s||'',t0=performance.now();
-          (function tick(t){var k=Math.min(1,(t-t0)/1100);b.textContent=Math.round(n*(1-Math.pow(1-k,3)))+s;if(k<1) requestAnimationFrame(tick)})(t0);
+      /* background colour follows the image you place (same idea as the Projects section) */
+      function hsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255; var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0, d = mx - mn;
+        if (d) { s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === r ? ((g - b) / d + (g < b ? 6 : 0)) : mx === g ? ((b - r) / d + 2) : ((r - g) / d + 4); h *= 60 } return [h, s, l]
+      }
+      function tint(img, cb) {
+        var src = img.currentSrc || img.src; if (!src) return;
+        var t = new Image(); t.crossOrigin = 'anonymous';
+        t.onload = function () {
+          try {
+            var cv = document.createElement('canvas'); cv.width = cv.height = 32;
+            var cx = cv.getContext('2d', { willReadFrequently: true }); cx.drawImage(t, 0, 0, 32, 32);
+            var d = cx.getImageData(0, 0, 32, 32).data, bins = {}, best = null, tr = 0, tg = 0, tb = 0, c = 0;
+            for (var i = 0; i < d.length; i += 4) {
+              if (d[i + 3] < 128) continue;
+              var r = d[i], g = d[i + 1], b = d[i + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b), sat = mx ? (mx - mn) / mx : 0, lum = (mx + mn) / 510;
+              tr += r; tg += g; tb += b; c++;
+              var w = (.1 + sat * sat * 3) * Math.max(.1, 1 - Math.abs(lum - .5) * 1.4), k = (r >> 4) + ',' + (g >> 4) + ',' + (b >> 4), o = bins[k] || (bins[k] = { w: 0, r: 0, g: 0, b: 0 });
+              o.w += w; o.r += r * w; o.g += g * w; o.b += b * w; if (!best || o.w > best.w) best = o;
+            }
+            if (!c) return;
+            var h = hsl(best.r / best.w, best.g / best.w, best.b / best.w);
+            if (h[1] < .12) h = hsl(tr / c, tg / c, tb / c);
+            var s = Math.min(h[1], .62), l = Math.min(.72, Math.max(.3, h[2]));
+            var col = function (dl) { return 'hsl(' + h[0].toFixed(0) + ',' + (s * 100).toFixed(0) + '%,' + ((l + dl) * 100).toFixed(0) + '%)' };
+            cb('linear-gradient(140deg,' + col(.07) + ',' + col(-.1) + ')');
+          } catch (e) { }
+        };
+        t.src = src;
+      }
+      function tintIn(root) {
+        [].forEach.call(root.querySelectorAll('img'), function (img) {
+          var host = img.closest('.sxcard,.vwslide,.vwth'); if (!host) return;
+          var go = function () { tint(img, function (g) { host.style.setProperty('--sbg', g) }) };
+          if (img.complete && img.naturalWidth) go(); else img.addEventListener('load', go, { once: true });
         });
-      })},{threshold:.5});
-      so.observe(stats);
-    }
-  }
+      }
 
-  /* on scroll: progress line, active chapter, light parallax */
-  var queued=false;
-  function update(){
-    queued=false;
-    var vh=window.innerHeight,mid=vh*.5,sr=sec.getBoundingClientRect();
-    if(sr.bottom<-200||sr.top>vh+200) return;
-    if(!reduce) sec.style.setProperty('--sy',(-sr.top).toFixed(0));
-    if(tl&&fill){var r=tl.getBoundingClientRect();fill.style.transform='scaleY('+Math.max(0,Math.min(1,(mid-r.top)/r.height)).toFixed(4)+')'}
-    chs.forEach(function(c){
-      var r=c.getBoundingClientRect();
-      c.classList.toggle('on',r.top<mid);
-      if(!reduce) c.style.setProperty('--p',Math.max(-1,Math.min(1,(r.top+r.height/2-mid)/vh)).toFixed(3));
-    });
-  }
-  function req(){if(!queued){queued=true;requestAnimationFrame(update)}}
-  window.addEventListener('scroll',req,{passive:true});window.addEventListener('resize',req);update();
-})();
-</script>
+      /* ---------- carousel ---------- */
+      track.innerHTML = SCREENS.map(function (d, i) {
+        return '<button class="sxcard' + (d.fit === 'cover' ? ' cover' : '') + '" type="button" data-i="' + i + '" aria-label="Open project: ' + esc(d.title) + '" style="' + sty(i) + '">' +
+          '<span class="sxmedia">' + slide(i, 0) + '</span><span class="sxshade"></span>' +
+          '<span class="sxcount">' + n(i) + ' screens</span>' +
+          '<span class="sxopen" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>' +
+          '<span class="sxinfo"><small>' + esc(d.cat) + '</small><strong>' + esc(d.title) + '</strong></span></button>';
+      }).join('');
+      tintIn(track);
+
+      function syncBar() {
+        var max = track.scrollWidth - track.clientWidth, r = max > 0 ? track.scrollLeft / max : 0, w = Math.min(100, track.clientWidth / track.scrollWidth * 100);
+        fill.style.width = w + '%'; fill.style.left = (r * (100 - w)) + '%';
+        prev.disabled = track.scrollLeft <= 2; next.disabled = track.scrollLeft >= max - 2;
+      }
+      function step(dir) {
+        var c = track.querySelector('.sxcard'), gap = parseFloat(getComputedStyle(track).columnGap) || 16;
+        track.scrollBy({ left: dir * (c.getBoundingClientRect().width + gap), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      var r1 = 0; track.addEventListener('scroll', function () { cancelAnimationFrame(r1); r1 = requestAnimationFrame(syncBar) }, { passive: true });
+      prev.addEventListener('click', function () { step(-1) }); next.addEventListener('click', function () { step(1) });
+      window.addEventListener('resize', syncBar); syncBar();
+
+      /* mouse drag for desktop (touch scrolls natively) */
+      function drag(el, done) {
+        var down = false, sx = 0, sl = 0;
+        el.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse' || e.button) return; down = true; sx = e.clientX; sl = el.scrollLeft });
+        window.addEventListener('pointermove', function (e) {
+          if (!down) return; var dx = e.clientX - sx;
+          if (Math.abs(dx) > 5) el.classList.add('drag');
+          if (el.classList.contains('drag')) el.scrollLeft = sl - dx;
+        });
+        window.addEventListener('pointerup', function () {
+          if (!down) return; down = false;
+          if (el.classList.contains('drag')) { el.classList.remove('drag'); el.dataset.dragged = '1'; setTimeout(function () { delete el.dataset.dragged }, 0); done() }
+        });
+      }
+      drag(track, function () {
+        var pad = parseFloat(getComputedStyle(track).paddingLeft) || 0, best = null, bd = 1e9;
+        [].forEach.call(track.children, function (c) { var d = Math.abs(c.offsetLeft - pad - track.scrollLeft); if (d < bd) { bd = d; best = c } });
+        if (best) track.scrollTo({ left: best.offsetLeft - pad, behavior: 'smooth' });
+      });
+
+      /* ---------- viewer ---------- */
+      var cur = 0, idx = 0, lastCard = null, r2 = 0;
+      function fillV(i) {
+        var d = SCREENS[i], c = n(i), s = '', t = '', m = '';
+        for (var k = 0; k < c; k++) {
+          var im = d.images && d.images[k];
+          s += '<div class="vwslide' + (d.fit === 'cover' ? ' cover' : '') + '" style="' + sty(i) + '">' + slide(i, k) + '</div>';
+          t += '<button type="button" class="vwth" data-k="' + k + '" aria-label="Show image ' + (k + 1) + '" style="' + sty(i) + '">' + (im ? '<img src="' + esc(im) + '" alt="" loading="lazy" draggable="false">' : '') + '</button>';
+        }
+        vtrack.innerHTML = s; thumbs.innerHTML = t;
+        $('#vwcat').textContent = d.cat + (d.year ? ' · ' + d.year : '');
+        $('#vwtitle').textContent = d.title; $('#vwdesc').textContent = d.desc || '';
+        $('#vwchips').innerHTML = (d.tags || []).map(function (x) { return '<span>' + esc(x) + '</span>' }).join('');
+        [['Role', d.role], ['Timeline', d.time], ['Tools', d.tools]].forEach(function (r) { if (r[1]) m += '<div><dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd></div>' });
+        $('#vwmeta').innerHTML = m;
+        var a = $('#vwcta'); a.setAttribute('href', d.link || '#');
+        tintIn(vtrack); tintIn(thumbs);
+      }
+      function syncV() {
+        var w = vtrack.clientWidth || 1, c = vtrack.children.length;
+        idx = Math.max(0, Math.min(c - 1, Math.round(vtrack.scrollLeft / w)));
+        count.textContent = (idx + 1) + ' / ' + c;
+        [].forEach.call(thumbs.children, function (b, k) { b.classList.toggle('on', k === idx) });
+        var on = thumbs.children[idx]; if (on) thumbs.scrollTo({ left: on.offsetLeft - thumbs.clientWidth / 2 + on.offsetWidth / 2, behavior: 'smooth' });
+        vprev.disabled = idx <= 0; vnext.disabled = idx >= c - 1;
+      }
+      function go(k) { var c = vtrack.children.length; k = Math.max(0, Math.min(c - 1, k)); vtrack.scrollTo({ left: k * vtrack.clientWidth, behavior: reduce ? 'auto' : 'smooth' }) }
+      vtrack.addEventListener('scroll', function () { cancelAnimationFrame(r2); r2 = requestAnimationFrame(syncV) }, { passive: true });
+      vprev.addEventListener('click', function () { go(idx - 1) }); vnext.addEventListener('click', function () { go(idx + 1) });
+      thumbs.addEventListener('click', function (e) { var b = e.target.closest('.vwth'); if (b) go(+b.dataset.k) });
+      drag(vtrack, function () { go(Math.round(vtrack.scrollLeft / vtrack.clientWidth)) });
+      window.addEventListener('resize', function () { if (vw.classList.contains('open')) vtrack.scrollLeft = idx * vtrack.clientWidth });
+
+      function flip(from, to) { /* transform that makes `to` look like `from` */
+        var a = from.getBoundingClientRect(), b = to.getBoundingClientRect();
+        return 'translate(' + (a.left + a.width / 2 - b.left - b.width / 2) + 'px,' + (a.top + a.height / 2 - b.top - b.height / 2) + 'px) scale(' + (a.width / b.width) + ',' + (a.height / b.height) + ')';
+      }
+      function openV(i, card) {
+        lastCard = card; cur = i; fillV(i);
+        vw.setAttribute('aria-hidden', 'false'); document.documentElement.classList.add('vw-lock');
+        vtrack.scrollLeft = 0;
+        if (!reduce) {
+          panel.style.transition = 'none'; panel.style.transform = 'none';
+          panel.style.transform = flip(card, panel);
+          void panel.offsetWidth;
+          panel.style.transition = ''; panel.style.transform = 'none';
+        }
+        vw.classList.add('open'); syncV(); panel.focus({ preventScroll: true });
+      }
+      function closeV() {
+        if (!vw.classList.contains('open')) return;
+        vw.classList.remove('open'); vw.classList.add('closing');
+        if (!reduce && lastCard) panel.style.transform = flip(lastCard, panel);
+        setTimeout(function () {
+          vw.classList.remove('closing'); vw.setAttribute('aria-hidden', 'true');
+          document.documentElement.classList.remove('vw-lock'); panel.style.transform = '';
+          if (lastCard) lastCard.focus({ preventScroll: true });
+        }, reduce ? 0 : 540);
+      }
+      track.addEventListener('click', function (e) {
+        var c = e.target.closest('.sxcard');
+        if (!c || track.dataset.dragged) return;
+        openV(+c.dataset.i, c);
+      });
+      vw.addEventListener('click', function (e) { if (e.target.closest('[data-close]')) closeV() });
+      $('#vwcta').addEventListener('click', function (e) { if (this.getAttribute('href') === '#') e.preventDefault() });
+      document.addEventListener('keydown', function (e) {
+        if (!vw.classList.contains('open')) return;
+        if (e.key === 'Escape') closeV();
+        else if (e.key === 'ArrowRight') go(idx + 1);
+        else if (e.key === 'ArrowLeft') go(idx - 1);
+        else if (e.key === 'Tab') {
+          var f = [].filter.call(panel.querySelectorAll('button,a[href]'), function (x) { return !x.disabled && x.offsetParent !== null });
+          if (!f.length) return;
+          var first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) { e.preventDefault(); last.focus() }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+        }
+      });
+    })();
+
+  </script>
+  <script>
+    /* ===== Screens carousel: seamless endless flow ===== */
+    (function () {
+      var track = document.getElementById('sxtrack');
+      if (!track || !track.children.length) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var SPEED = 45;                       // pixels per second (raise = faster, lower = slower)
+      var vw = document.getElementById('vw');
+      var fill = document.getElementById('sxfill');
+      var prevB = document.getElementById('sxprev');
+      var nextB = document.getElementById('sxnext');
+      var section = document.getElementById('screens');
+
+      /* ---- build the loop: [clones] [originals] [clones] ---- */
+      var orig = [].slice.call(track.children);
+      function mk(src) {
+        var c = src.cloneNode(true);
+        c.setAttribute('aria-hidden', 'true');
+        c.removeAttribute('aria-label');
+        c.tabIndex = -1;
+        return c;
+      }
+      var before = orig.map(mk), after = orig.map(mk);
+      before.forEach(function (c) { track.insertBefore(c, orig[0]); });
+      after.forEach(function (c) { track.appendChild(c); });
+
+      /* keep clone colours in sync when the originals get tinted from images */
+      if ('MutationObserver' in window) {
+        var mo = new MutationObserver(function () {
+          orig.forEach(function (o, i) {
+            var s = o.getAttribute('style') || '';
+            before[i].setAttribute('style', s);
+            after[i].setAttribute('style', s);
+          });
+        });
+        orig.forEach(function (o) { mo.observe(o, { attributes: true, attributeFilter: ['style'] }); });
+      }
+
+      /* free scrolling (no snapping) so the flow is perfectly smooth */
+      track.style.scrollSnapType = 'none';
+
+      var setW = 0;
+      function measure() { setW = orig[0].offsetLeft - before[0].offsetLeft; }
+      measure();
+      track.scrollLeft = setW;
+      var pos = track.scrollLeft;
+
+      /* ---- pause rules ---- */
+      var hover = false, touching = false, down = false, inView = true, holdUntil = 0;
+      function hold(ms) { holdUntil = Math.max(holdUntil, performance.now() + ms); }
+
+      var rail = track.parentElement;
+      rail.addEventListener('mouseenter', function () { hover = true; });
+      rail.addEventListener('mouseleave', function () { hover = false; hold(300); });
+      track.addEventListener('touchstart', function () { touching = true; }, { passive: true });
+      track.addEventListener('touchend', function () { touching = false; hold(2500); }, { passive: true });
+      track.addEventListener('touchcancel', function () { touching = false; hold(2500); }, { passive: true });
+      track.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') down = true; });
+      window.addEventListener('pointerup', function () { if (down) { down = false; hold(1500); } });
+      [prevB, nextB].forEach(function (b) { if (b) b.addEventListener('click', function () { hold(3500); }); });
+
+      if (section && 'IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }, { threshold: 0.2 }).observe(section);
+      }
+
+      /* ---- progress bar + arrows (the loop never ends, so arrows stay enabled) ---- */
+      var uiR = 0;
+      function ui() {
+        if (!setW) return;
+        var p = (((track.scrollLeft - setW) % setW) + setW) % setW / setW;
+        if (fill) { fill.style.left = '0%'; fill.style.width = (8 + p * 92).toFixed(1) + '%'; }
+        if (prevB) prevB.disabled = false;
+        if (nextB) nextB.disabled = false;
+      }
+      function queueUi() { cancelAnimationFrame(uiR); uiR = requestAnimationFrame(ui); }
+      track.addEventListener('scroll', queueUi, { passive: true });
+      window.addEventListener('resize', function () {
+        var ratio = setW ? (track.scrollLeft - setW) / setW : 0;
+        measure();
+        track.scrollLeft = pos = setW + ratio * setW;
+        queueUi();
+      });
+      ui();
+
+      /* ---- the flow ---- */
+      var v = 0, last = performance.now();
+      function frame(now) {
+        var dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+
+        var paused = hover || touching || down || now < holdUntil || !inView ||
+          (vw && vw.classList.contains('open'));
+        v += ((paused ? 0 : SPEED) - v) * (1 - Math.exp(-dt * 5));   // eases in and out
+
+        var sl = track.scrollLeft;
+        if (Math.abs(sl - pos) > 1.5) pos = sl;                      // someone else scrolled (drag, arrows, swipe)
+
+        if (v > 0.5) { pos += v * dt; track.scrollLeft = pos; }
+
+        /* jump by exactly one set of cards: looks identical, so it's invisible */
+        if (setW) {
+          if (pos >= 2 * setW) { pos -= setW; track.scrollLeft = pos; }
+          else if (pos < setW) { pos += setW; track.scrollLeft = pos; }
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
+  </script>
+  <script>
+    /* ===== About: gentle story effects (reveal once, progress line, light parallax) ===== */
+    (function () {
+      var sec = document.getElementById('about'); if (!sec) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var chs = [].slice.call(sec.querySelectorAll('.ab-ch')), tl = sec.querySelector('.ab-tl'), fill = sec.querySelector('.ab-fill');
+
+      /* reveal each block once as it enters the screen */
+      if (!reduce && 'IntersectionObserver' in window) {
+        sec.classList.add('ab-js');
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
+          })
+        }, { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+        [].forEach.call(sec.querySelectorAll('.ab-rv'), function (el) { io.observe(el) });
+
+        /* numbers count up once */
+        var stats = sec.querySelector('.ab-stats');
+        if (stats) {
+          var so = new IntersectionObserver(function (es) {
+            es.forEach(function (e) {
+              if (!e.isIntersecting) return; so.disconnect();
+              [].forEach.call(stats.querySelectorAll('b[data-n]'), function (b) {
+                var n = +b.dataset.n, s = b.dataset.s || '', t0 = performance.now();
+                (function tick(t) { var k = Math.min(1, (t - t0) / 1100); b.textContent = Math.round(n * (1 - Math.pow(1 - k, 3))) + s; if (k < 1) requestAnimationFrame(tick) })(t0);
+              });
+            })
+          }, { threshold: .5 });
+          so.observe(stats);
+        }
+      }
+
+      /* on scroll: progress line, active chapter, light parallax */
+      var queued = false;
+      function update() {
+        queued = false;
+        var vh = window.innerHeight, mid = vh * .5, sr = sec.getBoundingClientRect();
+        if (sr.bottom < -200 || sr.top > vh + 200) return;
+        if (!reduce) sec.style.setProperty('--sy', (-sr.top).toFixed(0));
+        if (tl && fill) { var r = tl.getBoundingClientRect(); fill.style.transform = 'scaleY(' + Math.max(0, Math.min(1, (mid - r.top) / r.height)).toFixed(4) + ')' }
+        chs.forEach(function (c) {
+          var r = c.getBoundingClientRect();
+          c.classList.toggle('on', r.top < mid);
+          if (!reduce) c.style.setProperty('--p', Math.max(-1, Math.min(1, (r.top + r.height / 2 - mid) / vh)).toFixed(3));
+        });
+      }
+      function req() { if (!queued) { queued = true; requestAnimationFrame(update) } }
+      window.addEventListener('scroll', req, { passive: true }); window.addEventListener('resize', req); update();
+    })();
+  </script>
+  <script>
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { e.target.classList.toggle('idle', !e.isIntersecting) });
+      }, { threshold: .05 });
+      [].forEach.call(document.querySelectorAll('.ab-vis'), function (v) { io.observe(v) });
+    })();
+  </script>
 </body>
 
 </html>
