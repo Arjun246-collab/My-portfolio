@@ -4308,6 +4308,14 @@
         grid-template-columns: 1fr
       }
     }
+    /* background particles fade away while they pass over text */
+.fxp svg {
+  transition: opacity .45s ease
+}
+
+.fxp.gone svg {
+  opacity: 0
+}
   </style>
 </head>
 
@@ -6063,6 +6071,82 @@
       build();
     })();
   </script>
+  <script>
+  /* ===== Background particles: disappear while passing over text ===== */
+  (function () {
+    var host = document.getElementById('fx'); if (!host) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var PAD = 10, flow = [], fixedBox = [], fixedCache = new Map(), timer = 0, lastRun = 0;
+
+    function isFixed(el) {
+      var chain = [], e = el, res = false;
+      while (e && e !== document.body && e !== document.documentElement) {
+        if (fixedCache.has(e)) { res = fixedCache.get(e); break }
+        chain.push(e);
+        if (getComputedStyle(e).position === 'fixed') { res = true; break }
+        e = e.parentElement;
+      }
+      chain.forEach(function (c) { fixedCache.set(c, res) });
+      return res;
+    }
+
+    /* remember where every line of text sits (page coordinates; fixed UI in viewport coordinates) */
+    function collect() {
+      lastRun = performance.now();
+      var sx = window.scrollX, sy = window.scrollY, range = document.createRange();
+      var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      var f = [], x = [], n;
+      fixedCache.clear();
+      while ((n = w.nextNode())) {
+        if (!n.nodeValue || !n.nodeValue.trim()) continue;
+        var p = n.parentElement;
+        if (!p || p.closest('script,style,noscript,template,svg,#fx')) continue;
+        if (p.checkVisibility && !p.checkVisibility({ checkVisibilityCSS: true })) continue;
+        range.selectNodeContents(n);
+        var rs = range.getClientRects(), fx = isFixed(p);
+        for (var i = 0; i < rs.length; i++) {
+          var r = rs[i]; if (r.width < 2 || r.height < 2) continue;
+          if (fx) x.push({ l: r.left, t: r.top, r: r.right, b: r.bottom });
+          else f.push({ l: r.left + sx, t: r.top + sy, r: r.right + sx, b: r.bottom + sy });
+        }
+      }
+      flow = f; fixedBox = x;
+    }
+    function schedule(ms) { clearTimeout(timer); timer = setTimeout(collect, ms) }
+
+    var parts = [].slice.call(host.children);
+    function tick() {
+      var sx = window.scrollX, sy = window.scrollY, vh = window.innerHeight;
+      for (var i = 0; i < parts.length; i++) {
+        var b = parts[i].getBoundingClientRect(), hit = false;
+        if (b.bottom > 0 && b.top < vh) {
+          var l = b.left - PAD, r = b.right + PAD, t = b.top - PAD, bt = b.bottom + PAD, k, q;
+          for (k = 0; k < flow.length && !hit; k++) {
+            q = flow[k];
+            var qt = q.t - sy; if (qt > bt || q.b - sy < t) continue;
+            if (q.l - sx < r && q.r - sx > l) hit = true;
+          }
+          for (k = 0; k < fixedBox.length && !hit; k++) {
+            q = fixedBox[k];
+            if (q.t < bt && q.b > t && q.l < r && q.r > l) hit = true;
+          }
+        }
+        if (parts[i]._gone !== hit) { parts[i]._gone = hit; parts[i].classList.toggle('gone', hit) }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* keep the text map fresh: layout changes, fonts, carousels scrolling, late content */
+    window.addEventListener('resize', function () { schedule(150) });
+    window.addEventListener('load', function () { schedule(100) });
+    document.addEventListener('scroll', function () { if (performance.now() - lastRun > 250) schedule(80) }, true);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { schedule(50) });
+    if ('ResizeObserver' in window) new ResizeObserver(function () { schedule(200) }).observe(document.body);
+    if ('MutationObserver' in window) new MutationObserver(function () { schedule(400) }).observe(document.body, { childList: true, subtree: true, characterData: true });
+    setInterval(collect, 2500);
+    collect(); requestAnimationFrame(tick);
+  })();
+</script>
 </body>
 
 </html>
