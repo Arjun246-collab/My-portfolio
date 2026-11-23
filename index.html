@@ -2157,6 +2157,99 @@ html.vw-lock,html.vw-lock body{overflow:hidden}
   .vwclose{top:12px;right:12px}
 }
 @media (prefers-reduced-motion:reduce){.sxcard:hover::after,.sxcard:focus-visible::after{animation:none}}
+/* ===== About me: story section (id="about") ===== */
+.work{padding-bottom:clamp(40px,6vw,80px)}   /* the About section now carries the space above the dock */
+.sx{padding-bottom:clamp(40px,6vw,80px)}     /* (only matters if you added the screens carousel) */
+.ab{position:relative;z-index:1;overflow:hidden;padding:clamp(56px,9vw,110px) 0 clamp(150px,18vw,190px)}
+.ab-wrap{position:relative;z-index:1;width:100%;max-width:1040px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+.ab-ring{position:absolute;z-index:0;border-radius:50%;border:1px solid color-mix(in srgb,var(--blue) 28%,transparent);pointer-events:none;will-change:transform}
+.ab-r1{width:540px;height:540px;right:-220px;top:8%;transform:translateY(calc(var(--sy,0)*.06px))}
+.ab-r2{width:380px;height:380px;left:-160px;top:58%;transform:translateY(calc(var(--sy,0)*-.04px))}
+
+.ab-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:clamp(28px,4vw,48px)}
+.ab-title{margin:0;font-weight:500;font-size:clamp(2.4rem,5.4vw,4.2rem);line-height:1;letter-spacing:-.035em;color:var(--text)}
+.ab-title span{display:block;color:var(--blue)}
+.ab-lede{margin:0;max-width:34ch;font-weight:300;color:var(--muted);font-size:clamp(1rem,1.4vw,1.12rem);line-height:1.7}
+
+.ab-intro{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start;margin-bottom:clamp(64px,9vw,120px)}
+.ab-say{margin:0;font-weight:500;font-size:clamp(1.6rem,3.2vw,2.6rem);line-height:1.2;letter-spacing:-.03em;color:var(--text)}
+.ab-say em{font-style:normal;color:var(--blue)}
+.ab-stats{margin:0;padding:0;list-style:none;border-top:1px solid var(--hl)}
+.ab-stats li{display:flex;align-items:baseline;gap:16px;padding:18px 0;border-bottom:1px solid var(--hl)}
+.ab-stats b{min-width:3.4ch;font-weight:500;font-size:clamp(2rem,4vw,3rem);line-height:1;letter-spacing:-.04em;color:var(--text)}
+.ab-stats span{color:var(--muted);font-weight:300}
+
+.ab-sub{margin:0 0 clamp(28px,4vw,44px);font-weight:500;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.03em;color:var(--text)}
+
+/* the story: a timeline that draws itself as you scroll */
+.ab-tl{position:relative;display:flex;flex-direction:column;gap:clamp(44px,6vw,84px)}
+.ab-line{position:absolute;top:12px;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--hl);-webkit-mask-image:linear-gradient(#000 88%,transparent);mask-image:linear-gradient(#000 88%,transparent)}
+.ab-fill{position:absolute;inset:0;background:linear-gradient(var(--blue),color-mix(in srgb,var(--blue) 40%,transparent));transform:scaleY(0);transform-origin:top}
+.ab-ch{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);align-items:start;gap:0 clamp(12px,2vw,28px)}
+.ab-mark{grid-column:2;grid-row:1;display:flex;justify-content:center;padding-top:8px}
+.ab-dot{position:relative;z-index:1;width:16px;height:16px;border-radius:50%;background:var(--page);border:2px solid var(--hl);transition:background .4s,border-color .4s,box-shadow .4s}
+.ab-ch.on .ab-dot{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 6px color-mix(in srgb,var(--blue) 22%,transparent)}
+.ab-card{grid-column:1;grid-row:1;padding-top:2px}
+.ab-ch:nth-child(even) .ab-card{grid-column:3}
+.ab-kind{margin:0 0 10px;color:var(--blue);font-weight:500;font-size:.9rem}
+.ab-kind time{margin-left:8px;color:var(--muted);font-weight:300}
+.ab-card h3{margin:0;font-weight:500;font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.15;letter-spacing:-.03em;color:var(--text)}
+.ab-place{margin:6px 0 0;color:var(--muted);font-weight:300}
+.ab-txt{margin:14px 0 0;max-width:44ch;color:var(--muted);font-weight:300;line-height:1.75}
+.ab-tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.ab-tags li{padding:5px 13px;border:1px solid var(--hl);border-radius:99px;font-size:.85rem;color:var(--muted)}
+
+.ab-vis{--g1:#e2cd9f;--g2:#bd9b5b;--abink:rgba(20,18,13,.34);--abic:#14120d;position:relative;grid-column:3;grid-row:1;aspect-ratio:4/3;border-radius:28px;overflow:hidden;isolation:isolate;background:linear-gradient(140deg,var(--g1),var(--g2))}
+.ab-ch:nth-child(even) .ab-vis{grid-column:1}
+.ab-vis[data-tone="stone"]{--g1:#ece8de;--g2:#cdc5b3}
+.ab-vis[data-tone="work"]{--g1:#2c2d33;--g2:#131418;--abink:rgba(255,255,255,.3);--abic:#f3efe6}
+.ab-vis[data-tone="brown"]{--g1:#3c3427;--g2:#1a1510;--abink:rgba(255,255,255,.3);--abic:#f3efe6}
+.ab-vis::before{content:"";position:absolute;z-index:-1;width:70%;aspect-ratio:1;right:-18%;bottom:-30%;border-radius:50%;border:1px solid var(--abink);transform:translateY(calc(var(--p,0)*-18px))}
+.ab-big{position:absolute;left:22px;bottom:-6px;font-weight:600;font-size:clamp(4.2rem,9vw,7.4rem);line-height:1;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px var(--abink);user-select:none;transform:translateY(calc(var(--p,0)*-34px))}
+.ab-ico{position:absolute;right:22px;top:22px;width:clamp(56px,7vw,76px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:var(--abic);transform:translateY(calc(var(--p,0)*22px))}
+.ab-ico svg{width:46%;height:46%}
+
+/* expertise */
+.ab-exp{margin-top:clamp(72px,10vw,130px)}
+.ab-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px)}
+.ab-skill{padding:26px;border:1px solid var(--hl);border-radius:26px;background:var(--tile);transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .5s}
+.ab-skill:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--blue) 55%,var(--hl));box-shadow:0 30px 60px -28px var(--shadow)}
+.ab-skill i{display:grid;place-items:center;width:48px;height:48px;margin-bottom:18px;border-radius:50%;border:1.5px solid var(--blue);color:var(--blue);transition:background .35s,color .35s}
+.ab-skill:hover i{background:var(--blue);color:#14120d}
+.ab-skill svg{width:22px;height:22px}
+.ab-skill h4{margin:0;font-weight:500;font-size:1.2rem;letter-spacing:-.02em;color:var(--text)}
+.ab-skill p{margin:8px 0 0;color:var(--muted);font-weight:300;line-height:1.65;font-size:.96rem}
+.ab-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:clamp(28px,4vw,44px)}
+.ab-tools b{margin-right:8px;font-weight:500;color:var(--text)}
+.ab-tools span{padding:8px 16px;border:1px solid var(--hl);border-radius:99px;color:var(--muted);font-weight:300;transition:border-color .3s,color .3s}
+.ab-tools span:hover{border-color:var(--blue);color:var(--text)}
+
+/* closing */
+.ab-end{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px 40px;margin-top:clamp(64px,9vw,120px);padding:clamp(28px,5vw,56px);border:1px solid var(--hl);border-radius:32px;background:var(--tile)}
+.ab-end h3{margin:0;max-width:16ch;font-weight:500;font-size:clamp(1.8rem,3.6vw,2.8rem);line-height:1.1;letter-spacing:-.035em;color:var(--text)}
+.ab-end h3 span{color:var(--blue)}
+.ab-end p{margin:12px 0 0;max-width:38ch;color:var(--muted);font-weight:300}
+.ab-cta{display:flex;flex-wrap:wrap;gap:12px}
+
+/* reveal once (never hides content if JS is off) */
+@keyframes abin{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.ab-js .ab-rv:not(.in){opacity:0}
+.ab-rv.in{animation:abin .9s cubic-bezier(.2,.8,.2,1) var(--d,0s) backwards}
+
+@media (max-width:860px){
+  .ab-head{flex-direction:column;align-items:center;text-align:center}
+  .ab-lede{margin:0 auto}
+  .ab-intro{grid-template-columns:1fr}
+  .ab-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ab-line{left:7px;margin-left:0}
+  .ab-ch{grid-template-columns:16px minmax(0,1fr);gap:0 16px}
+  .ab-mark{grid-column:1;justify-content:flex-start}
+  .ab-card,.ab-ch:nth-child(even) .ab-card{grid-column:2;grid-row:1}
+  .ab-vis,.ab-ch:nth-child(even) .ab-vis{grid-column:2;grid-row:2;margin-top:18px;aspect-ratio:16/10}
+  .ab-end{flex-direction:column;align-items:flex-start}
+}
+@media (max-width:560px){.ab-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.ab-rv.in{animation:none}.ab-js .ab-rv:not(.in){opacity:1}}
     
   </style>
 </head>
@@ -2452,6 +2545,113 @@ html.vw-lock,html.vw-lock body{overflow:hidden}
       </div>
     </nav>
   </div>
+  <section class="ab" id="about">
+  <span class="ab-ring ab-r1" aria-hidden="true"></span><span class="ab-ring ab-r2" aria-hidden="true"></span>
+  <div class="ab-wrap">
+
+    <div class="ab-head ab-rv">
+      <h2 class="ab-title">My <span>story</span></h2>
+      <p class="ab-lede">Where I studied, where I have worked and what I do best, in a few minutes of scrolling.</p>
+    </div>
+
+    <div class="ab-intro">
+      <p class="ab-say ab-rv">I’m Arjun, a UX/UI designer who starts with people and ends with <em>clear, beautiful products</em>.</p>
+      <ul class="ab-stats ab-rv" style="--d:.1s">
+        <li><b data-n="4" data-s="+">4+</b><span>years designing products</span></li>
+        <li><b data-n="20" data-s="+">20+</b><span>projects shipped</span></li>
+        <li><b data-n="3" data-s="">3</b><span>industries explored</span></li>
+      </ul>
+    </div>
+
+    <h3 class="ab-sub ab-rv">The journey so far</h3>
+    <div class="ab-tl">
+
+      <article class="ab-ch ab-rv">
+        <div class="ab-mark"><span class="ab-dot"></span></div>
+        <div class="ab-card">
+          <p class="ab-kind">Studies<time>2018 – 2021</time></p>
+          <h3>B.Des in Visual Communication</h3>
+          <p class="ab-place">Your University · City</p>
+          <p class="ab-txt">Where my curiosity for how people see, read and decide began. Typography, colour and storytelling became the foundation of every interface I design today.</p>
+          <ul class="ab-tags"><li>Visual design</li><li>Typography</li><li>Storytelling</li></ul>
+        </div>
+        <div class="ab-vis" aria-hidden="true"><span class="ab-big">2018</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></span></div>
+      </article>
+
+      <article class="ab-ch ab-rv">
+        <div class="ab-mark"><span class="ab-dot"></span></div>
+        <div class="ab-card">
+          <p class="ab-kind">Learning<time>2021</time></p>
+          <h3>UX/UI Design Programme</h3>
+          <p class="ab-place">Institute or course name</p>
+          <p class="ab-txt">I turned curiosity into craft: user research, wireframing, prototyping and my first end-to-end case studies, each one tested with real people.</p>
+          <ul class="ab-tags"><li>User research</li><li>Wireframes</li><li>Prototyping</li></ul>
+        </div>
+        <div class="ab-vis" data-tone="stone" aria-hidden="true"><span class="ab-big">2021</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16 5l3 3L8 19z"/><path d="M14 7l3 3"/></svg></span></div>
+      </article>
+
+      <article class="ab-ch ab-rv">
+        <div class="ab-mark"><span class="ab-dot"></span></div>
+        <div class="ab-card">
+          <p class="ab-kind">Career<time>2022 – 2024</time></p>
+          <h3>Junior UI/UX Designer</h3>
+          <p class="ab-place">Company one · City</p>
+          <p class="ab-txt">I designed screens for web and mobile products, learned to work closely with developers, and to test ideas quickly instead of arguing about them.</p>
+          <ul class="ab-tags"><li>Web</li><li>Mobile</li><li>Developer handoff</li></ul>
+        </div>
+        <div class="ab-vis" data-tone="work" aria-hidden="true"><span class="ab-big">2022</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span></div>
+      </article>
+
+      <article class="ab-ch ab-rv">
+        <div class="ab-mark"><span class="ab-dot"></span></div>
+        <div class="ab-card">
+          <p class="ab-kind">Career<time>2024 – Now</time></p>
+          <h3>UX/UI Designer</h3>
+          <p class="ab-place">Company two · City</p>
+          <p class="ab-txt">I now own design from research to launch: shaping product direction, building design systems and measuring results together with the team.</p>
+          <ul class="ab-tags"><li>Product design</li><li>Design systems</li><li>Metrics</li></ul>
+        </div>
+        <div class="ab-vis" data-tone="brown" aria-hidden="true"><span class="ab-big">2024</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></span></div>
+      </article>
+
+      <article class="ab-ch ab-rv">
+        <div class="ab-mark"><span class="ab-dot"></span></div>
+        <div class="ab-card">
+          <p class="ab-kind">Next chapter<time>Now</time></p>
+          <h3>Open to new projects</h3>
+          <p class="ab-place">Where I’m heading</p>
+          <p class="ab-txt">I’m looking for teams that care about craft and outcomes. If that sounds like yours, I would love to talk.</p>
+          <ul class="ab-tags"><li>Product design</li><li>Design systems</li><li>Mobile &amp; web</li></ul>
+        </div>
+        <div class="ab-vis" aria-hidden="true"><span class="ab-big">Now</span><span class="ab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></span></div>
+      </article>
+
+      <div class="ab-line" aria-hidden="true"><div class="ab-fill"></div></div>
+    </div>
+
+    <div class="ab-exp">
+      <h3 class="ab-sub ab-rv">What I do best</h3>
+      <div class="ab-grid">
+        <div class="ab-skill ab-rv"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/></svg></i><h4>UX research</h4><p>Interviews, surveys and usability tests that turn assumptions into evidence.</p></div>
+        <div class="ab-skill ab-rv" style="--d:.08s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 10h18M9 10v10"/></svg></i><h4>UI design</h4><p>Clean, consistent interfaces with strong hierarchy and details that feel considered.</p></div>
+        <div class="ab-skill ab-rv" style="--d:.16s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></i><h4>Design systems</h4><p>Reusable components and tokens that keep teams fast and products consistent.</p></div>
+        <div class="ab-skill ab-rv"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 7-6 2-2 6z"/></svg></i><h4>Prototyping</h4><p>Interactive flows that let people feel the idea before a line of code is written.</p></div>
+        <div class="ab-skill ab-rv" style="--d:.08s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M8 7l3 9M16 7l-3 9"/></svg></i><h4>Information architecture</h4><p>Structures and flows that make complex products easy to navigate.</p></div>
+        <div class="ab-skill ab-rv" style="--d:.16s"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="8" r="1.2"/><path d="M8 11h8M12 11v5M10 20l2-4 2 4"/></svg></i><h4>Accessibility</h4><p>Designing for everyone: contrast, hierarchy, motion and touch targets.</p></div>
+      </div>
+      <div class="ab-tools ab-rv"><b>Tools I work in</b><span>Figma</span><span>FigJam</span><span>Maze</span><span>Notion</span><span>ProtoPie</span><span>Webflow</span><span>Illustrator</span></div>
+    </div>
+
+    <div class="ab-end ab-rv">
+      <div>
+        <h3>Let’s build something <span>people love.</span></h3>
+        <p>Have a product, a team or an idea? I’d love to hear about it.</p>
+      </div>
+      <div class="ab-cta"><a class="hbtn fill" href="mailto:04arjunkj@gmail.com">Let’s talk</a><a class="hbtn" href="#work">See my work</a></div>
+    </div>
+
+  </div>
+</section>
 
   <div class="side" id="side" role="group" aria-label="Social links">
     <button class="side-toggle" id="sideToggle" type="button" aria-expanded="false" aria-controls="sideLinks"
@@ -3254,6 +3454,53 @@ html.vw-lock,html.vw-lock body{overflow:hidden}
   });
 })();
 
+</script>
+<script>
+/* ===== About: gentle story effects (reveal once, progress line, light parallax) ===== */
+(function(){
+  var sec=document.getElementById('about'); if(!sec) return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var chs=[].slice.call(sec.querySelectorAll('.ab-ch')),tl=sec.querySelector('.ab-tl'),fill=sec.querySelector('.ab-fill');
+
+  /* reveal each block once as it enters the screen */
+  if(!reduce&&'IntersectionObserver' in window){
+    sec.classList.add('ab-js');
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}
+    })},{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+    [].forEach.call(sec.querySelectorAll('.ab-rv'),function(el){io.observe(el)});
+
+    /* numbers count up once */
+    var stats=sec.querySelector('.ab-stats');
+    if(stats){
+      var so=new IntersectionObserver(function(es){es.forEach(function(e){
+        if(!e.isIntersecting) return; so.disconnect();
+        [].forEach.call(stats.querySelectorAll('b[data-n]'),function(b){
+          var n=+b.dataset.n,s=b.dataset.s||'',t0=performance.now();
+          (function tick(t){var k=Math.min(1,(t-t0)/1100);b.textContent=Math.round(n*(1-Math.pow(1-k,3)))+s;if(k<1) requestAnimationFrame(tick)})(t0);
+        });
+      })},{threshold:.5});
+      so.observe(stats);
+    }
+  }
+
+  /* on scroll: progress line, active chapter, light parallax */
+  var queued=false;
+  function update(){
+    queued=false;
+    var vh=window.innerHeight,mid=vh*.5,sr=sec.getBoundingClientRect();
+    if(sr.bottom<-200||sr.top>vh+200) return;
+    if(!reduce) sec.style.setProperty('--sy',(-sr.top).toFixed(0));
+    if(tl&&fill){var r=tl.getBoundingClientRect();fill.style.transform='scaleY('+Math.max(0,Math.min(1,(mid-r.top)/r.height)).toFixed(4)+')'}
+    chs.forEach(function(c){
+      var r=c.getBoundingClientRect();
+      c.classList.toggle('on',r.top<mid);
+      if(!reduce) c.style.setProperty('--p',Math.max(-1,Math.min(1,(r.top+r.height/2-mid)/vh)).toFixed(3));
+    });
+  }
+  function req(){if(!queued){queued=true;requestAnimationFrame(update)}}
+  window.addEventListener('scroll',req,{passive:true});window.addEventListener('resize',req);update();
+})();
 </script>
 </body>
 
