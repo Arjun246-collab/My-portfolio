@@ -4935,6 +4935,621 @@
         transform: none
       }
     }
+        /* ===== CONTACT (last section) ===== */
+    .gl {
+      padding-bottom: clamp(40px, 6vw, 80px)
+    }
+
+    /* gallery is no longer the last section */
+
+    .ct {
+      position: relative;
+      z-index: 1;
+      padding: clamp(40px, 6vw, 80px) clamp(14px, 4vw, 40px) clamp(150px, 18vw, 190px)
+    }
+
+    .ct-wrap {
+      max-width: 1180px;
+      margin: 0 auto
+    }
+
+    /* the dark room */
+    .ct-room {
+      --gold: #dcc48f;
+      --ink: #f4efe4;
+      --mute: rgba(244, 239, 228, .62);
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 24px;
+      align-items: center;
+      min-height: clamp(500px, 50vw, 640px);
+      padding: clamp(34px, 5vw, 72px);
+      border: 1px solid rgba(220, 196, 143, .18);
+      border-radius: clamp(24px, 3vw, 40px);
+      color: var(--ink);
+      background: radial-gradient(90% 80% at 82% 55%, #1b1810 0%, #0d0c09 62%, #080706 100%)
+    }
+
+    .ct-room::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(60% 70% at 26% 50%, rgba(255, 226, 150, .11), transparent 70%);
+      transition: opacity 1.8s ease
+    }
+
+    .ct-room.lit::before {
+      opacity: 1
+    }
+
+    .ct-info {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 2.4vw, 28px)
+    }
+
+    .ct-eyebrow {
+      font-size: .78rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold)
+    }
+
+    .ct-title {
+      margin: 8px 0 0;
+      font-weight: 500;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.02;
+      letter-spacing: -.035em;
+      color: var(--ink)
+    }
+
+    .ct-title span {
+      display: block;
+      color: var(--gold)
+    }
+
+    .ct-lede {
+      margin: 14px 0 0;
+      max-width: 36ch;
+      color: var(--mute);
+      font-weight: 300;
+      line-height: 1.7
+    }
+
+    .ct-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .ct-item {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .ct-row {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px 12px 12px;
+      border: 1px solid rgba(244, 239, 228, .1);
+      border-radius: 18px;
+      background: rgba(244, 239, 228, .04);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color .3s, background .3s, transform .4s cubic-bezier(.2, .8, .2, 1)
+    }
+
+    a.ct-row:hover,
+    a.ct-row:focus-visible {
+      border-color: var(--gold);
+      background: rgba(220, 196, 143, .09);
+      transform: translateX(6px);
+      outline: none
+    }
+
+    .ct-ic {
+      flex: none;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--gold);
+      color: #14120d
+    }
+
+    .ct-ic svg {
+      width: 19px;
+      height: 19px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .ct-txt {
+      display: flex;
+      flex-direction: column;
+      min-width: 0
+    }
+
+    .ct-txt small {
+      font-size: .74rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--mute)
+    }
+
+    .ct-txt b {
+      font-weight: 500;
+      font-size: clamp(1rem, 1.5vw, 1.18rem);
+      overflow-wrap: anywhere
+    }
+
+    .ct-copy {
+      flex: none;
+      padding: 9px 16px;
+      border: 1px solid rgba(244, 239, 228, .16);
+      border-radius: 99px;
+      background: none;
+      color: var(--ink);
+      font: inherit;
+      font-size: .86rem;
+      font-weight: 300;
+      cursor: pointer;
+      transition: background .3s, color .3s, border-color .3s
+    }
+
+    .ct-copy:hover,
+    .ct-copy:focus-visible {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #14120d;
+      outline: none
+    }
+
+    .ct-copy.done {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #14120d
+    }
+
+    .ct-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .ct-chip {
+      padding: 8px 15px;
+      border: 1px solid rgba(244, 239, 228, .16);
+      border-radius: 99px;
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 300;
+      font-size: .92rem;
+      transition: background .3s, color .3s, border-color .3s
+    }
+
+    .ct-chip:hover,
+    .ct-chip:focus-visible {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #14120d;
+      outline: none
+    }
+
+    .ct-cta {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 99px;
+      background: var(--gold);
+      color: #14120d;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform .4s cubic-bezier(.2, .8, .2, 1), box-shadow .4s
+    }
+
+    .ct-cta:hover,
+    .ct-cta:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px -16px rgba(220, 196, 143, .7);
+      outline: none
+    }
+
+    /* everything starts in the dark and is lit by the torch */
+    .ct-lite {
+      transition: opacity 1s ease, filter 1s ease, transform 1s cubic-bezier(.2, .8, .2, 1);
+      transition-delay: calc(var(--i, 0)*.14s)
+    }
+
+    .ct-js .ct-room:not(.lit) .ct-lite {
+      opacity: .07;
+      filter: blur(6px);
+      transform: translateX(-14px);
+      pointer-events: none
+    }
+
+    /* character */
+    .ct-stage {
+      position: relative;
+      z-index: 3;
+      align-self: stretch;
+      min-height: 340px
+    }
+
+    .ct-who {
+      --arm: 90deg;
+      --lx: 15%;
+      --ly: 50.6%;
+      --beam-rot: 0deg;
+      --bw: min(112vw, 900px);
+      --bh: clamp(300px, 34vw, 470px);
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: min(380px, 100%);
+      aspect-ratio: 380/340;
+      cursor: pointer
+    }
+
+    .ct-js .ct-room:not(.walk):not(.arrived) .ct-who {
+      transform: translateX(110vw)
+    }
+
+    .ct-room.walk .ct-who {
+      animation: ctenter 2.4s cubic-bezier(.25, .65, .3, 1) both
+    }
+
+    @keyframes ctenter {
+      from {
+        transform: translateX(110vw)
+      }
+
+      to {
+        transform: none
+      }
+    }
+
+    .ct-who svg {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible
+    }
+
+    .ct-shadow {
+      fill: rgba(0, 0, 0, .4)
+    }
+
+    .ct-leg,
+    .ct-arm,
+    .ct-arm-b {
+      transform-box: fill-box;
+      transform-origin: 50% 0
+    }
+
+    .ct-arm {
+      transition: transform .9s cubic-bezier(.3, 1.35, .5, 1)
+    }
+
+    .ct-room.point .ct-arm {
+      transform: rotate(var(--arm))
+    }
+
+    @keyframes ctleg {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      25% {
+        transform: rotate(26deg)
+      }
+
+      75% {
+        transform: rotate(-26deg)
+      }
+    }
+
+    @keyframes ctarm {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      25% {
+        transform: rotate(-22deg)
+      }
+
+      75% {
+        transform: rotate(22deg)
+      }
+    }
+
+    @keyframes ctbob {
+
+      0%,
+      50%,
+      100% {
+        transform: translateY(0)
+      }
+
+      25%,
+      75% {
+        transform: translateY(-5px)
+      }
+    }
+
+    .ct-room.walk .ct-leg.a {
+      animation: ctleg .6s linear 4
+    }
+
+    .ct-room.walk .ct-leg.b {
+      animation: ctleg .6s linear 4 reverse
+    }
+
+    .ct-room.walk .ct-arm-b {
+      animation: ctarm .6s linear 4
+    }
+
+    .ct-room.walk .ct-arm {
+      animation: ctarm .6s linear 4 reverse
+    }
+
+    .ct-room.walk .ct-bob {
+      animation: ctbob .6s ease-in-out 4
+    }
+
+    .ct-blink {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: ctblink 5s infinite
+    }
+
+    @keyframes ctblink {
+
+      0%,
+      93%,
+      100% {
+        transform: scaleY(1)
+      }
+
+      96% {
+        transform: scaleY(.08)
+      }
+    }
+
+    .ct-pupils {
+      transition: transform .18s ease-out
+    }
+
+    .ct-lamp {
+      fill: #5a5546;
+      transition: fill .3s
+    }
+
+    .ct-glow {
+      opacity: 0;
+      transition: opacity .3s
+    }
+
+    .ct-room.on .ct-lamp {
+      fill: #fff3c4
+    }
+
+    .ct-room.on .ct-glow {
+      opacity: 1;
+      animation: ctflick .8s ease both
+    }
+
+    @keyframes ctflick {
+      0% {
+        opacity: 0
+      }
+
+      15% {
+        opacity: 1
+      }
+
+      30% {
+        opacity: .15
+      }
+
+      50% {
+        opacity: 1
+      }
+
+      65% {
+        opacity: .35
+      }
+
+      100% {
+        opacity: 1
+      }
+    }
+
+    .ct-room.wave .ct-arm-b {
+      animation: ctwave 1.5s ease-in-out 1
+    }
+
+    @keyframes ctwave {
+
+      0%,
+      100% {
+        transform: rotate(0)
+      }
+
+      20%,
+      60% {
+        transform: rotate(-150deg)
+      }
+
+      40%,
+      80% {
+        transform: rotate(-122deg)
+      }
+    }
+
+    /* the torch beam */
+    .ct-beam {
+      position: absolute;
+      left: var(--lx);
+      top: var(--ly);
+      width: var(--bw);
+      height: var(--bh);
+      translate: -100% -50%;
+      rotate: var(--beam-rot);
+      transform-origin: 100% 50%;
+      scale: 0 1;
+      opacity: .95;
+      clip-path: polygon(100% 44%, 0 0, 0 100%, 100% 56%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      transition: scale 1.1s cubic-bezier(.2, .8, .2, 1), opacity 1.4s ease
+    }
+
+    .ct-room.on .ct-beam {
+      scale: 1 1
+    }
+
+    .ct-room.lit .ct-beam {
+      opacity: .55
+    }
+
+    .ct-bglow {
+      position: absolute;
+      inset: 0;
+      filter: blur(3px);
+      background: linear-gradient(to left, rgba(255, 233, 170, .8), rgba(255, 226, 150, .26) 52%, rgba(255, 226, 150, .05))
+    }
+
+    .ct-mote {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #fff3c4;
+      opacity: 0;
+      animation: ctmote var(--d, 6s) ease-in-out infinite var(--dl, 0s)
+    }
+
+    @keyframes ctmote {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: translate(0, 0)
+      }
+
+      40%,
+      60% {
+        opacity: .85
+      }
+
+      100% {
+        transform: translate(var(--mx, 14px), var(--my, -18px))
+      }
+    }
+
+    .ct-say {
+      position: absolute;
+      left: 36%;
+      top: -10%;
+      padding: 10px 16px;
+      border: 1px solid rgba(220, 196, 143, .4);
+      border-radius: 16px;
+      background: #14120d;
+      color: var(--gold);
+      font-size: .92rem;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px) scale(.92);
+      transition: opacity .5s, transform .5s cubic-bezier(.2, 1.4, .4, 1)
+    }
+
+    .ct-say::after {
+      content: "";
+      position: absolute;
+      left: 26px;
+      bottom: -7px;
+      width: 12px;
+      height: 12px;
+      background: #14120d;
+      border-right: 1px solid rgba(220, 196, 143, .4);
+      border-bottom: 1px solid rgba(220, 196, 143, .4);
+      transform: rotate(45deg)
+    }
+
+    .ct-say.show {
+      opacity: 1;
+      transform: none
+    }
+
+    @media (max-width:860px) {
+      .ct-room {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        min-height: 0;
+        padding: 30px 20px 0
+      }
+
+      .ct-stage {
+        min-height: 320px
+      }
+
+      .ct-who {
+        --arm: 125deg;
+        --lx: 21%;
+        --ly: 28%;
+        --beam-rot: 35deg;
+        --bw: min(520px, 130vw);
+        --bh: 340px;
+        width: min(310px, 88%)
+      }
+
+      .ct-say {
+        left: 30%;
+        top: -6%
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      .ct-room .ct-who,
+      .ct-leg,
+      .ct-arm,
+      .ct-arm-b,
+      .ct-bob,
+      .ct-blink,
+      .ct-mote {
+        animation: none !important
+      }
+    }
   </style>
 </head>
 
@@ -5587,6 +6202,89 @@
     </figure>
   </div>
   <!-- ================= /GALLERY ================= -->
+     <!-- ================= CONTACT (last section) ================= -->
+  <section class="ct" id="contact">
+    <div class="ct-wrap">
+      <div class="ct-room" id="ctRoom">
+
+        <div class="ct-info">
+          <div class="ct-lite" style="--i:0">
+            <span class="ct-eyebrow">Contact</span>
+            <h2 class="ct-title">Got an idea? <span>Let&rsquo;s talk.</span></h2>
+            <p class="ct-lede">Tell me what you are building. I usually reply within a day.</p>
+          </div>
+          <ul class="ct-list" id="ctList"></ul><!-- rows are made from the CONTACT list in the script -->
+        </div>
+
+        <div class="ct-stage">
+          <div class="ct-who" id="ctWho" role="img" aria-label="A small guide shining a torch on the contact details">
+            <div class="ct-beam" id="ctBeam" aria-hidden="true"><i class="ct-bglow"></i></div>
+            <div class="ct-say" id="ctSay" aria-hidden="true">Found them! Say hello.</div>
+            <svg viewBox="-20 0 380 340" aria-hidden="true">
+              <defs>
+                <radialGradient id="ctLamp">
+                  <stop offset="0" stop-color="#fff6d2" />
+                  <stop offset=".35" stop-color="#ffd978" stop-opacity=".7" />
+                  <stop offset="1" stop-color="#ffd978" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="ctBody" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#e3cb93" />
+                  <stop offset="1" stop-color="#b8975a" />
+                </linearGradient>
+              </defs>
+
+              <ellipse class="ct-shadow" cx="210" cy="324" rx="78" ry="9" />
+
+              <!-- legs -->
+              <g class="ct-leg a"><rect x="178" y="244" width="24" height="64" rx="12" fill="#2a2823" /><ellipse cx="190" cy="312" rx="24" ry="10" fill="#f0e6d2" /></g>
+              <g class="ct-leg b"><rect x="216" y="244" width="24" height="64" rx="12" fill="#2a2823" /><ellipse cx="228" cy="312" rx="24" ry="10" fill="#f0e6d2" /></g>
+
+              <g class="ct-bob">
+                <!-- far arm (waves when you click) -->
+                <g class="ct-arm-b"><rect x="248" y="174" width="20" height="64" rx="10" fill="#a98b50" /><circle cx="258" cy="244" r="10" fill="#e9c9a6" /></g>
+
+                <!-- body -->
+                <rect x="150" y="146" width="118" height="104" rx="38" fill="url(#ctBody)" />
+                <path d="M178 218q30 14 62 0" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="3" stroke-linecap="round" />
+                <path d="M198 152v22M214 152v22" stroke="#f4efe4" stroke-width="3" stroke-linecap="round" />
+                <rect x="192" y="128" width="32" height="26" rx="8" fill="#e9c9a6" />
+
+                <!-- head -->
+                <circle class="ct-headc" cx="206" cy="96" r="46" fill="#f3d5b5" />
+                <path d="M158 92C158 40 256 40 256 92Z" fill="#2a2823" />
+                <rect x="154" y="84" width="104" height="18" rx="9" fill="#3a372f" />
+                <rect x="154" y="90" width="104" height="5" fill="#dcc48f" />
+                <circle cx="206" cy="44" r="10" fill="#dcc48f" />
+                <circle cx="170" cy="128" r="7" fill="rgba(232,130,110,.35)" />
+                <circle cx="242" cy="128" r="7" fill="rgba(232,130,110,.35)" />
+                <circle cx="184" cy="112" r="15" fill="rgba(255,255,255,.92)" />
+                <circle cx="222" cy="112" r="15" fill="rgba(255,255,255,.92)" />
+                <g class="ct-blink"><g class="ct-pupils" id="ctPupils"><circle cx="180" cy="113" r="5.4" fill="#1b1a17" /><circle cx="218" cy="113" r="5.4" fill="#1b1a17" /><circle cx="178" cy="111" r="1.6" fill="#fff" /><circle cx="216" cy="111" r="1.6" fill="#fff" /></g></g>
+                <circle cx="184" cy="112" r="15" fill="none" stroke="#2a2823" stroke-width="3.5" />
+                <circle cx="222" cy="112" r="15" fill="none" stroke="#2a2823" stroke-width="3.5" />
+                <path d="M199 110q4-4 8 0" fill="none" stroke="#2a2823" stroke-width="3" stroke-linecap="round" />
+                <path d="M193 136q12 10 24 0" fill="none" stroke="#7a4a3a" stroke-width="3" stroke-linecap="round" />
+
+                <!-- near arm with the torch (rotates to point left) -->
+                <g class="ct-arm">
+                  <rect x="160" y="172" width="20" height="62" rx="10" fill="#caa863" />
+                  <rect x="158" y="226" width="24" height="10" rx="5" fill="#a98b50" />
+                  <rect x="162" y="240" width="16" height="46" rx="6" fill="#3a372f" />
+                  <circle cx="170" cy="252" r="10.5" fill="#f3d5b5" />
+                  <rect x="158" y="278" width="24" height="6" rx="3" fill="#8a826e" />
+                  <path d="M160 282h20l10 22h-40z" fill="#d6cdb7" />
+                  <ellipse class="ct-lamp" cx="170" cy="305" rx="19" ry="5.5" />
+                  <circle class="ct-glow" cx="170" cy="306" r="40" fill="url(#ctLamp)" />
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ================= /CONTACT ================= -->
 
   <div class="side" id="side" role="group" aria-label="Social links">
     <button class="side-toggle" id="sideToggle" type="button" aria-expanded="false" aria-controls="sideLinks"
@@ -7060,6 +7758,127 @@
       var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); sizeBig(); movePill() }, 250) });
       measure().then(function () { build(); movePill() });
       movePill();
+    })();
+  </script>
+    <script>
+    /* ===== Contact: a guide walks in, points a torch, your details light up ===== */
+    (function () {
+      var sec = document.getElementById('contact'); if (!sec) return;
+
+      /* ╔══════════════════════════════════════════════════════════════════════╗
+         ║  YOUR CONTACT DETAILS  (edit the lines marked  ◄ EDIT)               ║
+         ╚══════════════════════════════════════════════════════════════════════╝ */
+      var CONTACT = {
+        email: 'hello@yourdomain.com',                                   // ◄ EDIT your email
+        phone: '+91 00000 00000',                                        // ◄ EDIT your phone (keep the + and country code, '' to hide)
+        whatsapp: '',                                                    // ◄ EDIT optional: WhatsApp number, digits only e.g. '919876543210'
+        location: 'Your city, Country',                                  // ◄ EDIT where you are ('' to hide)
+        links: [                                                         // ◄ EDIT / add / remove your profiles
+          { name: 'LinkedIn', url: 'https://www.linkedin.com/in/your-name' },
+          { name: 'Behance', url: 'https://www.behance.net/your-name' },
+          { name: 'Dribbble', url: 'https://dribbble.com/your-name' },
+          { name: 'Instagram', url: 'https://www.instagram.com/your-name' }
+        ],
+        button: 'Say hello'                                              // ◄ EDIT the big button text (it opens an email)
+      };
+      /* ───────────────────────── end of the part you edit ───────────────────────── */
+
+      var room = document.getElementById('ctRoom'), who = document.getElementById('ctWho'), say = document.getElementById('ctSay'),
+        list = document.getElementById('ctList'), beam = document.getElementById('ctBeam'), pup = document.getElementById('ctPupils'),
+        headc = sec.querySelector('.ct-headc'), info = sec.querySelector('.ct-info');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches, played = false, n = 1;
+      var IC = {
+        mail: '<path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/>',
+        phone: '<path d="M6.5 4h3l1.5 4-2 1.5a11 11 0 0 0 5.5 5.5L16 13l4 1.5v3a2 2 0 0 1-2 2A14 14 0 0 1 4.500 6a2 2 0 0 1 2-2z"/>',
+        chat: '<path d="M5 5h14v10H10l-5 4z"/>',
+        pin: '<path d="M12 21s-6-5.5-6-10a6 6 0 0 1 12 0c0 4.500-6 10-6 10z"/><circle cx="12" cy="11" r="2.200"/>'
+      };
+      function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') }
+      function ic(k) { return '<i class="ct-ic"><svg viewBox="0 0 24 24" aria-hidden="true">' + IC[k] + '</svg></i>' }
+      function row(k, label, value, href) {
+        var inner = ic(k) + '<span class="ct-txt"><small>' + label + '</small><b>' + esc(value) + '</b></span>';
+        return href ? '<a class="ct-row" href="' + esc(href) + '">' + inner + '</a>' : '<div class="ct-row">' + inner + '</div>';
+      }
+      function item(html, extra) {
+        var li = document.createElement('li'); li.className = 'ct-item ct-lite'; li.style.setProperty('--i', n++);
+        li.innerHTML = html + (extra || ''); list.appendChild(li); return li;
+      }
+      var C = CONTACT;
+      if (C.email) item(row('mail', 'Email', C.email, 'mailto:' + C.email), '<button class="ct-copy" type="button" data-copy="' + esc(C.email) + '">Copy</button>');
+      if (C.phone) item(row('phone', 'Phone', C.phone, 'tel:' + C.phone.replace(/[^\d+]/g, '')));
+      if (C.whatsapp) item(row('chat', 'WhatsApp', 'Chat with me', 'https://wa.me/' + C.whatsapp.replace(/\D/g, '')));
+      if (C.location) item(row('pin', 'Based in', C.location, ''));
+      if (C.links && C.links.length) {
+        var li = item('<div class="ct-socials"></div>'), box = li.firstChild;
+        C.links.forEach(function (l) {
+          var a = document.createElement('a'); a.className = 'ct-chip'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+          a.textContent = l.name + ' \u2197'; box.appendChild(a);
+        });
+      }
+      if (C.email) {
+        var cta = document.createElement('a'); cta.className = 'ct-cta ct-lite'; cta.style.setProperty('--i', n++);
+        cta.href = 'mailto:' + C.email; cta.textContent = C.button + ' \u2192'; info.appendChild(cta);
+      }
+
+      /* dust floating in the beam */
+      for (var i = 0; i < 18; i++) {
+        var m = document.createElement('i'); m.className = 'ct-mote';
+        m.style.left = (6 + Math.random() * 86) + '%'; m.style.top = (12 + Math.random() * 76) + '%';
+        m.style.setProperty('--d', (4 + Math.random() * 5).toFixed(1) + 's'); m.style.setProperty('--dl', (-Math.random() * 6).toFixed(1) + 's');
+        m.style.setProperty('--mx', (Math.random() * 40 - 20).toFixed(0) + 'px'); m.style.setProperty('--my', (Math.random() * -40 - 6).toFixed(0) + 'px');
+        beam.appendChild(m);
+      }
+
+      /* copy email */
+      function copy(t) {
+        function legacy() {
+          var ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy') } catch (e) { } ta.remove();
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(t).catch(legacy);
+        legacy(); return Promise.resolve();
+      }
+      list.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-copy]'); if (!b) return;
+        copy(b.dataset.copy).then(function () {
+          b.textContent = 'Copied'; b.classList.add('done');
+          setTimeout(function () { b.textContent = 'Copy'; b.classList.remove('done') }, 1600);
+        });
+      });
+
+      /* the show */
+      sec.classList.add('ct-js');
+      function later(fn, ms) { setTimeout(fn, ms) }
+      function play() {
+        if (played) return; played = true;
+        if (reduce) { room.classList.add('arrived', 'point', 'on', 'lit'); return }
+        room.classList.add('walk');                                              /* walks in from the right */
+        later(function () { room.classList.remove('walk'); room.classList.add('arrived') }, 2400);
+        later(function () { room.classList.add('point') }, 2500);                /* raises the torch */
+        later(function () { room.classList.add('on') }, 3300);                   /* torch flickers on, beam grows */
+        later(function () { room.classList.add('lit') }, 3900);                  /* details light up, and stay lit */
+        later(function () { say.classList.add('show') }, 5000);
+        later(function () { say.classList.remove('show') }, 9500);
+      }
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { play(); io.disconnect() } }, { threshold: .45 });
+        io.observe(room);
+      } else play();
+
+      /* his eyes follow your mouse; click him to wave */
+      if (!reduce) window.addEventListener('pointermove', function (e) {
+        if (!played || !headc) return;
+        var r = headc.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2),
+          d = Math.hypot(dx, dy) || 1, k = Math.min(4, d / 40);
+        pup.style.transform = 'translate(' + (dx / d * k - 1).toFixed(1) + 'px,' + (dy / d * k).toFixed(1) + 'px)';
+      }, { passive: true });
+      who.addEventListener('click', function () {
+        if (!room.classList.contains('lit')) return;
+        say.textContent = 'Hi there!'; say.classList.add('show'); room.classList.add('wave');
+        later(function () { room.classList.remove('wave') }, 1550);
+        later(function () { say.classList.remove('show'); say.textContent = 'Found them! Say hello.' }, 3200);
+      });
     })();
   </script>
 </body>
