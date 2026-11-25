@@ -4935,7 +4935,7 @@
         transform: none
       }
     }
-       /* ===== CONTACT (last section) · guide walks to the centre, lights the left, then the right, then vanishes ===== */
+      /* ===== CONTACT (last section) · guide walks to the centre, lights the left, then the right, then vanishes ===== */
     .gl {
       padding-bottom: clamp(40px, 6vw, 80px)
     }
@@ -5183,16 +5183,13 @@
       outline: none
     }
 
-    /* the left side starts in the dark and is lit by the first sweep of the torch */
-    .ct-lite {
-      transition: opacity 1s ease, filter 1s ease, transform 1s cubic-bezier(.2, .8, .2, 1);
-      transition-delay: calc(var(--i, 0)*.14s)
-    }
-
-    .ct-js .ct-room:not(.lit) .ct-lite {
-      opacity: .07;
-      filter: blur(6px);
-      transform: translateX(-14px);
+    /* everything starts in the dark. The script sets --lit (0 to 1) on each item as the beam passes over it,
+       then adds .ct-on once it is fully lit so it stays crisp and clickable. */
+    .ct-js .ct-lite:not(.ct-on) {
+      --lit: 0;
+      opacity: calc(.07 + .93 * var(--lit));
+      filter: blur(calc((1 - var(--lit)) * 6px));
+      transform: translateX(calc((1 - var(--lit)) * -14px));
       pointer-events: none
     }
 
@@ -5205,26 +5202,15 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: clamp(20px, 2.6vw, 32px);
+      gap: clamp(20px, 2.6vw, 32px)
+    }
+
+    .ct-js .ct-blk:not(.ct-on) {
+      --lit: 0;
+      opacity: calc(.07 + .93 * var(--lit));
+      filter: blur(calc((1 - var(--lit)) * 6px));
+      transform: translateX(calc((1 - var(--lit)) * 14px));
       pointer-events: none
-    }
-
-    .ct-room.ctside .ct-side {
-      pointer-events: auto
-    }
-
-    .ct-blk {
-      opacity: .07;
-      filter: blur(6px);
-      transform: translateX(14px);
-      transition: opacity 1s ease, filter 1s ease, transform 1s cubic-bezier(.2, .8, .2, 1);
-      transition-delay: calc(var(--j, 0)*.18s)
-    }
-
-    .ct-room.ctside .ct-blk {
-      opacity: 1;
-      filter: none;
-      transform: none
     }
 
     .ct-blk small {
@@ -5291,214 +5277,141 @@
       font-size: .9rem
     }
 
-    /* ---------- centre lane: the guide ---------- */
+    /* ---------- centre lane: empty spacer + a thin gold divider that draws itself once the lamp has settled ---------- */
     .ct-stage {
       grid-column: 2;
       grid-row: 1;
       position: relative;
-      z-index: 3;
       align-self: stretch;
       min-height: 320px
     }
 
-    /* thin gold divider that draws itself in the centre once he has gone */
     .ct-stage::after {
       content: "";
       position: absolute;
       left: 50%;
-      top: 8%;
+      top: 34%;
       bottom: 8%;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(220, 196, 143, .55), transparent);
+      background: linear-gradient(to bottom, transparent, rgba(220, 196, 143, .5), transparent);
       transform: scaleY(0);
-      transform-origin: center;
-      transition: transform 1.4s cubic-bezier(.2, .8, .2, 1)
+      transform-origin: top center;
+      transition: transform 1.6s cubic-bezier(.2, .8, .2, 1)
     }
 
     .ct-room.gone .ct-stage::after {
       transform: scaleY(1)
     }
 
-    .ct-who {
-      --arm: 90deg;
-      --armr: -90deg;
-      /* where the torch lamp sits inside the guide box, and which way the beam points */
-      --lx: 5%;
-      --ly: 50.6%;
-      --beam-rot: 0deg;
-      --bw: min(46vw, 560px);
-      --bh: clamp(300px, 34vw, 460px);
+    /* ---------- the hanging lamp ---------- */
+    .ct-rig {
+      --cl: 105px;
+      /* cord length */
+      --len: 900px;
+      /* beam length (set by the script) */
+      --bw: 1500px;
+      /* beam width at the far end (set by the script) */
       position: absolute;
       left: 50%;
-      translate: -50% 0;
-      bottom: 0;
-      width: clamp(270px, 28vw, 340px);
-      aspect-ratio: 380/340;
-      cursor: pointer;
-      transform-origin: 50% 100%
+      top: 0;
+      width: 0;
+      height: 0;
+      z-index: 3;
+      pointer-events: none
     }
 
-    /* torch in the RIGHT hand: lamp sits on the right-hand side (he never turns, only the hand changes) */
-    .ct-room.hand-r .ct-who {
-      --lx: 95%
+    /* ceiling mount, fixed */
+    .ct-cap {
+      position: absolute;
+      left: -24px;
+      top: -10px;
+      width: 48px;
+      height: 18px;
+      border-radius: 0 0 12px 12px;
+      background: linear-gradient(to right, #8a7448, #f1dca3 45%, #8a7448);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, .45)
     }
 
-    /* before he arrives he waits off to the right */
-    .ct-js .ct-room:not(.walk):not(.arrived) .ct-who {
-      transform: translateX(80vw)
+    /* the lamp lowers itself from the ceiling when the section arrives */
+    .ct-drop {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0;
+      height: 0;
+      opacity: 0;
+      transform: translateY(-280px);
+      transition: transform .9s cubic-bezier(.6, 0, .9, .4), opacity .4s
     }
 
-    .ct-room.walk .ct-who {
-      animation: ctenter 2.6s cubic-bezier(.25, .65, .3, 1) both
+    .ct-room.rise .ct-drop {
+      opacity: 1;
+      transform: none;
+      transition: transform 1.4s cubic-bezier(.2, .9, .3, 1.1), opacity .3s
     }
 
-    @keyframes ctenter {
-      from {
-        transform: translateX(80vw)
+    /* the swinging part: the script sets its `rotate` every frame (negative = left, positive = right) */
+    .ct-pend {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0;
+      height: 0;
+      transform-origin: 0 0;
+      rotate: 0deg;
+      will-change: transform
+    }
+
+    /* once the big swings have died down it keeps a tiny, endless sway */
+    .ct-room.idle .ct-pend {
+      animation: ctsway 7s ease-in-out infinite
+    }
+
+    @keyframes ctsway {
+
+      0%,
+      100% {
+        transform: rotate(-1.2deg)
       }
 
-      to {
-        transform: none
+      50% {
+        transform: rotate(1.2deg)
       }
     }
 
-    .ct-who svg {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100%;
+    .ct-cord {
+      position: absolute;
+      left: -1px;
+      top: 0;
+      width: 2px;
+      height: var(--cl);
+      background: linear-gradient(to right, #8a7448, #f1dca3 50%, #8a7448)
+    }
+
+    .ct-lampsvg {
+      position: absolute;
+      left: -45px;
+      top: var(--cl);
+      width: 90px;
+      height: 70px;
       overflow: visible
     }
 
-    .ct-shadow {
-      fill: rgba(0, 0, 0, .4)
-    }
-
-    .ct-leg,
-    .ct-arm-l,
-    .ct-arm-r {
-      transform-box: fill-box;
-      transform-origin: 50% 0
-    }
-
-    .ct-arm-l,
-    .ct-arm-r {
-      transition: transform .9s cubic-bezier(.3, 1.35, .5, 1)
-    }
-
-    /* the arm that holds the torch swings up; the other one stays relaxed */
-    .ct-room.point:not(.hand-r) .ct-arm-l {
-      transform: rotate(var(--arm))
-    }
-
-    .ct-room.point.hand-r .ct-arm-r {
-      transform: rotate(var(--armr))
-    }
-
-    @keyframes ctleg {
-
-      0%,
-      100% {
-        transform: rotate(0)
-      }
-
-      25% {
-        transform: rotate(26deg)
-      }
-
-      75% {
-        transform: rotate(-26deg)
-      }
-    }
-
-    @keyframes ctarm {
-
-      0%,
-      100% {
-        transform: rotate(0)
-      }
-
-      25% {
-        transform: rotate(-22deg)
-      }
-
-      75% {
-        transform: rotate(22deg)
-      }
-    }
-
-    @keyframes ctbob {
-
-      0%,
-      50%,
-      100% {
-        transform: translateY(0)
-      }
-
-      25%,
-      75% {
-        transform: translateY(-5px)
-      }
-    }
-
-    .ct-room.walk .ct-leg.a {
-      animation: ctleg .65s linear 4
-    }
-
-    .ct-room.walk .ct-leg.b {
-      animation: ctleg .65s linear 4 reverse
-    }
-
-    .ct-room.walk .ct-arm-r {
-      animation: ctarm .65s linear 4
-    }
-
-    .ct-room.walk .ct-arm-l {
-      animation: ctarm .65s linear 4 reverse
-    }
-
-    .ct-room.walk .ct-bob {
-      animation: ctbob .65s ease-in-out 4
-    }
-
-    .ct-blink {
-      transform-box: fill-box;
-      transform-origin: 50% 50%;
-      animation: ctblink 5s infinite
-    }
-
-    @keyframes ctblink {
-
-      0%,
-      93%,
-      100% {
-        transform: scaleY(1)
-      }
-
-      96% {
-        transform: scaleY(.08)
-      }
-    }
-
-    .ct-pupils {
-      transition: transform .18s ease-out
-    }
-
-    .ct-lamp {
-      fill: #5a5546;
+    .ct-bulb {
+      fill: #6b6554;
       transition: fill .3s
     }
 
-    .ct-glow {
+    .ct-halo {
       opacity: 0;
       transition: opacity .3s
     }
 
-    .ct-room.on .ct-lamp {
-      fill: #fff3c4
+    .ct-room.on .ct-bulb {
+      fill: #fff6d6
     }
 
-    .ct-room.on .ct-glow {
+    .ct-room.on .ct-halo {
       opacity: 1;
       animation: ctflick .8s ease both
     }
@@ -5529,118 +5442,66 @@
       }
     }
 
-    /* torch switching off (a short flicker) */
-    .ct-room.off .ct-glow {
+    /* soft bloom around the shade */
+    .ct-bloom {
+      position: absolute;
+      left: -190px;
+      top: calc(var(--cl) + 10px);
+      width: 380px;
+      height: 230px;
+      background: radial-gradient(closest-side, rgba(255, 226, 150, .34), transparent);
       opacity: 0;
-      animation: ctflickoff .7s ease both
+      transition: opacity 1s ease
     }
 
-    @keyframes ctflickoff {
-      0% {
-        opacity: 1
-      }
-
-      20% {
-        opacity: .2
-      }
-
-      40% {
-        opacity: .9
-      }
-
-      60% {
-        opacity: .1
-      }
-
-      100% {
-        opacity: 0
-      }
+    .ct-room.on .ct-bloom {
+      opacity: 1
     }
 
-    /* click to wave with the free hand */
-    .ct-room.wave:not(.hand-r) .ct-arm-r {
-      animation: ctwave 1.5s ease-in-out 1
-    }
-
-    .ct-room.wave.hand-r .ct-arm-l {
-      animation: ctwavel 1.5s ease-in-out 1
-    }
-
-    @keyframes ctwavel {
-
-      0%,
-      100% {
-        transform: rotate(0)
-      }
-
-      20%,
-      60% {
-        transform: rotate(150deg)
-      }
-
-      40%,
-      80% {
-        transform: rotate(122deg)
-      }
-    }
-
-    @keyframes ctwave {
-
-      0%,
-      100% {
-        transform: rotate(0)
-      }
-
-      20%,
-      60% {
-        transform: rotate(-150deg)
-      }
-
-      40%,
-      80% {
-        transform: rotate(-122deg)
-      }
-    }
-
-    /* the torch beam: collapses when the torch is off, grows when it is on */
+    /* the cone of light that leaves the shade: it points wherever the lamp swings */
     .ct-beam {
       position: absolute;
-      left: var(--lx);
-      top: var(--ly);
+      left: calc(var(--bw) / -2);
+      top: calc(var(--cl) + 60px);
       width: var(--bw);
-      height: var(--bh);
-      translate: -100% -50%;
-      rotate: var(--beam-rot);
-      transform-origin: 100% 50%;
-      scale: 0 1;
-      opacity: .95;
-      clip-path: polygon(100% 44%, 0 0, 0 100%, 100% 56%);
-      pointer-events: none;
+      height: var(--len);
       mix-blend-mode: screen;
-      transition: scale .6s cubic-bezier(.6, 0, .9, .4), opacity .5s ease
+      opacity: 0;
+      transition: opacity .8s ease
     }
 
     .ct-room.on .ct-beam {
-      scale: 1 1;
-      transition: scale 1.1s cubic-bezier(.2, .8, .2, 1), opacity 1.4s ease
+      opacity: 1
     }
 
-    /* mirrored beam when he faces right */
-    .ct-room.hand-r .ct-beam {
-      translate: 0 -50%;
-      transform-origin: 0 50%;
-      clip-path: polygon(0 44%, 100% 0, 100% 100%, 0 56%)
-    }
-
-    .ct-bglow {
+    .ct-cone {
       position: absolute;
       inset: 0;
-      filter: blur(3px);
-      background: linear-gradient(to left, rgba(255, 233, 170, .8), rgba(255, 226, 150, .26) 52%, rgba(255, 226, 150, .05))
+      clip-path: polygon(calc(50% - 30px) 0, calc(50% + 30px) 0, 100% 100%, 0 100%);
+      background: linear-gradient(to bottom, rgba(255, 240, 190, .62), rgba(255, 226, 150, .24) 40%, rgba(255, 226, 150, .04));
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 24%, #000 76%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 24%, #000 76%, transparent);
+      animation: ctbflk 2.8s ease-in-out infinite
     }
 
-    .ct-room.hand-r .ct-bglow {
-      background: linear-gradient(to right, rgba(255, 233, 170, .8), rgba(255, 226, 150, .26) 52%, rgba(255, 226, 150, .05))
+    @keyframes ctbflk {
+
+      0%,
+      100% {
+        opacity: .94
+      }
+
+      30% {
+        opacity: .8
+      }
+
+      55% {
+        opacity: 1
+      }
+
+      80% {
+        opacity: .86
+      }
     }
 
     .ct-mote {
@@ -5671,265 +5532,88 @@
       }
     }
 
-    /* ===== realism: torch hand swap, shading, rim light, breathing, head + body lean, cast shadow ===== */
-    .ct-torch {
-      transition: opacity .3s
-    }
-
-    .ct-arm-r .ct-torch {
-      opacity: 0
-    }
-
-    .ct-room.hand-r .ct-arm-l .ct-torch {
-      opacity: 0
-    }
-
-    .ct-room.hand-r .ct-arm-r .ct-torch {
-      opacity: 1
-    }
-
-    /* he breathes the whole time */
-    .ct-breath {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: ctbreath 3.8s ease-in-out infinite
-    }
-
-    @keyframes ctbreath {
-
-      0%,
-      100% {
-        transform: translateY(0) scaleY(1)
-      }
-
-      50% {
-        transform: translateY(-1.6px) scaleY(1.012)
-      }
-    }
-
-    /* leans and looks toward whatever he is lighting */
-    .ct-lean {
-      transform-box: fill-box;
-      transform-origin: 50% 90%;
-      transition: transform .9s cubic-bezier(.3, 1.2, .5, 1)
-    }
-
-    .ct-room.point:not(.hand-r) .ct-lean {
-      transform: rotate(-2.4deg)
-    }
-
-    .ct-room.point.hand-r .ct-lean {
-      transform: rotate(2.4deg)
-    }
-
-    .ct-head {
-      transform-box: fill-box;
-      transform-origin: 50% 96%;
-      transition: transform .8s cubic-bezier(.3, 1.2, .5, 1)
-    }
-
-    .ct-room.point:not(.hand-r) .ct-head {
-      transform: rotate(-4deg) translateX(-1px)
-    }
-
-    .ct-room.point.hand-r .ct-head {
-      transform: rotate(4deg) translateX(1px)
-    }
-
-    .ct-look {
-      transition: transform .5s ease
-    }
-
-    .ct-room.point:not(.hand-r) .ct-look {
-      transform: translateX(-3.5px)
-    }
-
-    .ct-room.point.hand-r .ct-look {
-      transform: translateX(3.5px)
-    }
-
-    /* warm torch light on the side of his face and body that faces the beam */
-    .ct-rim {
-      opacity: 0
-    }
-
-    .ct-room.on:not(.hand-r) .ct-rim.l,
-    .ct-room.on.hand-r .ct-rim.r {
-      opacity: 1;
-      animation: ctrim 2.6s ease-in-out infinite
-    }
-
-    @keyframes ctrim {
-
-      0%,
-      100% {
-        opacity: .95
-      }
-
-      35% {
-        opacity: .7
-      }
-
-      60% {
-        opacity: 1
-      }
-
-      80% {
-        opacity: .78
-      }
-    }
-
-    /* his shadow stretches away from the torch, and the floor catches the light */
-    .ct-shadow {
-      transform-box: fill-box;
-      transform-origin: 50% 50%;
-      transition: transform .9s ease
-    }
-
-    .ct-room.on:not(.hand-r) .ct-shadow {
-      transform: translateX(18px) scaleX(1.2)
-    }
-
-    .ct-room.on.hand-r .ct-shadow {
-      transform: translateX(-18px) scaleX(1.2)
-    }
-
-    .ct-floorglow {
+    /* ---------- short circuit: stutters, sparks, one last pop, then dark ---------- */
+    .ct-room.sc .ct-beam,
+    .ct-room.sc .ct-bloom,
+    .ct-room.sc .ct-halo {
       opacity: 0;
-      transform-box: fill-box;
-      transform-origin: 50% 50%;
-      transition: opacity .9s ease, transform .9s ease
+      transition: none;
+      animation: none
     }
 
-    .ct-room.on:not(.hand-r) .ct-floorglow {
+    .ct-room.sc .ct-bulb {
+      fill: #6b6554;
+      transition: none
+    }
+
+    .ct-room.sc::before,
+    .ct-room.sc::after {
+      opacity: .3;
+      transition: none
+    }
+
+    .ct-room.pop .ct-halo,
+    .ct-room.pop .ct-bloom {
       opacity: 1;
-      transform: translateX(-62px)
+      transition: none;
+      animation: none
     }
 
-    .ct-room.on.hand-r .ct-floorglow {
-      opacity: 1;
-      transform: translateX(62px)
+    .ct-room.pop .ct-bulb {
+      fill: #fff;
+      transition: none
     }
 
-    /* the beam flickers a little, like a real torch */
-    .ct-room.lit .ct-bglow {
-      animation: ctbflk 2.8s ease-in-out infinite
-    }
-
-    @keyframes ctbflk {
-
-      0%,
-      100% {
-        opacity: .92
-      }
-
-      30% {
-        opacity: .78
-      }
-
-      55% {
-        opacity: 1
-      }
-
-      80% {
-        opacity: .84
-      }
-    }
-
-    /* speech bubble above his head */
-    .ct-say {
-      position: absolute;
-      left: 50%;
-      top: 4%;
-      padding: 10px 16px;
-      border: 1px solid rgba(220, 196, 143, .4);
-      border-radius: 16px;
-      background: #14120d;
-      color: var(--gold);
-      font-size: .92rem;
-      white-space: nowrap;
-      pointer-events: none;
+    .ct-room.dead .ct-beam {
       opacity: 0;
-      transform: translate(-50%, -90%) scale(.92);
-      transition: opacity .5s, transform .5s cubic-bezier(.2, 1.4, .4, 1)
+      transition: opacity .15s ease
     }
 
-    .ct-say::after {
-      content: "";
+    .ct-room.dead .ct-bloom,
+    .ct-room.dead .ct-halo {
+      opacity: 0;
+      transition: opacity .35s ease
+    }
+
+    .ct-room.dead .ct-bulb {
+      fill: #6b6554;
+      transition: fill 1.6s ease
+    }
+
+    .ct-room.dead::before,
+    .ct-room.dead::after {
+      opacity: .3;
+      transition: opacity 1.2s ease
+    }
+
+    .ct-spark {
       position: absolute;
-      left: 50%;
-      bottom: -7px;
-      width: 12px;
-      height: 12px;
-      margin-left: -6px;
-      background: #14120d;
-      border-right: 1px solid rgba(220, 196, 143, .4);
-      border-bottom: 1px solid rgba(220, 196, 143, .4);
-      transform: rotate(45deg)
-    }
-
-    .ct-say.show {
-      opacity: 1;
-      transform: translate(-50%, -100%) scale(1)
-    }
-
-    /* the end: he pops out of the centre with a little ring of light */
-    .ct-room.leave .ct-who {
-      animation: ctvanish 1s cubic-bezier(.5, 0, .7, .3) both;
-      pointer-events: none
-    }
-
-    @keyframes ctvanish {
-      0% {
-        transform: none;
-        opacity: 1;
-        filter: none
-      }
-
-      35% {
-        transform: scale(1.06) translateY(-6px);
-        opacity: 1
-      }
-
-      100% {
-        transform: scale(.15) translateY(-40px);
-        opacity: 0;
-        filter: blur(6px)
-      }
-    }
-
-    .ct-room.leave .ct-who::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 52%;
-      width: 24px;
-      height: 24px;
-      margin: -12px 0 0 -12px;
+      left: 0;
+      top: calc(var(--cl) + 62px);
+      width: 3px;
+      height: 3px;
+      margin: -1.5px 0 0 -1.5px;
       border-radius: 50%;
-      border: 2px solid var(--gold);
-      pointer-events: none;
-      animation: ctring 1s ease-out both
+      background: #fff6d6;
+      box-shadow: 0 0 6px 2px rgba(255, 214, 120, .9);
+      opacity: 0;
+      animation: ctspark var(--t, .6s) cubic-bezier(.15, .6, .4, 1) forwards
     }
 
-    @keyframes ctring {
-      from {
-        transform: scale(1);
+    @keyframes ctspark {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0)
+      }
+
+      70% {
         opacity: .9
       }
 
-      to {
-        transform: scale(8);
-        opacity: 0
+      100% {
+        opacity: 0;
+        transform: translate(var(--sx), var(--sy))
       }
-    }
-
-    .ct-room.gone .ct-who {
-      visibility: hidden
-    }
-
-    .ct-room.gone .ct-who * {
-      animation: none !important
     }
 
     /* copyright, centred under the contact box */
@@ -5961,13 +5645,15 @@
       font-size: .92rem
     }
 
-    /* ---------- mobile: contact on top, guide in the middle, address below ---------- */
+
+
+    /* ---------- mobile: lamp hangs in a header strip, contact below it, address at the bottom ---------- */
     @media (max-width:860px) {
       .ct-room {
         grid-template-columns: 1fr;
         gap: 6px;
         min-height: 0;
-        padding: 30px 20px 30px
+        padding: 200px 20px 30px
       }
 
       .ct-info,
@@ -5982,7 +5668,7 @@
 
       .ct-stage {
         grid-row: 2;
-        min-height: 300px
+        min-height: 24px
       }
 
       .ct-side {
@@ -5995,32 +5681,11 @@
       }
 
       .ct-room::before {
-        background: radial-gradient(80% 40% at 50% 18%, rgba(255, 226, 150, .12), transparent 70%)
+        background: radial-gradient(80% 30% at 50% 28%, rgba(255, 226, 150, .12), transparent 70%)
       }
 
       .ct-room::after {
-        background: radial-gradient(80% 40% at 50% 84%, rgba(255, 226, 150, .12), transparent 70%)
-      }
-
-      .ct-blk {
-        transform: translateY(14px)
-      }
-
-      /* left sweep points up-left at the contact details, right sweep points down-right at the address */
-      .ct-who {
-        --arm: 140deg;
-        --armr: -40deg;
-        --lx: 17%;
-        --ly: 21%;
-        --beam-rot: 62deg;
-        --bw: min(520px, 130vw);
-        --bh: 320px;
-        width: min(310px, 88%)
-      }
-
-      .ct-room.hand-r .ct-who {
-        --lx: 83%;
-        --ly: 81%
+        background: radial-gradient(80% 30% at 50% 86%, rgba(255, 226, 150, .12), transparent 70%)
       }
 
       .ct-stage::after {
@@ -6030,13 +5695,10 @@
 
     @media (prefers-reduced-motion:reduce) {
 
-      .ct-room .ct-who,
-      .ct-leg,
-      .ct-arm-l,
-      .ct-arm-r,
-      .ct-bob,
-      .ct-blink,
-      .ct-mote {
+      .ct-pend,
+      .ct-cone,
+      .ct-mote,
+      .ct-halo {
         animation: none !important
       }
     }
@@ -6692,7 +6354,7 @@
     </figure>
   </div>
   <!-- ================= /GALLERY ================= -->
-    <!-- ================= CONTACT (last section) ================= -->
+   <!-- ================= CONTACT (last section) ================= -->
   <section class="ct" id="contact">
     <div class="ct-wrap">
       <div class="ct-room" id="ctRoom">
@@ -6707,138 +6369,47 @@
           <ul class="ct-list" id="ctList"></ul><!-- rows are made from the CONTACT list in the script -->
         </div>
 
-        <!-- CENTRE: the guide walks in here, lights the left, swaps the torch to his other hand, lights the right, then vanishes -->
-        <div class="ct-stage">
-          <div class="ct-who" id="ctWho" role="img" aria-label="A small guide shining a torch on the contact details, then on the address">
-            <div class="ct-beam" id="ctBeam" aria-hidden="true"><i class="ct-bglow"></i></div>
-            <div class="ct-say" id="ctSay" aria-hidden="true"></div>
-            <svg viewBox="19 0 380 340" aria-hidden="true">
-              <defs>
-                <radialGradient id="ctLamp">
-                  <stop offset="0" stop-color="#fff6d2" />
-                  <stop offset=".35" stop-color="#ffd978" stop-opacity=".7" />
-                  <stop offset="1" stop-color="#ffd978" stop-opacity="0" />
-                </radialGradient>
-                <linearGradient id="ctBody" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0" stop-color="#ead49e" />
-                  <stop offset=".6" stop-color="#c9a86a" />
-                  <stop offset="1" stop-color="#a98a50" />
-                </linearGradient>
-                <linearGradient id="ctSleeve" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stop-color="#d9b876" />
-                  <stop offset="1" stop-color="#b3924f" />
-                </linearGradient>
-                <radialGradient id="ctSkin" cx=".38" cy=".3" r=".85">
-                  <stop offset="0" stop-color="#fbe4cb" />
-                  <stop offset=".55" stop-color="#f1cfab" />
-                  <stop offset="1" stop-color="#dcae84" />
-                </radialGradient>
-                <linearGradient id="ctRimL" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stop-color="#ffe9ad" stop-opacity=".9" />
-                  <stop offset="1" stop-color="#ffe9ad" stop-opacity="0" />
-                </linearGradient>
-                <linearGradient id="ctRimR" x1="1" y1="0" x2="0" y2="0">
-                  <stop offset="0" stop-color="#ffe9ad" stop-opacity=".9" />
-                  <stop offset="1" stop-color="#ffe9ad" stop-opacity="0" />
-                </linearGradient>
-                <radialGradient id="ctFloor">
-                  <stop offset="0" stop-color="#ffe9ad" stop-opacity=".55" />
-                  <stop offset="1" stop-color="#ffe9ad" stop-opacity="0" />
-                </radialGradient>
-                <clipPath id="ctClipHead"><circle cx="206" cy="96" r="50" /></clipPath>
-                <clipPath id="ctClipBody"><rect x="150" y="146" width="118" height="104" rx="38" /><rect x="192" y="128" width="32" height="26" rx="8" /></clipPath>
-              </defs>
-
-              <!-- floor: light pool + cast shadow -->
-              <ellipse class="ct-floorglow" cx="210" cy="322" rx="112" ry="13" fill="url(#ctFloor)" />
-              <ellipse class="ct-shadow" cx="210" cy="324" rx="78" ry="9" />
-
-              <!-- legs -->
-              <g class="ct-leg a"><rect x="178" y="244" width="24" height="64" rx="12" fill="#2a2823" /><rect x="182" y="250" width="6" height="50" rx="3" fill="rgba(255,255,255,.07)" /><ellipse cx="190" cy="312" rx="24" ry="10" fill="#f0e6d2" /><ellipse cx="184" cy="309" rx="12" ry="3.5" fill="rgba(255,255,255,.5)" /></g>
-              <g class="ct-leg b"><rect x="216" y="244" width="24" height="64" rx="12" fill="#2a2823" /><rect x="220" y="250" width="6" height="50" rx="3" fill="rgba(255,255,255,.07)" /><ellipse cx="228" cy="312" rx="24" ry="10" fill="#f0e6d2" /><ellipse cx="222" cy="309" rx="12" ry="3.5" fill="rgba(255,255,255,.5)" /></g>
-
-              <g class="ct-bob"><g class="ct-lean">
-                <rect x="19" y="0" width="380" height="340" fill="none" /><!-- fixed anchor so the lean always pivots at his feet -->
-                <g class="ct-breath">
-
-                  <!-- body -->
-                  <rect x="150" y="146" width="118" height="104" rx="38" fill="url(#ctBody)" />
-                  <ellipse cx="188" cy="178" rx="17" ry="27" transform="rotate(-12 188 178)" fill="rgba(255,255,255,.13)" />
-                  <path d="M178 218q30 14 62 0" fill="none" stroke="rgba(0,0,0,.2)" stroke-width="3" stroke-linecap="round" />
-                  <path d="M176 232q33 12 66 0" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="2" stroke-linecap="round" />
-                  <rect x="192" y="128" width="32" height="26" rx="8" fill="#e3bf9a" />
-                  <path d="M198 152v22M214 152v22" stroke="#f4efe4" stroke-width="3" stroke-linecap="round" />
-                  <ellipse cx="208" cy="142" rx="26" ry="7" fill="rgba(60,30,10,.2)" /><!-- shadow under the chin -->
-                  <g class="ct-rim l" clip-path="url(#ctClipBody)"><rect x="148" y="126" width="62" height="126" fill="url(#ctRimL)" /></g>
-                  <g class="ct-rim r" clip-path="url(#ctClipBody)"><rect x="208" y="126" width="62" height="126" fill="url(#ctRimR)" /></g>
-
-                  <!-- head -->
-                  <g class="ct-head">
-                    <circle cx="160" cy="100" r="8" fill="#e6bd96" /><circle cx="252" cy="100" r="8" fill="#e6bd96" />
-                    <circle class="ct-headc" cx="206" cy="96" r="46" fill="url(#ctSkin)" />
-                    <path d="M158 92C158 40 256 40 256 92Z" fill="#2a2823" />
-                    <path d="M176 60q30-14 56 0" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="5" stroke-linecap="round" />
-                    <path d="M170 82v-18M184 82v-26M198 82v-30M212 82v-30M226 82v-26M240 82v-18" stroke="rgba(255,255,255,.05)" stroke-width="2" />
-                    <rect x="154" y="84" width="104" height="18" rx="9" fill="#3a372f" />
-                    <rect x="154" y="90" width="104" height="5" fill="#dcc48f" />
-                    <circle cx="206" cy="44" r="10" fill="#dcc48f" />
-                    <circle cx="203" cy="41" r="3.5" fill="rgba(255,255,255,.35)" />
-                    <circle cx="170" cy="128" r="7" fill="rgba(232,130,110,.38)" />
-                    <circle cx="242" cy="128" r="7" fill="rgba(232,130,110,.38)" />
-                    <circle cx="184" cy="112" r="15" fill="rgba(255,255,255,.94)" />
-                    <circle cx="222" cy="112" r="15" fill="rgba(255,255,255,.94)" />
-                    <g class="ct-blink"><g class="ct-look"><g class="ct-pupils" id="ctPupils"><circle cx="180" cy="113" r="5.4" fill="#1b1a17" /><circle cx="218" cy="113" r="5.4" fill="#1b1a17" /><circle cx="178" cy="111" r="1.6" fill="#fff" /><circle cx="216" cy="111" r="1.6" fill="#fff" /></g></g></g>
-                    <circle cx="184" cy="112" r="15" fill="none" stroke="#2a2823" stroke-width="3.5" />
-                    <circle cx="222" cy="112" r="15" fill="none" stroke="#2a2823" stroke-width="3.5" />
-                    <path d="M172 104q8-6 16-3" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round" /><!-- glass glint -->
-                    <path d="M199 110q4-4 8 0" fill="none" stroke="#2a2823" stroke-width="3" stroke-linecap="round" />
-                    <path d="M193 136q12 10 24 0" fill="none" stroke="#7a4a3a" stroke-width="3" stroke-linecap="round" />
-                    <g class="ct-rim l" clip-path="url(#ctClipHead)"><rect x="156" y="46" width="50" height="104" fill="url(#ctRimL)" opacity=".6" /></g>
-                    <g class="ct-rim r" clip-path="url(#ctClipHead)"><rect x="206" y="46" width="50" height="104" fill="url(#ctRimR)" opacity=".6" /></g>
-                  </g>
-
-                  <!-- LEFT arm: holds the torch while he lights the left -->
-                  <g class="ct-arm-l">
-                    <rect x="160" y="172" width="20" height="62" rx="10" fill="url(#ctSleeve)" />
-                    <rect x="158" y="226" width="24" height="10" rx="5" fill="#a98b50" />
-                    <g class="ct-torch">
-                      <rect x="162" y="240" width="16" height="46" rx="6" fill="#3a372f" />
-                      <rect x="165" y="244" width="4" height="38" rx="2" fill="rgba(255,255,255,.12)" />
-                    </g>
-                    <circle cx="170" cy="252" r="10.5" fill="url(#ctSkin)" />
-                    <g class="ct-torch">
-                      <rect x="158" y="278" width="24" height="6" rx="3" fill="#8a826e" />
-                      <path d="M160 282h20l10 22h-40z" fill="#d6cdb7" />
-                      <ellipse class="ct-lamp" cx="170" cy="305" rx="19" ry="5.5" />
-                      <circle class="ct-glow" cx="170" cy="306" r="40" fill="url(#ctLamp)" />
-                    </g>
-                  </g>
-
-                  <!-- RIGHT arm: takes the torch for the second sweep -->
-                  <g class="ct-arm-r">
-                    <rect x="238" y="172" width="20" height="62" rx="10" fill="url(#ctSleeve)" />
-                    <rect x="236" y="226" width="24" height="10" rx="5" fill="#a98b50" />
-                    <g class="ct-torch">
-                      <rect x="240" y="240" width="16" height="46" rx="6" fill="#3a372f" />
-                      <rect x="243" y="244" width="4" height="38" rx="2" fill="rgba(255,255,255,.12)" />
-                    </g>
-                    <circle cx="248" cy="252" r="10.5" fill="url(#ctSkin)" />
-                    <g class="ct-torch">
-                      <rect x="236" y="278" width="24" height="6" rx="3" fill="#8a826e" />
-                      <path d="M238 282h20l10 22h-40z" fill="#d6cdb7" />
-                      <ellipse class="ct-lamp" cx="248" cy="305" rx="19" ry="5.5" />
-                      <circle class="ct-glow" cx="248" cy="306" r="40" fill="url(#ctLamp)" />
-                    </g>
-                  </g>
-
-                </g>
-              </g></g>
-            </svg>
-          </div>
-        </div>
+        <!-- CENTRE: empty lane (a gold divider draws here at the end) -->
+        <div class="ct-stage" id="ctStage"></div>
 
         <!-- RIGHT: address details (lit by the second sweep of the torch) -->
         <div class="ct-side" id="ctSide"></div><!-- made from the CONTACT list in the script -->
+
+        <!-- HANGING LAMP: hangs from the top centre, swings left and right, and lights each side as it passes -->
+        <div class="ct-rig" id="ctRig" aria-hidden="true">
+          <i class="ct-cap"></i>
+          <div class="ct-drop">
+            <div class="ct-pend" id="ctPend">
+              <div class="ct-beam" id="ctBeam"><i class="ct-cone" id="ctCone"></i></div>
+              <i class="ct-cord"></i>
+              <i class="ct-bloom"></i>
+              <svg class="ct-lampsvg" viewBox="0 0 90 70" aria-hidden="true">
+                <defs>
+                  <linearGradient id="ctShade" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#4a463b" />
+                    <stop offset="1" stop-color="#17150f" />
+                  </linearGradient>
+                  <linearGradient id="ctRimG" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#8a7448" />
+                    <stop offset=".45" stop-color="#f6e3b4" />
+                    <stop offset="1" stop-color="#8a7448" />
+                  </linearGradient>
+                  <radialGradient id="ctHaloG">
+                    <stop offset="0" stop-color="#fff6d2" stop-opacity=".9" />
+                    <stop offset=".45" stop-color="#ffd978" stop-opacity=".45" />
+                    <stop offset="1" stop-color="#ffd978" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+                <rect x="39" y="0" width="12" height="12" rx="2" fill="url(#ctRimG)" />
+                <path d="M8 60C8 26 28 14 45 14C62 14 82 26 82 60Z" fill="url(#ctShade)" />
+                <path d="M19 52C21 36 31 25 43 21" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3" stroke-linecap="round" />
+                <ellipse cx="45" cy="60" rx="37" ry="6" fill="url(#ctRimG)" />
+                <ellipse class="ct-bulb" cx="45" cy="60.5" rx="27" ry="4.4" />
+                <ellipse class="ct-halo" cx="45" cy="64" rx="52" ry="20" fill="url(#ctHaloG)" />
+              </svg>
+            </div>
+          </div>
+        </div>
 
       </div>
 
@@ -8320,8 +7891,8 @@
       movePill();
     })();
   </script>
-    <script>
-    /* ===== Contact: the guide walks to the centre, lights the LEFT (contact), swaps the torch to his other hand, lights the RIGHT (address), then vanishes ===== */
+   <script>
+    
     (function () {
       var sec = document.getElementById('contact'); if (!sec) return;
 
@@ -8341,7 +7912,7 @@
         ],
         button: 'Say hello',                                             // ◄ EDIT the big button text (it opens an email)
 
-        /* ---- right side: shown after the second sweep of the torch ---- */
+        /* ---- right side: lit when the lamp swings to the right ---- */
         address: ['Door no. / Street name', 'Area, City', 'State, PIN code, Country'],   // ◄ EDIT your address, one line per item ([] to hide)
         showMap: true,                                                   // ◄ EDIT true = "View on map" link under the address
         currentLocation: 'Ernakulam, India',                             // ◄ EDIT where you are right now ('' to hide)
@@ -8349,20 +7920,16 @@
         role: 'UX/UI Designer',                                          // ◄ EDIT your role at that company
         companyUrl: '',                                                  // ◄ EDIT optional: company website, e.g. 'https://company.com'
 
-        /* ---- the two speech bubbles ---- */
-        sayLeft: 'Here is how to reach me',                              // ◄ EDIT bubble while lighting the contact details
-        sayRight: 'And here is where I am',                              // ◄ EDIT bubble while lighting the address
-
         /* ---- copyright line under the box ---- */
         owner: 'Arjun portfolio',                                              // ◄ EDIT your name for the copyright (the year updates by itself)
         note: 'The designs, text, images and code on this website are my own work. Please do not copy or reuse them without written permission.'   // ◄ EDIT optional
       };
       /* ───────────────────────── end of the part you edit ───────────────────────── */
 
-      var room = document.getElementById('ctRoom'), who = document.getElementById('ctWho'), say = document.getElementById('ctSay'),
-        list = document.getElementById('ctList'), beam = document.getElementById('ctBeam'), pup = document.getElementById('ctPupils'),
+      var room = document.getElementById('ctRoom'), rig = document.getElementById('ctRig'), pend = document.getElementById('ctPend'),
+        list = document.getElementById('ctList'), beam = document.getElementById('ctCone'),
         side = document.getElementById('ctSide'), legal = document.getElementById('ctLegal'),
-        headc = sec.querySelector('.ct-headc'), info = sec.querySelector('.ct-info'), stage = sec.querySelector('.ct-stage');
+        info = sec.querySelector('.ct-info'), stage = document.getElementById('ctStage');
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches, played = false, n = 1;
       var IC = {
         mail: '<path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/>',
@@ -8444,62 +8011,121 @@
       });
 
       /* ===== the show =====
-         walk to the centre -> torch points LEFT -> contact details light up
-         -> torch off, he passes the torch to his other hand -> torch points RIGHT -> address details light up
-         -> torch off -> he vanishes from the centre.
-         Change the millisecond numbers to speed it up or slow it down. */
+         the lamp lowers from the ceiling and switches on, then gets a push and swings like a pendulum.
+         Each contact / address item lights up (and stays lit) the moment the beam passes over it.
+         Tweak the numbers below to change the feel. */
       sec.classList.add('ct-js');
+      var CL = 105, APEX = CL + 60;          /* cord length + shade height: must match --cl in the CSS */
+      var HALF = 42;                         /* half-angle of the light cone, in degrees */
+      var SWING = 70, SWING_M = 56;          /* how wide the first swing is (degrees) */
+      var PERIOD = 4.2;                      /* seconds for one full left-right-left swing */
+      var DAMP = 5;                          /* bigger = keeps swinging for longer */
+      var D2R = Math.PI / 180, mobile = window.matchMedia('(max-width:860px)');
+      var items = [];
+
       function later(fn, ms) { setTimeout(fn, ms) }
       function add() { var a = arguments; return function () { for (var k = 0; k < a.length; k++) room.classList.add(a[k]) } }
-      function rem() { var a = arguments; return function () { for (var k = 0; k < a.length; k++) room.classList.remove(a[k]) } }
-      function speak(t, ms) { say.textContent = t; say.classList.add('show'); later(function () { say.classList.remove('show') }, ms) }
+      function setOn(it) { it.lvl = 1; it.el.classList.add('ct-on') }
+
+      /* remember where every item sits so we can tell when the beam is over it */
+      function layout() {
+        var rr = room.getBoundingClientRect();
+        var len = Math.min(1100, Math.hypot(rr.width, rr.height));
+        rig.style.setProperty('--len', len.toFixed(0) + 'px');
+        rig.style.setProperty('--bw', (2 * len * Math.tan(HALF * D2R) + 60).toFixed(0) + 'px');
+        var old = items; items = [];
+        function grab(list, side) {
+          [].forEach.call(list, function (el) {
+            var r = el.getBoundingClientRect(), prev = old.filter(function (o) { return o.el === el })[0];
+            items.push({ el: el, side: side, x: r.left - rr.left + r.width / 2, y: r.top - rr.top + r.height / 2, lvl: prev ? prev.lvl : 0, phi: 0 });
+          });
+        }
+        grab(info.querySelectorAll('.ct-lite'), 'L');
+        grab(side.querySelectorAll('.ct-blk'), 'R');
+        /* on a phone the panels are stacked, so reveal them top to bottom as the lamp swings out */
+        ['L', 'R'].forEach(function (sd) {
+          var g = items.filter(function (i) { return i.side === sd }).sort(function (a, b) { return a.y - b.y });
+          g.forEach(function (it, i) { it.phi = (sd === 'L' ? -1 : 1) * (8 + 16 * (g.length > 1 ? i / (g.length - 1) : 0)) });
+        });
+        return rr;
+      }
+
+      /* light up whatever the beam is pointing at right now */
+      function update(th, rr) {
+        var lx = rr.width / 2 + APEX * Math.sin(th * D2R), ly = APEX * Math.cos(th * D2R), anyL = false, anyR = false;
+        items.forEach(function (it) {
+          if (it.lvl >= 1) { return }
+          var t;
+          if (mobile.matches) t = it.side === 'L' ? (it.phi - th + 5) / 10 : (th - it.phi + 5) / 10;
+          else t = (HALF + 6 - Math.abs(Math.atan2(it.x - lx, it.y - ly) / D2R - th)) / 14;
+          t = Math.max(0, Math.min(1, t)); t = t * t * (3 - 2 * t);
+          if (t > it.lvl) it.lvl += (t - it.lvl) * .22;
+          if (it.lvl > .95) { setOn(it); return }
+          it.el.style.setProperty('--lit', it.lvl.toFixed(3));
+          if (it.lvl > .25) { if (it.side === 'L') anyL = true; else anyR = true }
+        });
+        items.forEach(function (it) { if (it.lvl > .25) { if (it.side === 'L') anyL = true; else anyR = true } });
+        if (anyL && !room.classList.contains('lit')) room.classList.add('lit');
+        if (anyR && !room.classList.contains('ctside')) room.classList.add('ctside');
+        if (!scheduled && items.length && items.every(function (i) { return i.lvl >= 1 })) { scheduled = true; later(shortCircuit, HOLD) }
+      }
+
+      /* ===== short circuit: once both sides are lit and have been seen for a moment, the lamp stutters, sparks and dies ===== */
+      var HOLD = 1700, scheduled = false;                    /* HOLD = milliseconds the finished page stays lit before the lamp fails */
+      var FLICKER = [['off', 70], ['on', 110], ['off', 50], ['on', 150], ['off', 40], ['on', 60], ['off', 90], ['on', 240], ['off', 55], ['on', 45], ['off', 60], ['on', 110]];
+      function sparks(n) {
+        for (var k = 0; k < n; k++) {
+          var s = document.createElement('i'); s.className = 'ct-spark';
+          var ang = (Math.random() * 160 - 80) * D2R, sp = 40 + Math.random() * 90;
+          s.style.setProperty('--sx', (Math.sin(ang) * sp).toFixed(0) + 'px');
+          s.style.setProperty('--sy', (Math.cos(ang) * sp * .4 + 30 + Math.random() * 70).toFixed(0) + 'px');   /* they fall a little */
+          s.style.setProperty('--t', (.45 + Math.random() * .5).toFixed(2) + 's');
+          pend.appendChild(s); (function (el) { setTimeout(function () { el.remove() }, 1100) })(s);
+        }
+      }
+      function shortCircuit() {
+        var i = 0;
+        (function step() {
+          if (i >= FLICKER.length) return die();
+          var s = FLICKER[i++];
+          room.classList.toggle('sc', s[0] === 'off');
+          if (s[0] === 'off' && (i === 3 || i === 7)) sparks(6);
+          later(step, s[1]);
+        })();
+      }
+      function die() {
+        room.classList.remove('sc'); room.classList.add('pop'); sparks(16);            /* one last bright pop... */
+        later(function () { room.classList.remove('pop', 'on'); room.classList.add('dead') }, 150);   /* ...then dark */
+        later(add('gone'), 700);                                                       /* the gold divider draws where the light was */
+      }
+
+      var t0 = 0, rr0 = null, running = false;
+      function finish() {
+        running = false; pend.style.rotate = '0deg';
+        items.forEach(setOn); room.classList.add('lit', 'ctside', 'idle');
+        if (!scheduled) { scheduled = true; shortCircuit() }
+      }
+      function tick(now) {
+        var t = (now - t0) / 1000, A = mobile.matches ? SWING_M : SWING;
+        var th = -A * Math.exp(-t / DAMP) * Math.sin(2 * Math.PI * t / PERIOD) * (1 - Math.exp(-t / .3));   /* first push goes LEFT */
+        pend.style.rotate = (-th).toFixed(2) + 'deg';           /* CSS rotates clockwise for positive, which swings a hanging lamp to the LEFT, so flip it */
+        update(th, rr0);
+        if (t > DAMP * 4.2) return finish();
+        requestAnimationFrame(tick);
+      }
       function play() {
         if (played) return; played = true;
-        if (reduce) { room.classList.add('arrived', 'lit', 'ctside', 'gone'); return }
-
-        room.classList.add('walk');                                              /* walks in to the centre */
-        later(function () { room.classList.remove('walk'); room.classList.add('arrived') }, 2700);
-
-        /* ---- 1. light the LEFT: contact details ---- */
-        later(add('point'), 2800);                                               /* raises the torch to the left */
-        later(add('on'), 3600);                                                  /* torch flickers on, beam grows left */
-        later(add('lit'), 4100);                                                 /* contact details light up and stay lit */
-        later(function () { speak(C.sayLeft, 1900) }, 4500);
-        later(function () { room.classList.remove('on'); room.classList.add('off') }, 6800);   /* torch off */
-        later(rem('point'), 7000);                                               /* lowers the arm */
-        later(rem('off'), 7600);
-
-        /* ---- 2. light the RIGHT: address details (he does not turn, the torch just changes hands) ---- */
-        later(add('hand-r'), 7900);                                              /* torch moves to his right hand */
-        later(add('point'), 8500);                                               /* raises the right arm */
-        later(add('on', 'ctside'), 9300);                                        /* torch on, address details light up */
-        later(function () { speak(C.sayRight, 1900) }, 9800);
-        later(function () { room.classList.remove('on'); room.classList.add('off') }, 11900);  /* torch off */
-        later(rem('point'), 12100);
-        later(rem('off'), 12700);
-
-        /* ---- 3. he vanishes from the centre ---- */
-        later(add('leave'), 12900);
-        later(add('gone'), 14000);
+        rr0 = layout();
+        if (reduce) { items.forEach(setOn); room.classList.add('rise', 'dead', 'lit', 'ctside', 'gone'); return }
+        later(add('rise'), 100);                                                 /* lamp lowers from the ceiling */
+        later(add('on'), 1300);                                                  /* bulb flickers on, the beam appears */
+        later(function () { running = true; t0 = performance.now(); requestAnimationFrame(tick) }, 1800);   /* gets a push: swings left first */
       }
+      var resizeT; window.addEventListener('resize', function () { clearTimeout(resizeT); resizeT = setTimeout(function () { if (played) rr0 = layout() }, 150) });
       if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { play(); io.disconnect() } }, { threshold: .5 });
-        io.observe(stage);
+        var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { play(); io.disconnect() } }, { threshold: .3 });
+        io.observe(room);
       } else play();
-
-      /* his eyes follow your mouse; click him to wave */
-      if (!reduce) window.addEventListener('pointermove', function (e) {
-        if (!played || !headc || room.classList.contains('leave')) return;
-        var r = headc.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2),
-          d = Math.hypot(dx, dy) || 1, k = Math.min(4, d / 40);
-        pup.style.transform = 'translate(' + (dx / d * k - 1).toFixed(1) + 'px,' + (dy / d * k).toFixed(1) + 'px)';
-      }, { passive: true });
-      who.addEventListener('click', function () {
-        if (!room.classList.contains('arrived') || room.classList.contains('leave') || say.classList.contains('show')) return;
-        say.textContent = 'Hi there!'; say.classList.add('show'); room.classList.add('wave');
-        later(function () { room.classList.remove('wave') }, 1550);
-        later(function () { say.classList.remove('show') }, 2400);
-      });
     })();
   </script>
 </body>
