@@ -5616,6 +5616,30 @@
       }
     }
 
+    /* ---------- scroll blink: the dead lamp flashes back on for a moment ---------- */
+    .ct-room.dead.blink .ct-beam {
+      opacity: .9;
+      transition: none
+    }
+
+    .ct-room.dead.blink .ct-bloom,
+    .ct-room.dead.blink .ct-halo {
+      opacity: 1;
+      transition: none;
+      animation: none
+    }
+
+    .ct-room.dead.blink .ct-bulb {
+      fill: #fff6d6;
+      transition: none
+    }
+
+    .ct-room.dead.blink::before,
+    .ct-room.dead.blink::after {
+      opacity: .7;
+      transition: none
+    }
+
     /* copyright, centred under the contact box */
     .ct-legal {
       max-width: 64ch;
@@ -5760,8 +5784,7 @@
 
       <div class="pjgrid">
         <!-- PROJECT 1 -->
-        <article class="pjcard pj1">
-          <div class="pjmedia">
+           <article class="pjcard pj1" data-slug="eit-academy">          <div class="pjmedia">
             <div class="scr web"><i class="dots"><b></b><b></b><b></b></i><span class="sk"
                 style="width:30%"></span><span class="num">$12,480</span>
               <svg class="chart" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
@@ -5788,7 +5811,7 @@
         </article>
 
         <!-- PROJECT 2 -->
-        <article class="pjcard pj2">
+        <article class="pjcard pj2" data-slug="lume-skincare">
           <div class="pjmedia">
             <div class="scr web"><i class="dots"><b></b><b></b><b></b></i>
               <div class="row"><span class="blk ac" style="flex:1.2;height:100%"></span>
@@ -5818,7 +5841,7 @@
         </article>
 
         <!-- PROJECT 3 -->
-        <article class="pjcard pj3">
+        <article class="pjcard pj3" data-slug="orbit-analytics">
           <div class="pjmedia">
             <div class="scr web"><i class="dots"><b></b><b></b><b></b></i>
               <div class="row"><span class="blk" style="width:16%;height:100%"></span>
@@ -5852,7 +5875,7 @@
         </article>
 
         <!-- PROJECT 4 -->
-        <article class="pjcard pj4">
+        <article class="pjcard pj4" data-slug="calm-clinic">
           <div class="pjmedia">
             <div class="scr web"><i class="dots"><b></b><b></b><b></b></i><span class="sk" style="width:36%"></span>
               <div class="cal"><i></i><i></i><i></i><i class="ac"></i><i></i><i></i><i></i><i></i><i></i><i
@@ -6875,12 +6898,23 @@
       items.forEach(function (el, i) { el.style.setProperty('--d', ((i % 2) * .08) + 's'); io.observe(el); });
     })();
 
-    /* Projects: placeholder links do nothing until you add the real case-study URL */
-    (function () {
-      [].slice.call(document.querySelectorAll('.pjview[href="#"]')).forEach(function (a) {
-        a.addEventListener('click', function (e) { e.preventDefault(); });
-      });
-    })();
+    /* Projects: link every card to the case-study page (one page, project.html, serves all projects) */
+var CASE_PAGE = 'project.html';
+function caseUrl(slug) { return CASE_PAGE + '?slug=' + encodeURIComponent(slug); }
+function rememberBg(bg) { try { if (bg) sessionStorage.setItem('cs_bg', bg); } catch (e) { } }
+(function () {
+  [].slice.call(document.querySelectorAll('.pjcard[data-slug]')).forEach(function (card) {
+    var a = card.querySelector('.pjview'); if (!a) return;
+    a.setAttribute('href', caseUrl(card.getAttribute('data-slug')));
+    a.addEventListener('click', function () {
+      var m = card.querySelector('.pjmedia');
+      if (m) rememberBg(getComputedStyle(m).backgroundImage);
+    });
+  });
+  [].slice.call(document.querySelectorAll('.pjview[href="#"]')).forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); });
+  });
+})();
 
     /* Projects: the mockup background becomes a gradient mix taken from the image placed inside it.
        Use <img class="pjshot" src="..."> inside .pjmedia.
@@ -8099,7 +8133,47 @@
         later(add('gone'), 700);                                                       /* the gold divider draws where the light was */
       }
 
+      /* ===== after the light has died: scrolling makes the lamp swing, blink and spark =====
+         Scroll over the section and the lamp gets pushed (left or right depending on scroll direction).
+         A harder scroll also makes the bulb blink back on for a moment and throw sparks. */
+      var PUSH = .4;                                        /* swing push per scrolled pixel (bigger = swings harder) */
+      var MAXPUSH = 55;                                     /* strongest single push, in degrees per second */
+      var BLINK_AT = 40;                                    /* scrolled pixels (within a moment) needed to trigger a blink */
+      var simTh = 0, simW = 0, simOn = false, simLast = 0, blinking = false, lastY = window.pageYOffset, acc = 0, accT;
+      function clamp(v, a, b) { return Math.max(a, Math.min(b, v)) }
+      function simStart() { if (!simOn) { simOn = true; simLast = performance.now(); requestAnimationFrame(simTick) } }
+      function simTick(now) {
+        var dt = Math.min(.033, (now - simLast) / 1000); simLast = now;
+        var w0 = 2 * Math.PI / PERIOD, c = 2 / DAMP;        /* same period and fade-out as the opening swing */
+        simW += (-w0 * w0 * simTh - c * simW) * dt;
+        simTh = clamp(simTh + simW * dt, -58, 58);
+        pend.style.rotate = (-simTh).toFixed(2) + 'deg';
+        if (Math.abs(simTh) < .05 && Math.abs(simW) < .5) { simOn = false; pend.style.rotate = '0deg'; room.classList.add('idle'); return }
+        requestAnimationFrame(simTick);
+      }
+      var BLINK = [[1, 60], [0, 70], [1, 45], [0, 150], [1, 90], [0, 60], [1, 35], [0, 0]];
+      function blink() {
+        if (blinking || !room.classList.contains('dead')) return; blinking = true;
+        var i = 0;
+        (function step() {
+          var s = BLINK[i++]; room.classList.toggle('blink', !!s[0]);
+          if (s[0] && (i === 1 || i === 5)) sparks(i === 1 ? 6 : 9);
+          if (i >= BLINK.length) { later(function () { blinking = false }, 500); return }
+          later(step, s[1]);
+        })();
+      }
+      if (!reduce) window.addEventListener('scroll', function () {
+        var y = window.pageYOffset, dy = y - lastY; lastY = y;
+        if (!dy || !room.classList.contains('dead')) return;
+        var r = room.getBoundingClientRect(); if (r.bottom < 0 || r.top > window.innerHeight) return;
+        room.classList.remove('idle');
+        simW = clamp(simW + clamp(dy * PUSH, -MAXPUSH, MAXPUSH), -95, 95); simStart();   /* total speed is capped so fast scrolling never goes wild */
+        acc += Math.abs(dy); clearTimeout(accT); accT = setTimeout(function () { acc = 0 }, 180);
+        if (acc > BLINK_AT) { acc = 0; blink() }
+      }, { passive: true });
+
       var t0 = 0, rr0 = null, running = false;
+      var prevTh = 0, prevNow = performance.now();
       function finish() {
         running = false; pend.style.rotate = '0deg';
         items.forEach(setOn); room.classList.add('lit', 'ctside', 'idle');
@@ -8110,6 +8184,8 @@
         var th = -A * Math.exp(-t / DAMP) * Math.sin(2 * Math.PI * t / PERIOD) * (1 - Math.exp(-t / .3));   /* first push goes LEFT */
         pend.style.rotate = (-th).toFixed(2) + 'deg';           /* CSS rotates clockwise for positive, which swings a hanging lamp to the LEFT, so flip it */
         update(th, rr0);
+        var vel = (th - prevTh) / Math.max(.001, (now - prevNow) / 1000); prevTh = th; prevNow = now;
+        if (room.classList.contains('dead')) { simTh = th; simW = vel; simStart(); return }   /* lamp is dead: scrolling takes over the swing */
         if (t > DAMP * 4.2) return finish();
         requestAnimationFrame(tick);
       }
