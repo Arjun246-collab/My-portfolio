@@ -5726,6 +5726,49 @@
         animation: none !important
       }
     }
+        /* ===== project cards: real images from Supabase (matched by data-slug) ===== */
+    .scr>img.cimg {
+      display: none
+    }
+
+    .scr.has-img {
+      padding: 0
+    }
+
+    .scr.has-img>*:not(img) {
+      display: none
+    }
+
+    .scr.has-img>img.cimg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      -webkit-user-drag: none
+    }
+
+    .pjmedia.no-phone .scr.phone {
+      display: none
+    }
+
+    /* app projects: phones only, no browser window */
+    .pjmedia.pj-app .scr.web {
+      display: none
+    }
+
+    .pjmedia.pj-app .scr.phone {
+      left: var(--l, 36%);
+      right: auto;
+      bottom: var(--b, -12%);
+      width: var(--w, 28%);
+      transform: rotate(var(--r, 0deg))
+    }
+
+    .pjcard:hover .pjmedia.pj-app .scr.phone,
+    .pjcard:focus-within .pjmedia.pj-app .scr.phone {
+      transform: translateY(-14px) rotate(var(--r, 0deg))
+    }
   </style>
 </head>
 
@@ -6761,8 +6804,8 @@
        The text already in the HTML is the fallback if Supabase is slow/offline.
        ===================================================================== */
     (function () {
-      var SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
-      var SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+      var SUPABASE_URL = 'https://vdfelauxvgwzfptdeizx.supabase.co';
+      var SUPABASE_ANON_KEY = 'sb_publishable_IZ19idtBF-D6tsPejWaSSw_ZldGCpCq';
       var TABLE = 'hero', ROW_ID = 1, CACHE_KEY = 'hero_cache_v1', DEFAULT_START = '2022-06-01';
 
       function $(id) { return document.getElementById(id); }
@@ -6866,7 +6909,7 @@
       var cached = null; try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch (e) { }
       if (cached) apply(cached);
       if (!SUPABASE_URL || SUPABASE_URL.indexOf('YOUR-') > -1) return;
-      fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?id=eq.' + ROW_ID + '&select=*', { headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY } })
+      fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?id=eq.' + ROW_ID + '&select=*', { headers: { apikey: SUPABASE_ANON_KEY } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(function (rows) {
           var d = rows && rows[0]; if (!d) return;
@@ -8202,6 +8245,82 @@ function rememberBg(bg) { try { if (bg) sessionStorage.setItem('cs_bg', bg); } c
         var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { play(); io.disconnect() } }, { threshold: .3 });
         io.observe(room);
       } else play();
+    })();
+  </script>
+    <script>
+    /* ===== Project cards: images and colours come from the Supabase "projects" table (matched by data-slug) ===== */
+    (function () {
+      var SB_URL = 'https://vdfelauxvgwzfptdeizx.supabase.co';
+      var SB_KEY = 'sb_publishable_IZ19idtBF-D6tsPejWaSSw_ZldGCpCq';
+      var TABLE = 'projects', CACHE = 'cs_projects_v1';
+      var SYNC_TEXT = false;    /* ◄ EDIT: true = the card's category, title and summary also come from the table */
+
+      var cards = [].slice.call(document.querySelectorAll('.pjcard[data-slug]')); if (!cards.length) return;
+      function url(u) { u = String(u || '').trim(); return /^\s*(javascript|vbscript):/i.test(u) || /^\s*data:(?!image\/)/i.test(u) ? '' : u }
+      function arr(v) { if (Array.isArray(v)) return v; if (typeof v === 'string' && v) { try { var j = JSON.parse(v); if (Array.isArray(j)) return j } catch (e) { } return v.split(',').map(function (s) { return s.trim() }).filter(Boolean) } return [] }
+      var LAYOUT = {                                  /* where the phones sit on an app card */
+        1: [{ l: '36%', r: '0deg', w: '28%', b: '-12%' }],
+        2: [{ l: '20%', r: '-3deg', w: '28%', b: '-10%' }, { l: '52%', r: '3deg', w: '28%', b: '-16%' }],
+        3: [{ l: '11%', r: '-5deg', w: '26%', b: '-14%' }, { l: '63%', r: '5deg', w: '26%', b: '-14%' }, { l: '37%', r: '0deg', w: '28%', b: '-9%' }]
+      };
+
+      /* put an image inside a screen; if it cannot be loaded the original artwork stays */
+      function put(scr, src, alt) {
+        var old = scr.querySelector('img.cimg'); if (old) old.remove(); scr.classList.remove('has-img');
+        if (!src) return;
+        var im = new Image(); im.className = 'cimg'; im.alt = alt || ''; im.decoding = 'async'; im.draggable = false;
+        im.onload = function () { scr.classList.add('has-img') };
+        im.onerror = function () { im.remove(); if (window.console) console.warn('Project card image not found:', src) };
+        im.src = src; scr.appendChild(im);
+      }
+
+      function apply(rows) {
+        var by = {}; rows.forEach(function (r) { if (r && r.slug) by[r.slug] = r });
+        cards.forEach(function (card) {
+          var p = by[card.getAttribute('data-slug')]; if (!p) return;
+          var media = card.querySelector('.pjmedia'); if (!media) return;
+
+          if (SYNC_TEXT) {
+            var mt = card.querySelector('.pjmeta span'), nm = card.querySelector('.pjname'), ds = card.querySelector('.pjdesc');
+            if (mt && p.category) mt.textContent = p.category; if (nm && p.title) nm.textContent = p.title; if (ds && p.summary) ds.textContent = p.summary;
+          }
+
+          var m = arr(p.mobile_images).map(url).filter(Boolean).slice(0, 3), d = url(p.desktop_image);
+          var isApp = String(p.type || '').toLowerCase().trim() === 'app' && m.length > 0, key = (isApp ? 'a' : 'w') + '#' + d + '#' + m.join('|');
+          if (media.getAttribute('data-sb') === key) return;                 /* nothing changed */
+          media.setAttribute('data-sb', key);
+
+          [].slice.call(media.querySelectorAll('.scr.phone[data-x]')).forEach(function (n) { n.remove() });
+          var web = media.querySelector('.scr.web'), ph = media.querySelector('.scr.phone:not([data-x])'), alt = p.title || '';
+          media.classList.toggle('pj-app', isApp);
+          media.classList.toggle('no-phone', !isApp && !!d && !m[0]);        /* a website with no mobile image: hide the little phone */
+
+          if (isApp) {
+            var L = LAYOUT[m.length];
+            m.forEach(function (src, i) {
+              var el = i === 0 ? ph : ph.cloneNode(true); if (i) { el.setAttribute('data-x', ''); ph.parentNode.insertBefore(el, ph.nextSibling) }
+              el.style.setProperty('--l', L[i].l); el.style.setProperty('--r', L[i].r); el.style.setProperty('--w', L[i].w); el.style.setProperty('--b', L[i].b);
+              el.style.zIndex = (m.length === 3 && i === 2) ? 2 : '';
+              put(el, src, alt);
+            });
+          } else {
+            if (web) put(web, d, alt);
+            if (ph) { ph.removeAttribute('style'); put(ph, m[0] || '', alt) }
+          }
+
+          /* the card background takes its colours from the first image (the existing toning script does the rest) */
+          var old = media.querySelector('img.pjshot[data-sb]'); if (old) old.remove();
+          var src0 = d || m[0];
+          if (src0) { var t = new Image(); t.className = 'pjshot'; t.setAttribute('data-sb', ''); t.setAttribute('aria-hidden', 'true'); t.alt = ''; t.hidden = true; t.src = src0; media.appendChild(t) }
+        });
+      }
+
+      var cached = null; try { cached = JSON.parse(localStorage.getItem(CACHE) || 'null') } catch (e) { }
+      if (Array.isArray(cached)) apply(cached);                              /* last known data first, no waiting */
+      fetch(SB_URL + '/rest/v1/' + TABLE + '?published=eq.true&order=position.asc&select=*', { headers: { apikey: SB_KEY } })
+        .then(function (r) { if (!r.ok) { r.text().then(function (t) { console.warn('Supabase projects', r.status, t) }); throw 0 } return r.json() })
+        .then(function (rows) { if (!Array.isArray(rows)) return; try { localStorage.setItem(CACHE, JSON.stringify(rows)) } catch (e) { } apply(rows) })
+        .catch(function () { });
     })();
   </script>
 </body>

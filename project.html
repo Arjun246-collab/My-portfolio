@@ -303,6 +303,7 @@ html.cg-lock,html.cg-lock body{overflow:hidden}
 .dt-rail a.on{color:var(--text);font-weight:500}
 .dt-rail a.on .nd{background:var(--blue);border-color:var(--blue);color:#14120d;transform:scale(1.14);box-shadow:0 0 0 7px color-mix(in srgb,var(--blue) 22%,transparent)}
 .dt-rail a:hover .nd{border-color:var(--blue)}
+.dt-stages{min-width:0;overflow-x:clip}
 .dt-st{scroll-margin-top:96px;padding-bottom:clamp(70px,9vw,120px)}
 .dt-st+.dt-st{padding-top:clamp(40px,6vw,80px);border-top:1px solid var(--hl)}
 .dt-sh{display:flex;align-items:flex-end;gap:clamp(14px,2.4vw,28px);margin-bottom:clamp(28px,4vw,48px)}
@@ -382,7 +383,7 @@ html.cg-lock,html.cg-lock body{overflow:hidden}
 
 @media (max-width:860px){
   .dt-kit,.dt-per{grid-template-columns:1fr}
-  .dt-grid{grid-template-columns:1fr}
+  .dt-grid{grid-template-columns:minmax(0,1fr)}
   .dt-rail{position:sticky;top:70px;z-index:20;padding:8px 10px;border:1px solid var(--hl);border-radius:99px;background:color-mix(in srgb,var(--page) 82%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
   .dt-line{left:30px;right:30px;top:auto;bottom:0;width:auto;height:2px}
   .dt-line i{width:calc(var(--pr)*100%);height:100%}
@@ -404,6 +405,180 @@ html.cg-lock,html.cg-lock body{overflow:hidden}
   .dt-ins{flex-direction:column;align-items:flex-start}
 }
 @media (prefers-reduced-motion:reduce){.dt-sw,.dt-note,.dt-q,.dt-core,.dt-rail .nd{transition:none}.dt-ins svg{animation:none}}
+
+/* ===== STAGE 2 · DEFINE  (affinity clusters, journey map, problem statement, How might we, goals) ===== */
+/* affinity: notes start scattered, then settle into their themes when the block scrolls in */
+.dt-aff{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.dt-th{padding:18px;border:1px solid var(--hl);border-radius:26px;background:var(--tile)}
+.dt-th h5{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 14px;font-weight:500;font-size:1.02rem;letter-spacing:-.01em}
+.dt-th h5 b{flex:none;display:grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:99px;background:var(--blue);color:#14120d;font-size:.78rem;font-weight:600}
+.dt-th ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.dt-an{padding:11px 14px;border-radius:5px 5px 16px 5px;background:color-mix(in srgb,var(--blue) 22%,var(--page));font-size:.92rem;line-height:1.4;box-shadow:0 12px 18px -14px var(--shadow);rotate:var(--nr,0deg);transition:translate 1.1s calc(var(--k)*.07s) cubic-bezier(.2,.9,.2,1),rotate 1.1s calc(var(--k)*.07s) cubic-bezier(.2,.9,.2,1),opacity .7s calc(var(--k)*.07s)}
+.dt-th:nth-child(2n) .dt-an{background:color-mix(in srgb,var(--blue) 11%,var(--page))}
+.cs-js .dt-aff:not(.in) .dt-an{translate:var(--sx) var(--sy);rotate:var(--sr);opacity:0}
+.cs-js .dt-aff:not(.in) .dt-th h5{opacity:.15}
+.dt-th h5{transition:opacity .8s .5s}
+
+/* journey map */
+.dt-jw{overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.dt-j{position:relative;min-width:calc(var(--n)*150px)}
+.dt-jc{position:relative;height:clamp(170px,20vw,230px);border:1px solid var(--hl);border-radius:26px;background:linear-gradient(var(--tile),var(--tile)) padding-box;overflow:hidden}
+.dt-jc::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1.5px dashed var(--hl)}
+.dt-jc svg{position:absolute;inset:0;width:100%;height:100%}
+.dt-jc .ar{fill:url(#dtJg);stroke:none;opacity:0;transition:opacity 1.2s .6s}
+.dt-jw.in .ar{opacity:1}
+.dt-jc .ln{fill:none;stroke:var(--blue);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2s cubic-bezier(.5,0,.2,1)}
+.dt-jw.in .ln{stroke-dashoffset:0}
+.dt-jz{position:absolute;left:16px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.dt-jz.t{top:12px}.dt-jz.b{bottom:12px}
+.dt-jd{position:absolute;z-index:2;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--blue);border:3px solid var(--tile);box-shadow:0 0 0 1.5px var(--blue);transform:scale(0);transition:transform .6s calc(.9s + var(--i)*.22s) cubic-bezier(.3,1.8,.5,1)}
+.dt-jw.in .dt-jd{transform:none}
+.dt-jd.bad{background:#e5645a;box-shadow:0 0 0 1.5px #e5645a}
+.dt-jd.neu{background:var(--muted);box-shadow:0 0 0 1.5px var(--muted)}
+.dt-jr{display:grid;grid-template-columns:repeat(var(--n),1fr);margin-top:14px}
+.dt-js{padding:0 10px;text-align:center}
+.dt-js b{display:block;color:var(--blue);font-size:.78rem;font-variant-numeric:tabular-nums}
+.dt-js h6{margin:4px 0 6px;font-weight:500;font-size:1rem}
+.dt-js p{margin:0;color:var(--muted);font-weight:300;font-size:.86rem;line-height:1.45}
+
+/* the problem statement */
+.dt-pov{position:relative;padding:clamp(28px,4.4vw,60px);border-radius:34px;background:var(--text);color:var(--page);overflow:hidden}
+.dt-pov::after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--blue) 55%,transparent),transparent)}
+.dt-pov small{position:relative;z-index:1;display:block;margin-bottom:18px;opacity:.6;font-weight:500;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase}
+.dt-pov p{position:relative;z-index:1;margin:0;max-width:30ch;font-weight:500;font-size:clamp(1.5rem,3.6vw,2.9rem);line-height:1.3;letter-spacing:-.035em}
+.dt-pov mark{color:inherit;background:linear-gradient(var(--blue),var(--blue)) 0 92%/0 .2em no-repeat;transition:background-size 1s calc(.3s + var(--m)*.45s) cubic-bezier(.2,.8,.2,1);padding-bottom:.05em}
+.dt-pov.in mark{background-size:100% .2em}
+.dt-pov mark em{font-style:normal;color:var(--blue)}
+
+/* how might we */
+.dt-hmw{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dt-h{position:relative;display:flex;gap:18px;align-items:flex-start;padding:clamp(20px,2.6vw,30px);border:1px solid var(--hl);border-radius:28px;background:var(--tile);overflow:hidden;isolation:isolate;transition:transform .5s cubic-bezier(.2,.8,.2,1),border-color .3s}
+.dt-h::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(120deg,color-mix(in srgb,var(--blue) 30%,transparent),transparent 70%);transform:translateX(-101%);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.dt-h:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--blue) 55%,var(--hl))}
+.dt-h:hover::before{transform:none}
+.dt-h i{flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--blue);color:#14120d;font-style:normal;font-weight:600;font-size:.88rem;font-variant-numeric:tabular-nums}
+.dt-h p{margin:0;font-weight:500;font-size:clamp(1.1rem,1.7vw,1.4rem);line-height:1.35;letter-spacing:-.02em}
+.dt-h p span{display:block;margin-bottom:4px;color:var(--muted);font-weight:300;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase}
+
+/* design goals */
+.dt-goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.dt-g{padding:22px;border:1px solid var(--hl);border-radius:26px;background:linear-gradient(160deg,color-mix(in srgb,var(--blue) 12%,transparent),transparent 75%)}
+.dt-g svg{width:30px;height:30px;margin-bottom:14px;fill:none;stroke:var(--blue);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dt-g b{display:block;font-weight:500;font-size:1.1rem;letter-spacing:-.01em}
+.dt-g span{display:inline-block;margin-top:12px;padding:5px 13px;border-radius:99px;background:var(--blue);color:#14120d;font-weight:500;font-size:.82rem}
+@media (max-width:860px){.dt-hmw{grid-template-columns:1fr}.dt-pov p{max-width:none}}
+@media (prefers-reduced-motion:reduce){.dt-an,.dt-jd,.dt-jc .ln,.dt-jc .ar,.dt-pov mark{transition:none}.dt-jc .ln{stroke-dashoffset:0}}
+
+/* ===== STAGES 3 · 4 · 5  (Ideate, Prototype, Test) ===== */
+.dt-ins .dt-go{flex:none;display:inline-flex;align-items:center;height:52px;padding:0 24px;border-radius:99px;background:var(--blue);color:#14120d;font-weight:500;text-decoration:none;transition:transform .3s,box-shadow .3s}
+.dt-ins .dt-go:hover{transform:translateY(-3px);box-shadow:0 16px 30px -12px var(--blue)}
+.dt-ins svg{animation:none}
+
+/* ideate: impact / effort matrix */
+.dt-mxw{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(16px,2.4vw,28px);align-items:start}
+.dt-mx{position:relative;aspect-ratio:1.25;border:1px solid var(--hl);border-radius:28px;background:var(--tile);overflow:hidden}
+.dt-mx::before,.dt-mx::after{content:"";position:absolute;background:var(--hl)}
+.dt-mx::before{left:50%;top:0;bottom:0;width:1px}.dt-mx::after{top:50%;left:0;right:0;height:1px}
+.dt-mx .qa{position:absolute;padding:14px 16px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.dt-mx .qa.t{top:0}.dt-mx .qa.b{bottom:22px}.dt-mx .qa.l{left:0}.dt-mx .qa.r{right:0}
+.dt-mx .qa.t.l{color:var(--blue);font-weight:600}
+.dt-mx .ax{position:absolute;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);opacity:.8}
+.dt-mx .ax.x{right:14px;bottom:6px}.dt-mx .ax.y{left:10px;top:50%;writing-mode:vertical-rl;rotate:180deg;translate:0 50%}
+.dt-dot{position:absolute;z-index:2;display:grid;place-items:center;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;border:1.5px solid var(--muted);background:var(--page);font-style:normal;font-size:.78rem;font-weight:600;font-variant-numeric:tabular-nums;transform:scale(0);transition:transform .6s cubic-bezier(.3,1.7,.5,1),background .3s,border-color .3s,box-shadow .3s}
+.dt-mxw.in .dt-dot{transform:none}
+.dt-dot.pick{background:var(--blue);border-color:var(--blue);color:#14120d;box-shadow:0 0 0 6px color-mix(in srgb,var(--blue) 25%,transparent)}
+.dt-dot.hl{transform:scale(1.35)!important;z-index:3;border-color:var(--blue)}
+.dt-il{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.dt-il li{display:flex;align-items:center;gap:12px;padding:11px 14px;border:1px solid var(--hl);border-radius:16px;background:var(--tile);transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s,background .3s}
+.dt-il li b{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--muted);font-size:.74rem;font-variant-numeric:tabular-nums}
+.dt-il li span{flex:1;font-weight:400;font-size:.95rem}
+.dt-il li em{font-style:normal;font-size:.7rem;font-weight:600;padding:3px 10px;border-radius:99px;background:var(--blue);color:#14120d}
+.dt-il li.pick b{background:var(--blue);border-color:var(--blue);color:#14120d}
+.dt-il li.hl{transform:translateX(6px);border-color:var(--blue)}
+/* sketches */
+.dt-sks{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:clamp(16px,2.4vw,28px);padding:clamp(8px,1.4vw,16px) 0}
+.dt-sk{position:relative;margin:0;rotate:var(--r);transition:rotate .5s cubic-bezier(.3,1.5,.5,1),translate .5s cubic-bezier(.2,.8,.2,1)}
+.dt-sk:hover{rotate:0deg;translate:0 -8px}
+.dt-sk .tape{position:absolute;z-index:2;top:-12px;left:50%;width:84px;height:24px;margin-left:-42px;background:color-mix(in srgb,var(--blue) 55%,transparent);rotate:-3deg;border-radius:2px}
+.dt-sk .pp{display:grid;place-items:center;aspect-ratio:4/3;padding:18px;border-radius:6px;background:#fbf8f1;color:#6b6456;box-shadow:0 24px 30px -22px var(--shadow),inset 0 0 0 1px rgba(0,0,0,.06);overflow:hidden}
+.dt-sk .pp svg{width:100%;height:100%}
+.dt-sk .pp img{width:calc(100% + 36px);height:calc(100% + 36px);margin:-18px;object-fit:cover}
+.dt-sk figcaption{margin-top:14px;font-weight:500}
+.dt-sk figcaption small{display:block;margin-top:2px;color:var(--muted);font-weight:300;font-size:.85rem}
+/* prototype */
+.dt-fid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.dt-f{position:relative;padding:18px;border:1px solid var(--hl);border-radius:28px;background:var(--tile)}
+.dt-f h6{display:flex;align-items:center;gap:10px;margin:16px 0 6px;font-weight:500;font-size:1.1rem}
+.dt-f h6 span{color:var(--blue);font-size:.78rem;font-variant-numeric:tabular-nums}
+.dt-f p{margin:0;color:var(--muted);font-weight:300;font-size:.92rem;line-height:1.55}
+.dt-ft{position:relative;aspect-ratio:4/3;display:flex;flex-direction:column;gap:9px;padding:16px;border-radius:18px;overflow:hidden}
+.dt-ft img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dt-ft i,.dt-ft b{display:block;border-radius:6px}
+.dt-ft i{height:9px;width:70%}.dt-ft i:nth-of-type(2){width:50%}.dt-ft b{flex:1;max-height:42%}.dt-ft i:last-of-type{width:34%;height:20px;border-radius:99px}
+.dt-ft.f0{background:#fbf8f1}.dt-ft.f0 i,.dt-ft.f0 b{border:1.5px dashed #8d8575;background:none}
+.dt-ft.f1{background:color-mix(in srgb,var(--text) 8%,var(--tile))}.dt-ft.f1 i,.dt-ft.f1 b{background:color-mix(in srgb,var(--text) 22%,transparent)}
+.dt-ft.f2{background:linear-gradient(160deg,color-mix(in srgb,var(--blue) 80%,#fff),var(--blue))}.dt-ft.f2 i{background:rgba(20,18,13,.28)}.dt-ft.f2 b{background:rgba(255,255,255,.55)}.dt-ft.f2 i:last-of-type{background:#14120d}
+.dt-flows{display:grid;gap:12px}
+.dt-fl{padding:20px clamp(18px,2.4vw,28px);border:1px solid var(--hl);border-radius:26px;background:var(--tile)}
+.dt-fl h6{margin:0 0 14px;font-weight:500;font-size:1rem}
+.dt-fl ol{display:flex;flex-wrap:wrap;align-items:center;gap:8px 0;margin:0;padding:0;list-style:none}
+.dt-fl li{padding:8px 16px;border:1px solid var(--hl);border-radius:99px;font-size:.9rem;background:var(--page)}
+.dt-fl li+li{margin-left:26px;position:relative}
+.dt-fl li+li::before{content:"";position:absolute;left:-26px;top:50%;width:26px;border-top:1.5px solid var(--blue)}
+.dt-fl li+li::after{content:"";position:absolute;left:-8px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-top:1.5px solid var(--blue);border-right:1.5px solid var(--blue);rotate:45deg}
+.dt-fl li.a,.dt-fl li.z{background:var(--blue);border-color:var(--blue);color:#14120d;font-weight:500}
+.dt-ds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dt-ds:has(.dt-box:only-child){grid-template-columns:1fr}
+.dt-ty .aa{font-size:clamp(4rem,8vw,6rem);line-height:1;letter-spacing:-.04em;font-weight:600;color:var(--blue)}
+.dt-ty .fm{margin:6px 0 18px;color:var(--muted);font-size:.9rem}
+.dt-ty ul{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.dt-ty li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-top:10px;border-top:1px solid var(--hl)}
+.dt-ty li small{color:var(--muted);font-size:.78rem;white-space:nowrap}
+.dt-cm .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.dt-cm button{height:44px;padding:0 20px;border-radius:99px;font:500 .92rem var(--font);cursor:pointer;transition:transform .25s,box-shadow .3s}
+.dt-cm button:hover{transform:translateY(-2px)}
+.dt-cm .b1{border:0;background:var(--pc);color:#14120d}.dt-cm .b1:hover{box-shadow:0 12px 22px -10px var(--pc)}
+.dt-cm .b2{border:1.5px solid var(--pc);background:none;color:var(--text)}
+.dt-cm .b3{border:0;background:none;color:var(--pc)}
+.dt-cm input[type=text]{flex:1;min-width:140px;height:44px;padding:0 16px;border:1.5px solid var(--hl);border-radius:14px;background:var(--page);color:var(--text);font:inherit}
+.dt-cm input[type=text]:focus{outline:none;border-color:var(--pc)}
+.dt-cm .sw{position:relative;width:50px;height:30px;cursor:pointer}
+.dt-cm .sw input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.dt-cm .sw i{position:absolute;inset:0;border-radius:99px;background:var(--hl);transition:background .3s}
+.dt-cm .sw i::after{content:"";position:absolute;left:4px;top:4px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.dt-cm .sw input:checked+i{background:var(--pc)}.dt-cm .sw input:checked+i::after{transform:translateX(20px)}
+.dt-cm .ch{padding:7px 15px;border:1px solid var(--hl);border-radius:99px;font-size:.88rem;color:var(--muted)}
+.dt-cm .ch.on{background:var(--pc);border-color:var(--pc);color:#14120d;font-weight:500}
+/* test */
+.dt-ts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;align-items:stretch}
+.dt-ts:has(.dt-sc:only-child),.dt-ts:has(.dt-stats:only-child){grid-template-columns:1fr}
+.dt-sc{display:flex;align-items:center;gap:22px}
+.dt-sc h3{margin:0 0 6px;font-size:1.15rem}.dt-sc p{margin:0;color:var(--muted);font-weight:300;font-size:.92rem;line-height:1.5}
+.dt-rgw{position:relative;flex:none;width:132px;height:132px}
+.dt-rg{width:100%;height:100%;border-radius:50%;background:conic-gradient(var(--blue) calc(var(--pct)*1%),var(--hl) 0);-webkit-mask:radial-gradient(circle,transparent 62%,#000 63%);mask:radial-gradient(circle,transparent 62%,#000 63%)}
+.dt-rn{position:absolute;inset:0;display:grid;place-items:center;font-weight:600;font-size:2.2rem;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.dt-ts .dt-stats{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
+.dt-fds{display:grid;gap:12px}
+.dt-fd{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:clamp(12px,2vw,24px);padding:clamp(18px,2.4vw,26px);border:1px solid var(--hl);border-radius:26px;background:var(--tile)}
+.dt-fd small{display:block;margin-bottom:6px;color:var(--muted);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase}
+.dt-fd .b small{color:var(--blue);font-weight:600}
+.dt-fd p{margin:0;font-weight:400;line-height:1.5}
+.dt-fd .b p{font-weight:500}
+.dt-fd>i{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--blue);color:#14120d}
+.dt-fd>i svg{width:20px;height:20px}
+.dt-fd em{font-style:normal;padding:2px 10px;border-radius:99px;font-weight:600;color:#14120d;background:#9ad5a3}
+.dt-fd em.high{background:#e5645a;color:#fff}.dt-fd em.medium{background:#e8b04a}
+.dt-ln{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.dt-lc{padding:22px;border:1px solid var(--hl);border-radius:26px;background:linear-gradient(160deg,color-mix(in srgb,var(--blue) 12%,transparent),transparent 75%)}
+.dt-lc b{display:block;margin-bottom:10px;color:var(--blue);font-size:.85rem;font-variant-numeric:tabular-nums}
+.dt-lc p{margin:0;font-weight:500;font-size:1.05rem;line-height:1.4;letter-spacing:-.01em}
+@media (max-width:860px){
+  .dt-mxw,.dt-ds,.dt-ts{grid-template-columns:1fr}
+  .dt-fd{grid-template-columns:1fr}.dt-fd>i{rotate:90deg}
+  .dt-sc{flex-direction:column;align-items:flex-start}
+  .dt-ins .dt-go{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){.dt-dot{transition:none;transform:none}.dt-sk,.dt-il li{transition:none}}
 </style>
 </head>
 <body>
@@ -452,7 +627,7 @@ html.cg-lock,html.cg-lock body{overflow:hidden}
    3) COLOURS. The hero colour is taken automatically from your mockup image (or from the "accent" column, e.g. #3b82f6).
    4) LINKS. On your landing page the "View case study" button links to project.html?slug=<slug>.
    ===================================================================================== */
-var CFG={SUPABASE_URL:'https://YOUR-PROJECT.supabase.co',SUPABASE_ANON_KEY:'YOUR-ANON-KEY',TABLE:'projects',
+var CFG={SUPABASE_URL:'https://vdfelauxvgwzfptdeizx.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_IZ19idtBF-D6tsPejWaSSw_ZldGCpCq',TABLE:'projects',
   EMAIL:'hello@yourdomain.com',HOME:'index.html#work',PAGE:'project.html'};
 
 var SAMPLE=[
@@ -519,7 +694,7 @@ var live=CFG.SUPABASE_URL.indexOf('YOUR-')<0;
 function getList(){
   if(!live)return Promise.resolve(SAMPLE);
   var ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){ctl&&ctl.abort()},3500);
-  return fetch(CFG.SUPABASE_URL+'/rest/v1/'+CFG.TABLE+'?published=eq.true&order=position.asc&select=*',{signal:ctl&&ctl.signal,headers:{apikey:CFG.SUPABASE_ANON_KEY,Authorization:'Bearer '+CFG.SUPABASE_ANON_KEY}})
+  return fetch(CFG.SUPABASE_URL+'/rest/v1/'+CFG.TABLE+'?published=eq.true&order=position.asc&select=*',{signal:ctl&&ctl.signal,headers:{apikey:CFG.SUPABASE_ANON_KEY}})
     .then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(rows){clearTimeout(tm);try{localStorage.setItem('cs_projects_v1',JSON.stringify(rows))}catch(e){}return rows})
     .catch(function(){var c=null;try{c=JSON.parse(localStorage.getItem('cs_projects_v1')||'null')}catch(e){}return c||SAMPLE});
 }
@@ -709,7 +884,7 @@ function initGallery(p){
    DYNAMIC: with Supabase connected, only what is in the row is shown. No palette = no palette box, no tools = no tools box,
    no "empathize" data = no Empathize stage (and the rail only lists stages that exist). The placeholder content below is used
    ONLY in demo mode (Supabase keys not filled in yet), so you can see the design.
-   Stages 2 to 5 get built one by one; until then they are demo-only placeholders. */
+   All five stages are built: empathize, define, ideate, prototype, test (each reads its own key in the process column). */
 var DT_STAGES=[
   {k:'empathize',n:'Empathize',tag:'Understand the people before the problem.'},
   {k:'define',n:'Define',tag:'Frame the real problem worth solving.'},
@@ -751,13 +926,154 @@ function dtTools(p,demo){
 }
 function dtLi(a){return (a||[]).map(function(x){return '<li>'+esc(x)+'</li>'}).join('')}
 var DT_IC={says:'<path d="M5 5h14v10H10l-5 4z"/>',thinks:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',does:'<path d="M9 11V5a1.5 1.5 0 0 1 3 0v5m0-1a1.5 1.5 0 0 1 3 0v2m0-1a1.5 1.5 0 0 1 3 0v4a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2-4a1.5 1.5 0 0 1 2.5-1.5L9 15"/>',feels:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.600-7 10-7 10z"/>'};
+/* ---------- STAGE 2 · DEFINE ----------
+   p.process.define = {   (every key optional; only what exists is shown)
+     tagline:'..', lede:'..',
+     themes:[{name:'Too much, too soon', notes:['Long sign-up form','..']}],                 // affinity clusters
+     journey:[{name:'Sign up', feeling:-2, note:'Long form, gives up'}],                       // feeling: -2 (frustrated) to 2 (delighted)
+     pov:{user:'A time-poor new member', need:'start and see progress in minutes', insight:'the first minute asks too much'},   // OR  problem:'one sentence'
+     hmw:['reduce sign-up to what we truly need?', ...],                                      // "How might we" is added for you
+     goals:[{t:'Fast first run', m:'Sign-up time -30%'}] } */
+var DT_DEF={ /* ◄ EDIT: demo placeholder, replace per project in the "process" column */
+  lede:'I put every note, quote and observation on the wall, grouped them, mapped the journey and wrote one clear problem. Everything after this answers it.',
+  themes:[{name:'Too much, too soon',notes:['Long sign-up form','Permissions asked before any value','Tutorial cannot be skipped']},
+          {name:'Lost progress',notes:['Progress hidden in a menu','No weekly summary','Streaks reset silently']},
+          {name:'Unclear next step',notes:['Five equal buttons','Jargon in labels','Empty screens give no hint']},
+          {name:'Trust and calm',notes:['Calm colours feel safe','Unclear how data is used']}],
+  journey:[{name:'Discover',feeling:1,note:'Curious after a friend recommends it'},{name:'Sign up',feeling:-2,note:'A long form makes them hesitate'},
+           {name:'Onboard',feeling:-1,note:'Tutorial is slow and cannot be skipped'},{name:'First use',feeling:0,note:'Unsure what to do first'},{name:'Habit',feeling:2,note:'Progress is clear and rewarding'}],
+  pov:{user:'A time-poor new member',need:'start and see progress within minutes',insight:'the first minute asks for too much before showing any value'},
+  hmw:['reduce sign-up to only what we truly need?','show value before asking for details?','make progress visible at a glance?','guide the next step without a manual?'],
+  goals:[{t:'A fast first run',m:'Sign-up time down 30%'},{t:'Progress people can see',m:'Day-7 return up 15%'},{t:'A clear path',m:'Task success 90% or more'}]
+};
+function dtSmooth(pts){var d='M'+pts[0][0]+' '+pts[0][1];for(var i=1;i<pts.length;i++){var a=pts[i-1],b=pts[i],mx=(a[0]+b[0])/2;d+=' C'+mx+' '+a[1]+' '+mx+' '+b[1]+' '+b[0]+' '+b[1]}return d}
+function defHTML(D,sub,stageHead){
+  var o='<article class="dt-st" id="dt-2">'+stageHead(1,D.tagline),k=0;
+  var themes=(D.themes||[]).filter(function(t){return t&&t.name&&arr(t.notes).length}),
+      jr=(D.journey||[]).filter(function(j){return j&&j.name}),
+      pov=D.pov&&typeof D.pov==='object'&&(D.pov.user||D.pov.need||D.pov.insight)?D.pov:null,
+      hmw=arr(D.hmw).filter(Boolean),goals=(D.goals||[]).filter(function(g){return g&&g.t});
+  if(D.lede)o+='<p class="dt-lede cs-rv">'+esc(D.lede)+'</p>';
+  if(themes.length){var ni=0;
+    o+=sub('Making sense of it')+'<div class="dt-aff cs-rv">'+themes.map(function(t){var ns=arr(t.notes);
+      return '<div class="dt-th"><h5>'+esc(t.name)+'<b>'+ns.length+'</b></h5><ul>'+ns.map(function(n){var i=ni++;
+        return '<li class="dt-an" style="--k:'+i+';--nr:'+[-1.2,.9,-.6,1.1][i%4]+'deg;--sx:'+(((i*53)%7-3)*46)+'px;--sy:'+(((i*37)%9-4)*34)+'px;--sr:'+(((i*29)%9-4)*7)+'deg">'+esc(n)+'</li>'}).join('')+'</ul></div>'}).join('')+'</div>'}
+  if(jr.length){var N=jr.length,pts=jr.map(function(j,i){var f=Math.max(-2,Math.min(2,+j.feeling||0));return [(i+.5)/N*1000,110-f*40]});
+    var line=dtSmooth(pts),area=line+' L'+pts[N-1][0]+' 220 L'+pts[0][0]+' 220 Z';
+    o+=sub('The user journey')+'<div class="dt-jw cs-rv"><div class="dt-j" style="--n:'+N+'"><div class="dt-jc"><svg viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="dtJg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c6a66b" stop-opacity=".28"/><stop offset="1" stop-color="#c6a66b" stop-opacity="0"/></linearGradient></defs><path class="ar" d="'+area+'"/><path class="ln" pathLength="1" vector-effect="non-scaling-stroke" d="'+line+'"/></svg>'+
+      '<span class="dt-jz t">Delighted</span><span class="dt-jz b">Frustrated</span>'+
+      jr.map(function(j,i){var f=+j.feeling||0;return '<i class="dt-jd '+(f<0?'bad':f===0?'neu':'')+'" style="--i:'+i+';left:'+(pts[i][0]/10)+'%;top:'+(pts[i][1]/220*100)+'%"></i>'}).join('')+'</div>'+
+      '<div class="dt-jr">'+jr.map(function(j,i){return '<div class="dt-js"><b>'+pad2(i+1)+'</b><h6>'+esc(j.name)+'</h6>'+(j.note?'<p>'+esc(j.note)+'</p>':'')+'</div>'}).join('')+'</div></div></div>'}
+  if(pov||D.problem){
+    o+=sub('The problem to solve')+'<div class="dt-pov cs-rv"><small>Problem statement</small><p>'+(pov?
+      (pov.user?'<mark style="--m:0">'+esc(pov.user)+'</mark> ':'')+(pov.need?'needs to <mark style="--m:1">'+esc(pov.need)+'</mark> ':'')+(pov.insight?'because <mark style="--m:2">'+esc(pov.insight)+'</mark>.':'')
+      :'<mark style="--m:0">'+esc(D.problem)+'</mark>')+'</p></div>'}
+  if(hmw.length)o+=sub('How might we')+'<div class="dt-hmw">'+hmw.map(function(q,i){q=String(q).replace(/^how might we\s*/i,'');
+    return '<div class="dt-h cs-rv"><i>'+pad2(i+1)+'</i><p><span>How might we</span>'+esc(q.charAt(0).toUpperCase()+q.slice(1))+'</p></div>'}).join('')+'</div>';
+  if(goals.length)o+=sub('Design goals')+'<div class="dt-goals">'+goals.map(function(g){
+    return '<div class="dt-g cs-rv"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg><b>'+esc(g.t)+'</b>'+(g.m?'<span>'+esc(g.m)+'</span>':'')+'</div>'}).join('')+'</div>';
+  return o+'</article>';
+}
+/* ---------- STAGE 3 · IDEATE ----------
+   p.process.ideate = { tagline, lede,
+     ideas:[{t:'Idea name', impact:0-10, effort:0-10, picked:true}],      // scored on the impact / effort matrix
+     sketches:[{src:'img/sketch1.jpg', title:'Onboarding sketch', note:'optional'}],   // photos or scans of your sketches
+     chosen:'The direction I picked and why.' }  */
+var DT_IDE={ /* ◄ EDIT demo placeholder */
+  lede:'With the problem framed, I went wide first. Dozens of rough ideas, then a simple score for how much each would help and how hard it would be to build.',
+  ideas:[{t:'One-screen sign-up',impact:9,effort:3,picked:true},{t:'Skip the tutorial',impact:6,effort:2},{t:'Progress ring on home',impact:8,effort:4,picked:true},{t:'Weekly summary email',impact:5,effort:3},
+         {t:'AI coach chat',impact:7,effort:9},{t:'Social challenges',impact:5,effort:8},{t:'Guided first workout',impact:9,effort:6,picked:true},{t:'Custom themes',impact:2,effort:4}],
+  sketches:[{title:'Sign-up in one screen'},{title:'Home with progress ring'},{title:'First workout flow'}],
+  chosen:'Start with the quick wins and one big bet: a one-screen sign-up, a progress ring on home and a guided first workout.'
+};
+function dtDoodle(i){var v=i%3;return v===0?'<svg viewBox="0 0 200 140" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="62" y="8" width="76" height="124" rx="10"/><path d="M74 28h52M74 44h34"/><rect x="74" y="58" width="52" height="30" rx="5"/><path d="M74 100h52" stroke-dasharray="4 5"/><rect x="82" y="110" width="36" height="12" rx="6"/></svg>':
+  v===1?'<svg viewBox="0 0 200 140" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="62" y="8" width="76" height="124" rx="10"/><circle cx="100" cy="56" r="22"/><path d="M100 34a22 22 0 0 1 20 14" stroke-width="4"/><path d="M76 94h48M76 106h30"/></svg>':
+  '<svg viewBox="0 0 200 140" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="26" width="46" height="88" rx="7"/><rect x="77" y="26" width="46" height="88" rx="7"/><rect x="140" y="26" width="46" height="88" rx="7"/><path d="M62 70h13M125 70h13"/><path d="M22 44h30M85 44h30M148 44h30" stroke-dasharray="3 4"/></svg>'}
+function ideHTML(I,sub,stageHead){
+  var o='<article class="dt-st" id="dt-3">'+stageHead(2,I.tagline),
+    ideas=(I.ideas||[]).filter(function(x){return x&&x.t}),sk=(I.sketches||[]).filter(function(x){return x&&(x.src||x.title)});
+  function cl(v){return Math.max(0,Math.min(10,+v||0))}
+  if(I.lede)o+='<p class="dt-lede cs-rv">'+esc(I.lede)+'</p>';
+  if(ideas.length){
+    o+=sub('Ideas, scored')+'<div class="dt-mxw cs-rv"><div class="dt-mx" role="img" aria-label="Ideas placed by effort and impact"><span class="qa t l">Quick wins</span><span class="qa t r">Big bets</span><span class="qa b l">Fill-ins</span><span class="qa b r">Reconsider</span>'+
+      '<span class="ax x">Effort →</span><span class="ax y">Impact →</span>'+
+      ideas.map(function(x,i){return '<i class="dt-dot'+(x.picked?' pick':'')+'" data-i="'+i+'" style="left:'+(cl(x.effort)*8+6)+'%;top:'+(100-(cl(x.impact)*8+6))+'%">'+(i+1)+'</i>'}).join('')+'</div>'+
+      '<ol class="dt-il">'+ideas.map(function(x,i){return '<li data-i="'+i+'"'+(x.picked?' class="pick"':'')+'><b>'+(i+1)+'</b><span>'+esc(x.t)+'</span>'+(x.picked?'<em>Chosen</em>':'')+'</li>'}).join('')+'</ol></div>'}
+  if(sk.length)o+=sub('Sketches and wireframes')+'<div class="dt-sks">'+sk.map(function(s,i){return '<figure class="dt-sk cs-rv" style="--r:'+[-1.8,1.3,-.8,1.6][i%4]+'deg"><span class="tape"></span><div class="pp">'+(url(s.src)?'<img src="'+esc(url(s.src))+'" alt="'+esc(s.title||'Sketch')+'" loading="lazy">':dtDoodle(i))+'</div><figcaption>'+esc(s.title||'')+(s.note?'<small>'+esc(s.note)+'</small>':'')+'</figcaption></figure>'}).join('')+'</div>';
+  if(I.chosen)o+='<div class="dt-ins cs-rv"><div><small>Chosen direction</small><p>'+esc(I.chosen)+'</p></div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></div>';
+  return o+'</article>';
+}
+
+/* ---------- STAGE 4 · PROTOTYPE ----------
+   p.process.prototype = { tagline, lede,
+     fidelity:[{label:'Lo-fi', note:'..', img:'url'}],                                  // paper -> clickable -> polished
+     flows:[{name:'Sign up', steps:['Open app','Create account','Pick a goal']}],       // key user flows
+     ds:{family:'Outfit', scale:[{n:'Heading',s:'36px',w:'600'}], components:true},    // type + components preview (uses your palette)
+     link:'https://www.figma.com/proto/...', linkLabel:'Open the prototype' }  */
+var DT_PRO={ /* ◄ EDIT demo placeholder */
+  lede:'I made the ideas tangible in steps: quick paper sketches, then clickable wireframes, then a polished interface with real type, colour and motion.',
+  fidelity:[{label:'Lo-fi',note:'Paper and boxes. Fast to change, perfect for testing the idea.'},{label:'Mid-fi',note:'Clickable wireframes. Real structure and flow, no styling yet.'},{label:'Hi-fi',note:'The polished interface with the final type, colour and motion.'}],
+  flows:[{name:'Sign up',steps:['Open app','Create account','Pick a goal','Dashboard']},{name:'First workout',steps:['Dashboard','Choose plan','Start','Celebrate']}],
+  ds:{family:'Outfit',scale:[{n:'Heading',s:'34px',w:'600'},{n:'Subheading',s:'22px',w:'500'},{n:'Body',s:'16px',w:'400'},{n:'Caption',s:'13px',w:'300'}],components:true},
+  link:'',linkLabel:'Open the prototype'
+};
+function proHTML(R,sub,stageHead,pc){
+  var o='<article class="dt-st" id="dt-4">'+stageHead(3,R.tagline),
+    fid=(R.fidelity||[]).filter(function(f){return f&&f.label}),flows=(R.flows||[]).filter(function(f){return f&&arr(f.steps).length}),ds=R.ds&&typeof R.ds==='object'?R.ds:null;
+  if(R.lede)o+='<p class="dt-lede cs-rv">'+esc(R.lede)+'</p>';
+  if(fid.length)o+=sub('From rough to refined')+'<div class="dt-fid">'+fid.map(function(f,i){var lv=Math.min(2,Math.round(i/Math.max(1,fid.length-1)*2));
+    return '<div class="dt-f cs-rv" style="--lv:'+lv+'"><div class="dt-ft f'+lv+'">'+(url(f.img)?'<img src="'+esc(url(f.img))+'" alt="'+esc(f.label)+'" loading="lazy">':'<i></i><i></i><b></b><i></i><i></i>')+'</div><h6><span>'+pad2(i+1)+'</span>'+esc(f.label)+'</h6>'+(f.note?'<p>'+esc(f.note)+'</p>':'')+'</div>'}).join('')+'</div>';
+  if(flows.length)o+=sub('Key user flows')+'<div class="dt-flows">'+flows.map(function(f){var st=arr(f.steps);
+    return '<div class="dt-fl cs-rv"><h6>'+esc(f.name||'Flow')+'</h6><ol>'+st.map(function(s,i){return '<li class="'+(i===0?'a':i===st.length-1?'z':'')+'">'+esc(s)+'</li>'}).join('')+'</ol></div>'}).join('')+'</div>';
+  if(ds&&(ds.family||arr(ds.scale).length||ds.components)){var fam=String(ds.family||'').replace(/[^\w \-]/g,'');
+    o+=sub('Design system')+'<div class="dt-ds cs-rv" style="--pc:'+(pc||'var(--blue)')+'">'+
+    ((fam||(ds.scale||[]).length)?'<div class="dt-box dt-ty"'+(fam?' style="font-family:\''+fam+'\',var(--font)"':'')+'><div class="aa">Aa</div>'+(fam?'<p class="fm">'+esc(fam)+'</p>':'')+'<ul>'+(ds.scale||[]).map(function(s){var px=Math.min(40,parseInt(s.s,10)||16);return '<li><span style="font-size:'+px+'px;font-weight:'+(+s.w||400)+'">'+esc(s.n||'Text')+'</span><small>'+esc(s.s||'')+(s.w?' · '+esc(s.w):'')+'</small></li>'}).join('')+'</ul></div>':'')+
+    (ds.components?'<div class="dt-box dt-cm"><h3>Components</h3><div class="row"><button type="button" class="b1">Primary</button><button type="button" class="b2">Secondary</button><button type="button" class="b3">Ghost</button></div><div class="row"><input type="text" placeholder="Input field" aria-label="Sample input"><label class="sw"><input type="checkbox" checked aria-label="Sample toggle"><i></i></label></div><div class="row"><span class="ch on">Selected</span><span class="ch">Option</span><span class="ch">Option</span></div></div>':'')+'</div>'}
+  if(url(R.link))o+='<div class="dt-ins cs-rv"><div><small>Interactive prototype</small><p>Click through it yourself.</p></div><a class="dt-go" href="'+esc(url(R.link))+'" target="_blank" rel="noopener">'+esc(R.linkLabel||'Open the prototype')+' ↗</a></div>';
+  return o+'</article>';
+}
+
+/* ---------- STAGE 5 · TEST ----------
+   p.process.test = { tagline, lede, methods:['Moderated sessions'],
+     score:{v:84, max:100, l:'System usability score', note:'Above the 68 average'},
+     stats:[{v:8,l:'participants'}],
+     findings:[{found:'What went wrong', fix:'What I changed', sev:'high'|'medium'|'low'}],
+     learned:['Takeaway', ...], outcome:'The result in one sentence.' }  */
+var DT_TES={ /* ◄ EDIT demo placeholder */
+  lede:'I put the prototype in front of real people, watched where they hesitated and fixed it. Then I tested again.',
+  methods:['Moderated sessions','Task success rate','System Usability Scale','Think-aloud'],
+  score:{v:84,max:100,l:'System usability score',note:'Well above the industry average of 68'},
+  stats:[{v:8,l:'participants'},{v:92,l:'% task success'},{v:2,l:'test rounds'}],
+  findings:[{found:'3 of 8 people missed the "Skip" link on the goal screen',fix:'Made Skip a clear button and moved it to the thumb zone',sev:'high'},
+            {found:'The progress ring was read as a loading spinner',fix:'Added a label and the number in the centre',sev:'medium'},
+            {found:'Some labels used fitness jargon',fix:'Rewrote them in plain words',sev:'low'}],
+  learned:['Watching people beats asking them','Small wording changes moved the numbers most','Testing early made every later change cheaper'],
+  outcome:'Task success rose from 61% to 92% between the first and second round.'
+};
+function tesHTML(T,sub,stageHead){
+  var o='<article class="dt-st" id="dt-5">'+stageHead(4,T.tagline),sc=T.score&&T.score.v!=null?T.score:null,
+    stats=(T.stats||[]).filter(function(s){return s&&s.v!=null}),fd=(T.findings||[]).filter(function(f){return f&&(f.found||f.fix)}),ln=arr(T.learned).filter(Boolean);
+  if(T.lede)o+='<p class="dt-lede cs-rv">'+esc(T.lede)+'</p>';
+  if(arr(T.methods).length)o+='<div class="dt-chips cs-rv">'+arr(T.methods).map(function(m){return '<span>'+esc(m)+'</span>'}).join('')+'</div>';
+  if(sc||stats.length)o+=sub('The numbers')+'<div class="dt-ts cs-rv">'+(sc?'<div class="dt-box dt-sc"><div class="dt-rgw"><div class="dt-rg" data-v="'+(+sc.v||0)+'" data-max="'+(+sc.max||100)+'" style="--pct:0"></div><b class="dt-rn">0</b></div><div><h3>'+esc(sc.l||'Score')+'</h3>'+(sc.note?'<p>'+esc(sc.note)+'</p>':'')+'</div></div>':'')+
+    (stats.length?'<div class="dt-stats">'+stats.map(function(s){return '<div class="dt-stat"><b data-v="'+(+s.v||0)+'">0</b><span>'+esc(s.l||'')+'</span></div>'}).join('')+'</div>':'')+'</div>';
+  if(fd.length)o+=sub('What I found, what I changed')+'<div class="dt-fds">'+fd.map(function(f){var sv=/^(high|medium|low)$/.test(f.sev)?f.sev:'';
+    return '<div class="dt-fd cs-rv"><div class="a"><small>'+(sv?'<em class="'+sv+'">'+sv+' priority</em>':'Found')+'</small><p>'+esc(f.found||'')+'</p></div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i><div class="b"><small>Changed</small><p>'+esc(f.fix||'')+'</p></div></div>'}).join('')+'</div>';
+  if(ln.length)o+=sub('What I learned')+'<div class="dt-ln">'+ln.map(function(t,i){return '<div class="dt-lc cs-rv"><b>'+pad2(i+1)+'</b><p>'+esc(t)+'</p></div>'}).join('')+'</div>';
+  if(T.outcome)o+='<div class="dt-ins cs-rv"><div><small>Outcome</small><p>'+esc(T.outcome)+'</p></div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.500"/></svg></i></div>';
+  return o+'</article>';
+}
 function processHTML(p){
   var demo=!live,pr=p.process;if(typeof pr==='string'){try{pr=JSON.parse(pr)}catch(e){pr=null}}pr=pr||{};
   var E=demo?Object.assign({},DT_EMP,pr.empathize||{}):(pr.empathize&&typeof pr.empathize==='object'?pr.empathize:null);
   if(E&&!Object.keys(E).length)E=null;
+  var D=demo?Object.assign({},DT_DEF,pr.define||{}):(pr.define&&typeof pr.define==='object'?pr.define:null);
+  if(D&&!Object.keys(D).length)D=null;
+  function stg(k,def){var v=pr[k];v=(v&&typeof v==='object')?v:null;var r=demo?Object.assign({},def,v||{}):v;return r&&Object.keys(r).length?r:null}
+  var I=stg('ideate',DT_IDE),R=stg('prototype',DT_PRO),T=stg('test',DT_TES);
   var pal=dtPalette(p,demo),tl=dtTools(p,demo);
   /* which stages exist for THIS project: has data (and a renderer), or demo placeholder */
-  var show=[];DT_STAGES.forEach(function(s,i){var has=s.k==='empathize'?!!E:false;if(has||(demo&&s.k!=='empathize'))show.push({s:s,i:i,has:has})});
+  var S={empathize:E,define:D,ideate:I,prototype:R,test:T},show=[];DT_STAGES.forEach(function(s,i){if(S[s.k])show.push({s:s,i:i,has:true})});
   if(!pal.length&&!tl.length&&!show.length)return '';
   var h='<section class="dt" id="process" aria-label="Design thinking process"><div class="cs-wrap">';
   /* intro */
@@ -795,9 +1111,12 @@ function processHTML(p){
     if(E.insight)o+='<div class="dt-ins cs-rv"><div><small>Key insight</small><p>'+esc(E.insight)+'</p></div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></i></div>';
     return o+'</article>';
   }
-  show.forEach(function(x){
-    if(x.has)h+=emp(E);                                       /* real data */
-    else h+='<article class="dt-st" id="dt-'+(x.i+1)+'">'+stageHead(x.i)+'<div class="dt-soon cs-rv">'+x.s.n+' goes here. This stage is built in the next step.</div></article>';   /* demo placeholder */
+  show.forEach(function(x){var kk=0,n=x.i+1,sub=function(t){return '<div class="dt-sub cs-rv"><small>'+n+'.'+(++kk)+'</small>'+t+'</div>'};
+    if(x.s.k==='empathize')h+=emp(E);
+    else if(x.s.k==='define')h+=defHTML(D,sub,stageHead);
+    else if(x.s.k==='ideate')h+=ideHTML(I,sub,stageHead);
+    else if(x.s.k==='prototype')h+=proHTML(R,sub,stageHead,pal[0]&&pal[0].hex);
+    else h+=tesHTML(T,sub,stageHead);
   });
   return h+'</div></div></div>'+'</section>';
   }
@@ -820,6 +1139,16 @@ function initProcess(p){
     if(reduce){el.textContent=v;return}
     (function f(now){var t=Math.min(1,(now-t0)/1400);el.textContent=Math.round(v*(1-Math.pow(1-t,3)));if(t<1)requestAnimationFrame(f)})(t0)})},{threshold:.6}):null;
   [].forEach.call(sec.querySelectorAll('.dt-stat b'),function(b){if(io)io.observe(b);else b.textContent=b.dataset.v});
+  /* score ring */
+  [].forEach.call(sec.querySelectorAll('.dt-rg'),function(rg){var num=rg.parentNode.querySelector('.dt-rn'),v=+rg.dataset.v,mx=+rg.dataset.max||100;
+    function set(e){rg.style.setProperty('--pct',(v/mx*100*e).toFixed(2));num.textContent=Math.round(v*e)}
+    if(reduce||!('IntersectionObserver' in window)){set(1);return}
+    var o=new IntersectionObserver(function(es){if(!es[0].isIntersecting)return;o.disconnect();var t0=performance.now();(function f(now){var t=Math.min(1,(now-t0)/1600);set(1-Math.pow(1-t,3));if(t<1)requestAnimationFrame(f)})(t0)},{threshold:.6});o.observe(rg)});
+  /* idea matrix: hover a name or a dot to light up the other */
+  [].forEach.call(sec.querySelectorAll('.dt-mxw'),function(w){
+    function clr(){[].forEach.call(w.querySelectorAll('.hl'),function(x){x.classList.remove('hl')})}
+    w.addEventListener('mouseover',function(e){var t=e.target.closest('[data-i]');clr();if(t)[].forEach.call(w.querySelectorAll('[data-i="'+t.dataset.i+'"]'),function(x){x.classList.add('hl')})});
+    w.addEventListener('mouseleave',clr)});
   /* copy a colour */
   var toast=document.createElement('div');toast.className='dt-toast';toast.setAttribute('role','status');document.body.appendChild(toast);var tm;
   sec.addEventListener('click',function(e){var b=e.target.closest('.dt-sw');if(!b)return;var hx=b.dataset.hex;
